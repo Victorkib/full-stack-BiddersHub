@@ -99,6 +99,8 @@ export const register = async (req, res) => {
       .cookie('token', token, {
         httpOnly: true,
         maxAge: age,
+        sameSite: 'none', // Allows cross-site requests
+        secure: true, // Ensures the cookie is only sent over HTTPS
       })
       .status(200)
       .json(newUser);
@@ -134,6 +136,8 @@ export const login = async (req, res) => {
       .cookie('token', token, {
         httpOnly: true,
         maxAge: age,
+        sameSite: 'none', // Allows cross-site requests
+        secure: true, // Ensures the cookie is only sent over HTTPS
       })
       .status(200)
       .json({ ...user, password: undefined });

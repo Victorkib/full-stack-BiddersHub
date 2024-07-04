@@ -4,7 +4,7 @@ dotenv.config();
 
 const io = new Server({
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: 'https://bidders-hub.onrender.com',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     allowedHeaders: ['Content-Type'],
     credentials: true,
