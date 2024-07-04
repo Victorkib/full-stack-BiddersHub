@@ -19,6 +19,10 @@ import sessionRoutes from './routes/session.js';
 const app = express();
 const port = process.env.PORT || 8800;
 
+// __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // Middleware
 app.use(
   cors({
@@ -34,9 +38,7 @@ app.use(cookieParser());
 // Use Multer middleware
 app.use(upload);
 
-// Serve static files from the dist folder
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// Serve static files from the frontend/dist folder
 app.use(express.static(join(__dirname, 'client', 'dist')));
 
 // Routes setup (ensure this is placed after static files middleware)
