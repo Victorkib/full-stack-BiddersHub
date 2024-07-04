@@ -1,8 +1,10 @@
 import { Server } from 'socket.io';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const io = new Server({
   cors: {
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL,
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     allowedHeaders: ['Content-Type'],
     credentials: true,
@@ -42,6 +44,7 @@ io.on('connection', (socket) => {
   });
 });
 
-io.listen('4000', () => {
-  console.log(`listening to 4000`);
+const PORT = process.env.PORT || 4000; // Use environment variable for port
+io.listen(PORT, () => {
+  console.log(`listening to ${PORT}`);
 });
