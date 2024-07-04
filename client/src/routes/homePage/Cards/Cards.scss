@@ -1,0 +1,54 @@
+/* Card Component */
+.card {
+  position: relative;
+  margin-right: 1.25rem; /* Corresponds to mr-5 */
+  height: 100%;
+  //   border: 1px solid orange;
+  @media (min-width: 768px) {
+    margin-top: 1.25rem; /* Corresponds to md:my-5 */
+    margin-bottom: 1.25rem; /* Corresponds to md:my-5 */
+  }
+}
+
+figure {
+  height: 18rem;
+  width: auto;
+  //   border: 1px solid crimson;
+  img {
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.3s;
+    @media (min-width: 768px) {
+      //   height: 18rem; /* Corresponds to md:h-72 */
+    }
+
+    &:hover {
+      transform: scale(1.05); /* Corresponds to hover:scale-105 */
+    }
+  }
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700; /* Corresponds to font-semibold */
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+
+  .timeRemaining {
+    border-radius: 0px 20px 0px 20px;
+    height: 40px;
+    border: 1px solid saddlebrown;
+  }
+}

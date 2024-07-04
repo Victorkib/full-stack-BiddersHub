@@ -1,0 +1,61 @@
+.email-sent {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+
+  .content {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff; /* White background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #333; /* Dark text color */
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: #666; /* Medium gray text color */
+    }
+
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #aecc06; /* Bootstrap blue */
+      color: #fff; /* White text color */
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      padding: 15px;
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      a {
+        font-size: 1rem;
+        padding: 8px 16px;
+      }
+    }
+  }
+}

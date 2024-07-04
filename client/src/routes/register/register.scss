@@ -1,0 +1,335 @@
+// .registerPage {
+//   height: 100%;
+//   display: flex;
+
+//   .formContainer {
+//     flex: 3;
+//     height: 100%;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+
+//     form {
+//       display: flex;
+//       flex-direction: column;
+//       gap: 20px;
+
+//       input {
+//         padding: 20px;
+//         border: 1px solid gray;
+//         border-radius: 5px;
+//       }
+
+//       button {
+//         padding: 20px;
+//         border-radius: 5px;
+//         border: none;
+//         background-color: teal;
+//         color: white;
+//         font-weight: bold;
+//         cursor: pointer;
+
+//         &:disabled {
+//           background-color: #bed9d8;
+//           cursor: not-allowed;
+//         }
+//       }
+
+//       span {
+//         color: rgba(255, 0, 0, 0.591);
+//       }
+
+//       a {
+//         font-size: 14px;
+//         color: gray;
+//         border-bottom: 1px solid gray;
+//         width: max-content;
+//       }
+//     }
+//   }
+
+//   .imgContainer {
+//     flex: 2;
+//     background-color: #fcf5f3;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     img {
+//       width: 100%;
+//     }
+//   }
+// }
+
+.registerPage {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('/public/auction-hammer.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer */
+
+  .firstRegPage {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+
+      .step {
+        width: 65px;
+        height: 65px;
+        background-color: lightgray;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: 300;
+        position: relative;
+
+        &.active {
+          background-color: teal;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          width: calc(100% - 10px);
+          height: 4px;
+          background-color: lightgray;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 50%;
+          z-index: -1;
+        }
+
+        &:first-child::after {
+          display: none;
+        }
+
+        &:last-child::after {
+          width: 0;
+        }
+      }
+    }
+
+    .progress-bar {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: lightgray;
+      height: 4px;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 0;
+        background-color: teal;
+        top: 0;
+        left: 0;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .formContainer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      overflow: scroll;
+      overflow-x: hidden;
+      scrollbar-width: none; /* For Firefox */
+      -ms-overflow-style: none; /* For Internet Explorer */
+
+      form {
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        border: 1px solid rgb(40, 161, 15);
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        input {
+          padding: 15px;
+          border: 1px solid lightgray;
+          border-radius: 5px;
+          font-size: 16px;
+          transition: border-color 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: teal;
+          }
+        }
+
+        button {
+          padding: 15px;
+          border-radius: 5px;
+          border: none;
+          background-color: teal;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #1a8b89;
+          }
+
+          &:disabled {
+            background-color: #bed9d8;
+            cursor: not-allowed;
+          }
+        }
+
+        span {
+          color: rgba(255, 0, 0, 0.8);
+        }
+
+        a {
+          font-size: 14px;
+          color: gray;
+          text-decoration: none;
+          border-bottom: 1px solid gray;
+          width: max-content;
+
+          &:hover {
+            color: teal;
+          }
+        }
+        .regbuttons {
+          display: flex;
+          width: 100%;
+          gap: 5px;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .uploadSection {
+        margin-bottom: 20px;
+
+        h2 {
+          font-size: 18px;
+          margin-bottom: 5px;
+        }
+
+        p {
+          font-size: 14px;
+          color: gray;
+          margin-bottom: 10px;
+        }
+
+        .documentPreview {
+          margin-top: 10px;
+          // border: 1px solid crimson;
+          img {
+            // border: 1px solid crimson;
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            object-position: center;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  .progress-bar {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: lightgray;
+    height: 4px;
+    position: relative;
+
+    .progress {
+      height: 100%;
+      background-color: teal;
+      transition: width 0.3s ease;
+    }
+  }
+  .fullDocumentView {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    border: 1px solid crimson;
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+
+    .fullDocument {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      z-index: 1001;
+      background: wheat;
+      padding: 20px;
+      // border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      opacity: 0.9;
+      overflow: auto;
+
+      img {
+        border: 1px solid forestgreen;
+        width: 90%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        // opacity: 0.8;
+      }
+
+      .closeButton {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -1,0 +1,194 @@
+@import '../../responsive.scss';
+
+.editSingle {
+  height: 100%;
+  position: relative;
+  //   width: 100%;
+  //   display: flex;
+  //   flex-direction: column;
+  //   border: 1px solid crimson;
+  @include md {
+    height: 100%;
+    // border: 1px solid crimson;
+  }
+  @include sm {
+    height: 100%;
+    // border: 1px solid rgb(135, 148, 19);
+  }
+
+  form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    // border: 2px solid violet;
+
+    hr {
+      display: none;
+
+      @include md {
+        display: block;
+      }
+      @include sm {
+        display: block;
+      }
+    }
+
+    @include md {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      flex-wrap: wrap;
+      //   gap: 20px;
+      width: 100%;
+      height: 100%;
+      //   border: 1px solid olivedrab;
+    }
+    @include sm {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      flex-wrap: wrap;
+      //   gap: 20px;
+      width: 100%;
+      height: 100%;
+      //   border: 1px solid olivedrab;
+    }
+
+    .formContainer {
+      flex: 3;
+      overflow: scroll;
+      overflow-x: hidden;
+      // width: 70%;
+
+      .wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+        width: 100%;
+        margin: 30px 50px 100px 0px;
+        // border: 1px solid forestgreen;
+
+        // @include lg {
+        // }
+        @include md {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+          width: 100%;
+        }
+        @include sm {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+          width: 100%;
+        }
+
+        .item {
+          width: 30%;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+
+          label {
+            text-shadow: 2px 2px 4px wheat;
+          }
+
+          input {
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid gray;
+          }
+
+          select {
+            padding: 19px;
+          }
+
+          &.description {
+            width: 100%;
+            height: 320px;
+
+            .quill > .ql-container > .ql-editor {
+              height: 200px;
+              font-size: 16px;
+            }
+          }
+        }
+        .sendButton {
+          width: 30%;
+          height: 9vh;
+          border-radius: 5px;
+          border: none;
+          background-color: teal;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+        }
+        .loader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(255, 255, 255, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+
+          .threeDots {
+            color: rgb(52, 138, 18);
+          }
+        }
+      }
+    }
+
+    .sideContainer {
+      flex: 2;
+      overflow: scroll;
+      overflow-x: hidden;
+      background-color: #fcf5f3;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid hotpink;
+
+      @include md {
+        border: 1px solid crimson;
+        overflow-x: auto;
+      }
+      @include sm {
+        border: 1px solid crimson;
+        overflow-x: auto;
+      }
+
+      .imageContainer {
+        position: relative;
+        width: 50%;
+
+        img {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+          border-radius: 5px;
+        }
+
+        button {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: red;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          padding: 5px 10px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
