@@ -44,7 +44,7 @@ function HomePage() {
           <img src="/BeeCar.jpg" alt="" />
         </div>
       </div>
-      {/* <Categories /> */}
+      {/* <Categoriess /> */}
       {/* New Sections */}
       <div className="aboutSection">
         <div className="wrapper">
