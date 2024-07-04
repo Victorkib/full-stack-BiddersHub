@@ -10,7 +10,11 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     // Update the URL to point to your hosted socket server
-    setSocket(io('https://bidderssocket.onrender.com'));
+    setSocket(
+      io('https://bidderssocket.onrender.com', {
+        withCredentials: true, // Ensure credentials are sent with the request
+      })
+    );
   }, []);
 
   useEffect(() => {
