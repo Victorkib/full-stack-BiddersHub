@@ -19,10 +19,6 @@ import sessionRoutes from './routes/session.js';
 const app = express();
 const port = process.env.PORT || 8800;
 
-// __dirname for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 // Middleware
 app.use(
   cors({
@@ -38,10 +34,7 @@ app.use(cookieParser());
 // Use Multer middleware
 app.use(upload);
 
-// Serve static files from the frontend/dist folder
-app.use(express.static(join(__dirname, 'client', 'dist')));
-
-// Routes setup (ensure this is placed after static files middleware)
+// Routes setup
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/posts', postRoute);
@@ -49,6 +42,12 @@ app.use('/api/test', testRoute);
 app.use('/api/chats', chatRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/sessions', sessionRoutes);
+
+// Serve static files from the frontend/dist folder
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+app.use(express.static(join(__dirname, '/client/dist')));
 
 // For any other route or fallback to index.html for client-side routing
 app.get('*', (req, res) => {
