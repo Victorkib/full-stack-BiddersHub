@@ -1,9 +1,9 @@
-// app.js
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import path from 'path'; // Import path module for file paths
 import { upload } from './middleware/upload.js'; // Import Multer middleware
 
 // Route Imports
@@ -33,7 +33,10 @@ app.use(cookieParser());
 // Use Multer middleware
 app.use(upload);
 
-// Routes
+// Serve static files from the dist folder
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+// Routes setup (ensure this is placed after static files middleware)
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/posts', postRoute);
@@ -42,6 +45,12 @@ app.use('/api/chats', chatRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/sessions', sessionRoutes);
 
+// For any other route or fallback to index.html for client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
+
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on PORT: ${port}`);
 });
