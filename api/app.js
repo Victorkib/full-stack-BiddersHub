@@ -50,7 +50,7 @@ app.use('/api/sessions', sessionRoutes);
 
 // For any other route or fallback to index.html for client-side routing
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, '../client/dist/index.html'));
+  res.sendFile(join(__dirname, 'client', 'dist', 'index.html'));
 });
 
 // Start the server
