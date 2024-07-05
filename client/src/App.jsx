@@ -19,6 +19,7 @@ import NotFoundPage from './components/underDeve/NotFound';
 import EmailSent from './routes/EmailSent/EmailSent';
 import ResetPassword from './routes/ResetPassword/ResetPassword';
 import EditSingle from './routes/Edit/EditSingle';
+import SessionForm from './routes/session/SessionForm';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -88,6 +89,10 @@ function App() {
         {
           path: '/liveAuctions',
           element: <DashboardPage />,
+        },
+        {
+          path: '/liveAuctions/create',
+          element: <SessionForm />,
         },
       ],
     },
