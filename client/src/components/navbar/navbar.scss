@@ -5,19 +5,6 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // background-color: dimgray;
-
-  a {
-    transition: all 0.4s ease;
-
-    @include sm {
-      display: none;
-    }
-
-    &:hover {
-      transform: scale(1.05); /* Corrected property name */
-    }
-  }
 
   .left {
     flex: 3;
@@ -25,32 +12,21 @@ nav {
     align-items: center;
     gap: 50px;
 
-    .logo {
-      font-weight: bold;
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    a {
+      transition: all 0.4s ease;
 
-      img {
-        width: 28px;
+      @include sm {
+        display: none;
       }
 
-      span {
-        @include md {
-          display: none;
-        }
-
-        @include sm {
-          display: initial;
-        }
+      &:hover {
+        transform: scale(1.05); /* Corrected property name */
       }
-    }
 
-    // Adjusted link styling for .active class
-    a.active {
-      color: #fece51; /* Adjust color for active link */
-      font-weight: bold;
+      &.active {
+        color: coral; /* Adjust color for active link */
+        font-weight: bold;
+      }
     }
   }
 
@@ -70,6 +46,11 @@ nav {
       padding: 12px 24px;
       margin: 20px;
       color: black; /* Default link color */
+
+      &.active {
+        color: coral; /* Adjust color for active link */
+        font-weight: bold;
+      }
     }
 
     .user {
@@ -160,12 +141,6 @@ nav {
           display: initial;
         }
       }
-    }
-
-    // Adjusted link styling for .active class
-    a.active {
-      color: #fece51; /* Adjust color for active link */
-      font-weight: bold;
     }
   }
 }

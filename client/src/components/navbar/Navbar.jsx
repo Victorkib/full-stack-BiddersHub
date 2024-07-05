@@ -1,23 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
 import './navbar.scss';
-import { NavLink, useNavigate, Link } from 'react-router-dom'; // Import NavLink
+import { Link, useNavigate, useLocation } from 'react-router-dom'; // Import Link and useLocation
 import { AuthContext } from '../../context/AuthContext';
 import { useNotificationStore } from '../../lib/notificationStore';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-
-  const [validUser, setValidUser] = useState(false);
   const { currentUser } = useContext(AuthContext);
-
   const fetch = useNotificationStore((state) => state.fetch);
   const number = useNotificationStore((state) => state.number);
+  const navigate = useNavigate();
+  const location = useLocation(); // Get current location
 
   useEffect(() => {
-    if (currentUser) fetch();
+    if (currentUser) {
+      fetch();
+    }
   }, [currentUser, fetch]);
 
-  const navigate = useNavigate();
   const handleClick = () => {
     navigate('/profile');
   };
@@ -25,22 +25,23 @@ function Navbar() {
   return (
     <nav>
       <div className="left">
-        <Link to="/" className="logo">
-          <img src="/logo.png" alt="" />
-          <span>Actioneers</span>
-        </Link>
-        <NavLink exact to="/" activeClassName="active">
+        <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
           Home
-        </NavLink>
-        <NavLink to="/forgotPassword" activeClassName="active">
+        </Link>
+        <Link
+          to="/forgotPassword"
+          className={location.pathname === '/forgotPassword' ? 'active' : ''}
+        >
           Actioneers
-        </NavLink>
+        </Link>
         {currentUser && (
-          <NavLink to="/liveAuctions" activeClassName="active">
+          <Link
+            to="/liveAuctions"
+            className={location.pathname === '/liveAuctions' ? 'active' : ''}
+          >
             live-Auctions
-          </NavLink>
+          </Link>
         )}
-        {/* {validUser ? <NavLink to="/liveAuctions" activeClassName="active">Live-Auction</NavLink> : ''} */}
       </div>
       <div className="right">
         {currentUser ? (
@@ -51,17 +52,34 @@ function Navbar() {
               onClick={handleClick}
             />
             <span onClick={handleClick}>{currentUser.username}</span>
-            <NavLink to="/profile" className="profile">
+            <Link
+              to="/profile"
+              className={`profile ${
+                location.pathname === '/profile' ? 'active' : ''
+              }`}
+            >
               {number > 0 && <div className="notification">{number}</div>}
               <span>Profile</span>
-            </NavLink>
+            </Link>
           </div>
         ) : (
           <>
-            <a href="/login">Sign in</a>
-            <a href="/register" className="register">
+            <Link
+              to="/login"
+              className={location.pathname === '/login' ? 'active' : ''}
+            >
+              Sign in
+            </Link>
+            <Link
+              to="/register"
+              className={
+                location.pathname === '/register'
+                  ? 'active register'
+                  : 'register'
+              }
+            >
               Sign up
-            </a>
+            </Link>
           </>
         )}
         <div className="menuIcon">
@@ -72,24 +90,45 @@ function Navbar() {
           />
         </div>
         <div className={open ? 'menu active' : 'menu'}>
-          <NavLink exact to="/" activeClassName="active">
+          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
             Home
-          </NavLink>
+          </Link>
           {currentUser && (
-            <NavLink to="/liveAuctions" activeClassName="active">
+            <Link
+              to="/liveAuctions"
+              className={location.pathname === '/liveAuctions' ? 'active' : ''}
+            >
               live-Auctions
-            </NavLink>
+            </Link>
           )}
-          <NavLink to="/profile" activeClassName="active">
+          <Link
+            to="/profile"
+            className={`profile ${
+              location.pathname === '/profile' ? 'active' : ''
+            }`}
+          >
             Profile
-          </NavLink>
-          <NavLink to="/agents" activeClassName="active">
+          </Link>
+          <Link
+            to="/agents"
+            className={location.pathname === '/agents' ? 'active' : ''}
+          >
             Agents
-          </NavLink>
+          </Link>
           {!currentUser && (
             <>
-              <a href="/login">Sign in</a>
-              <a href="/register">Sign up</a>
+              <Link
+                to="/login"
+                className={location.pathname === '/login' ? 'active' : ''}
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/register"
+                className={location.pathname === '/register' ? 'active' : ''}
+              >
+                Sign up
+              </Link>
             </>
           )}
         </div>

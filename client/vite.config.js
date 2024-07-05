@@ -8,7 +8,4 @@ export default defineConfig({
   },
   // If your app is hosted at a subdirectory, e.g., example.com/myapp/
   // base: '/myapp/',
-  server: {
-    port: 3000, // Change this to your preferred development port
-  },
 });

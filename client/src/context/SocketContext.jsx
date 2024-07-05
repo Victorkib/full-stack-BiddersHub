@@ -9,18 +9,11 @@ export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Update the URL to point to your hosted socket server
-    setSocket(
-      io('https://bidderssocket.onrender.com', {
-        withCredentials: true, // Ensure credentials are sent with the request
-      })
-    );
+    setSocket(io('https://bidderssocket.onrender.com'));
   }, []);
 
   useEffect(() => {
-    if (currentUser && socket) {
-      socket.emit('newUser', currentUser.id);
-    }
+    currentUser && socket?.emit('newUser', currentUser.id);
   }, [currentUser, socket]);
 
   return (

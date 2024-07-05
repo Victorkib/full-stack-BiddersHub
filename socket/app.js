@@ -4,7 +4,7 @@ dotenv.config();
 
 const io = new Server({
   cors: {
-    origin: 'https://bidders-hub.onrender.com',
+    origin: process.env.CLIENT_URL, // Use environment variable for production
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     allowedHeaders: ['Content-Type'],
     credentials: true,
@@ -36,9 +36,7 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', ({ receiverId, data }) => {
     const receiver = getUser(receiverId);
-    if (receiver) {
-      io.to(receiver.socketId).emit('getMessage', data);
-    }
+    io.to(receiver.socketId).emit('getMessage', data);
   });
 
   socket.on('disconnect', () => {

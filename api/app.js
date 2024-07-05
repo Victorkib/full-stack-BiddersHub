@@ -3,8 +3,8 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path'; // Import path module for file paths
+import path from 'path';
+import { fileURLToPath } from 'url'; // Import the fileURLToPath function from the url module
 import { upload } from './middleware/upload.js'; // Import Multer middleware
 
 // Route Imports
@@ -34,6 +34,10 @@ app.use(cookieParser());
 // Use Multer middleware
 app.use(upload);
 
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Routes setup
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
@@ -44,14 +48,10 @@ app.use('/api/messages', messageRoute);
 app.use('/api/sessions', sessionRoutes);
 
 // Serve static files from the frontend/dist folder
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+app.use(express.static(path.join(__dirname, '/client/dist')));
 
-app.use(express.static(join(__dirname, '/client/dist')));
-
-// For any other route or fallback to index.html for client-side routing
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, 'client', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
 // Start the server
