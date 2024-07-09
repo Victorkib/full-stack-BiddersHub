@@ -39,6 +39,13 @@ app.use(upload);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Paths
+const staticPath = path.join(__dirname, '..', 'client', 'dist');
+const indexPath = path.join(staticPath, 'index.html');
+
+console.log('Static files directory:', staticPath);
+console.log('Index HTML path:', indexPath);
+
 // Routes setup
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
@@ -50,13 +57,9 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/bidders', biddersRoute);
 
 // Serve static files from the frontend/dist folder
-const staticPath = path.join(__dirname, 'client', 'dist');
-console.log('Serving static files from:', staticPath);
 app.use(express.static(staticPath));
 
 app.get('*', (req, res) => {
-  const indexPath = path.join(staticPath, 'index.html');
-  console.log('Sending index file from:', indexPath);
   res.sendFile(indexPath);
 });
 
