@@ -59,12 +59,12 @@ const SessionListPage = () => {
     });
   };
 
-  // useEffect(() => {
-  //   const biddersToken = localStorage.getItem('biddersToken');
-  //   if (!biddersToken) {
-  //     navigate('/biddersRegister');
-  //   }
-  // }, [navigate]);
+  useEffect(() => {
+    const biddersToken = localStorage.getItem('biddersToken');
+    if (!biddersToken) {
+      navigate('/biddersRegister');
+    }
+  }, [navigate]);
 
   //  useEffect(() => {
   //    const biddersToken = document.cookie.replace(
