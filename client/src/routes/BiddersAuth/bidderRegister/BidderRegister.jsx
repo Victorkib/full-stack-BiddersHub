@@ -30,7 +30,7 @@ function BiddersRegister() {
         localStorage.setItem('biddersToken', res.data.token);
         navigate('/usersSession');
       } else {
-        setError(res.data.error || 'Failed to register bidder');
+        setError(res.data.error || 'Error Registering bidder');
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to register bidder');
