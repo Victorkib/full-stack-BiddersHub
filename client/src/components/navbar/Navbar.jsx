@@ -25,12 +25,15 @@ function Navbar() {
   return (
     <nav>
       <div className="left">
-        <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
-          Home
+        <Link
+          to="/"
+          className={location.pathname === '/' ? 'active hmImg' : ' hmImg'}
+        >
+          <img src="/logo.png" alt="" />
         </Link>
         <Link
-          to="/forgotPassword"
-          className={location.pathname === '/forgotPassword' ? 'active' : ''}
+          to="/usersSession"
+          className={location.pathname === '/usersSession' ? 'active' : ''}
         >
           Actioneers
         </Link>
@@ -98,22 +101,23 @@ function Navbar() {
               to="/liveAuctions"
               className={location.pathname === '/liveAuctions' ? 'active' : ''}
             >
-              live-Auctions
+              liveAuctions
             </Link>
           )}
+
+          <Link
+            to="/usersSession"
+            className={location.pathname === '/agents' ? 'active' : ''}
+          >
+            Actioneers
+          </Link>
           <Link
             to="/profile"
             className={`profile ${
               location.pathname === '/profile' ? 'active' : ''
             }`}
           >
-            Profile
-          </Link>
-          <Link
-            to="/agents"
-            className={location.pathname === '/agents' ? 'active' : ''}
-          >
-            Agents
+            UserProfile
           </Link>
           {!currentUser && (
             <>

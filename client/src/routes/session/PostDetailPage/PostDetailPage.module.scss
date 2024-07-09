@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+$primary-color: #00bfff;
+$secondary-color: #fff;
+$background-color: #f4f4f4;
+$card-shadow: rgba(0, 0, 0, 0.1);
+$error-color: #ff0000;
+
+.postDetailMain {
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  background-color: $background-color;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px $card-shadow;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: darken($background-color, 40%);
+  }
+
+  .postImage {
+    display: block;
+    margin: 0 auto 20px;
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  p {
+    text-align: center;
+    margin-bottom: 20px;
+    color: darken($background-color, 40%);
+  }
+
+  .bidInput {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid darken($background-color, 20%);
+    border-radius: 4px;
+    font-size: 1em;
+  }
+
+  .bidButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: $primary-color;
+    color: $secondary-color;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+
+    &:disabled {
+      background-color: lighten($primary-color, 20%);
+      cursor: not-allowed;
+    }
+  }
+
+  .error {
+    color: $error-color;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  @media (max-width: 600px) {
+    padding: 10px;
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    .postImage {
+      max-height: 300px;
+    }
+
+    .bidInput,
+    .bidButton {
+      font-size: 0.9em;
+    }
+  }
+}

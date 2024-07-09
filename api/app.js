@@ -15,6 +15,7 @@ import userRoute from './routes/user.route.js';
 import chatRoute from './routes/chat.route.js';
 import messageRoute from './routes/message.route.js';
 import sessionRoutes from './routes/session.js';
+import biddersRoute from './routes/bidder.route.js';
 
 const app = express();
 const port = process.env.PORT || 8800;
@@ -46,6 +47,7 @@ app.use('/api/test', testRoute);
 app.use('/api/chats', chatRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/sessions', sessionRoutes);
+app.use('/api/bidders', biddersRoute);
 
 // Serve static files from the frontend/dist folder
 app.use(express.static(path.join(__dirname, '/client/dist')));

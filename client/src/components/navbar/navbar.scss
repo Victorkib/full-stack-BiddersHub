@@ -14,9 +14,14 @@ nav {
 
     a {
       transition: all 0.4s ease;
+      &:nth-of-type(2) {
+        display: block;
+      }
 
       @include sm {
-        display: none;
+        &:nth-of-type(2) {
+          display: none;
+        }
       }
 
       &:hover {
@@ -27,6 +32,16 @@ nav {
         color: coral; /* Adjust color for active link */
         font-weight: bold;
       }
+    }
+    .hmImg {
+      width: max-content;
+      height: 5vh;
+    }
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      object-position: center;
     }
   }
 
@@ -48,7 +63,7 @@ nav {
       color: black; /* Default link color */
 
       &.active {
-        color: coral; /* Adjust color for active link */
+        color: rgb(170, 64, 26); /* Adjust color for active link */
         font-weight: bold;
       }
     }
@@ -120,7 +135,7 @@ nav {
       position: absolute;
       top: 0;
       right: -50%;
-      background-color: rgba(37, 49, 15, 0.9);
+      background-color: rgb(176, 199, 47);
       color: white;
       height: 100vh;
       width: 50%;
@@ -131,6 +146,7 @@ nav {
       align-items: center;
       font-size: 24px;
       text-wrap: wrap;
+      z-index: 1;
 
       &.active {
         right: 0;

@@ -8,8 +8,11 @@ export const SocketContextProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
   const [socket, setSocket] = useState(null);
 
+  // const socketUrl = 'http://localhost:4000';
+  const socketUrl = 'https://bidderssocket.onrender.com';
+
   useEffect(() => {
-    setSocket(io('https://bidderssocket.onrender.com'));
+    setSocket(io(socketUrl));
   }, []);
 
   useEffect(() => {

@@ -1,65 +1,3 @@
-// .registerPage {
-//   height: 100%;
-//   display: flex;
-
-//   .formContainer {
-//     flex: 3;
-//     height: 100%;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-
-//     form {
-//       display: flex;
-//       flex-direction: column;
-//       gap: 20px;
-
-//       input {
-//         padding: 20px;
-//         border: 1px solid gray;
-//         border-radius: 5px;
-//       }
-
-//       button {
-//         padding: 20px;
-//         border-radius: 5px;
-//         border: none;
-//         background-color: teal;
-//         color: white;
-//         font-weight: bold;
-//         cursor: pointer;
-
-//         &:disabled {
-//           background-color: #bed9d8;
-//           cursor: not-allowed;
-//         }
-//       }
-
-//       span {
-//         color: rgba(255, 0, 0, 0.591);
-//       }
-
-//       a {
-//         font-size: 14px;
-//         color: gray;
-//         border-bottom: 1px solid gray;
-//         width: max-content;
-//       }
-//     }
-//   }
-
-//   .imgContainer {
-//     flex: 2;
-//     background-color: #fcf5f3;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     img {
-//       width: 100%;
-//     }
-//   }
-// }
-
 .registerPage {
   height: 100%;
   width: 100%;
@@ -259,6 +197,9 @@
           }
         }
       }
+      .errorMessage {
+        color: red;
+      }
     }
   }
   .progress-bar {
@@ -279,7 +220,7 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 60%;
+    width: 70%;
     height: 100%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -307,16 +248,17 @@
       padding: 20px;
       // border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      opacity: 0.9;
+      opacity: 0.99;
       overflow: auto;
 
-      img {
+      .fullDocIframe {
         border: 1px solid forestgreen;
         width: 90%;
         height: 100%;
         object-fit: cover;
         object-position: center;
         // opacity: 0.8;
+        border: 1px solid crimson;
       }
 
       .closeButton {

@@ -21,6 +21,12 @@ import ResetPassword from './routes/ResetPassword/ResetPassword';
 import EditSingle from './routes/Edit/EditSingle';
 import SessionForm from './routes/session/SessionForm';
 import 'react-toastify/dist/ReactToastify.css';
+import PostDetailPage from './routes/session/PostDetailPage/PostDetailPage';
+import SessionEndPage from './routes/session/SessionEndPage/SessionEndPage';
+import SessionListPage from './routes/session/SessionListPage/SessionListPage';
+import SessionDetailPage from './routes/session/SessionDetailPage/SessionDetailPage';
+import BiddersRegister from './routes/BiddersAuth/bidderRegister/BidderRegister';
+import BidderLogin from './routes/BiddersAuth/bidderLogin/BidderLogin';
 
 function App() {
   const router = createBrowserRouter([
@@ -63,6 +69,15 @@ function App() {
           path: '/forgotPassword',
           element: <Deve />,
         },
+        //users reg, logins
+        {
+          path: '/biddersRegister',
+          element: <BiddersRegister />,
+        },
+        {
+          path: '/biddersLogin',
+          element: <BidderLogin />,
+        },
       ],
     },
     {
@@ -94,6 +109,23 @@ function App() {
           path: '/liveAuctions/create',
           element: <SessionForm />,
         },
+        //users's side
+        {
+          path: '/usersSession',
+          element: <SessionListPage />,
+        },
+        {
+          path: '/sessions/:id',
+          element: <SessionDetailPage />,
+        },
+        {
+          path: '/posts/:id',
+          element: <PostDetailPage />,
+        },
+        {
+          path: '/session-end',
+          element: <SessionEndPage />,
+        },
       ],
     },
     {
@@ -106,3 +138,31 @@ function App() {
 }
 
 export default App;
+
+/**
+ * import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import SessionListPage from './pages/SessionListPage';
+import SessionDetailPage from './pages/SessionDetailPage';
+import PostDetailPage from './pages/PostDetailPage';
+import SessionEndPage from './pages/SessionEndPage';
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact component={SessionListPage} />
+        <Route path="/sessions/:id" component={SessionDetailPage} />
+        <Route path="/posts/:id" component={PostDetailPage} />
+        <Route path="/session-end" component={SessionEndPage} />
+      </Switch>
+    </Router>
+  );
+};
+
+export default App;
+
+ * 
+ * 
+ * 
+ */

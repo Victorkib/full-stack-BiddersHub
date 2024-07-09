@@ -3,9 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import apiRequest from '../../lib/apiRequest';
 import { AuthContext } from '../../context/AuthContext';
-import UploadWidget from '../../components/uploadWidget/UploadWidget';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faFile } from '@fortawesome/free-solid-svg-icons';
+import UploadDocWidget from '../../components/uploadWidget/UploadDocWidget';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addCr12,
+  addAuctioneeringLicense,
+  resetUploads,
+} from '../../Features/docSlice/docUrlSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ThreeDots } from 'react-loader-spinner';
 
 function Register() {
   const [error, setError] = useState('');
@@ -13,18 +22,19 @@ function Register() {
   const [userData, setUserData] = useState({
     email: '',
     password: '',
-    username: '', // Add username state
+    username: '',
   });
   const [companyData, setCompanyData] = useState({
     companyName: '',
     companyAddress: '',
-    cr12: [],
-    auctioneeringLicense: [],
   });
+  const [loading, setLoading] = useState(false); // State for loader
   const [fullDocumentView, setFullDocumentView] = useState(null);
 
   const { updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const documentUrls = useSelector((state) => state.uploads);
 
   const handleSubmitStep1 = async (e) => {
     e.preventDefault();
@@ -50,12 +60,14 @@ function Register() {
     e.preventDefault();
     setError('');
     if (
-      companyData.cr12.length === 0 ||
-      companyData.auctioneeringLicense.length === 0
+      !documentUrls.cr12.length ||
+      !documentUrls.auctioneeringLicense.length
     ) {
       setError('Please upload all required documents.');
       return;
     }
+
+    setLoading(true); // Set loading to true when submitting
 
     const formData = new FormData();
     formData.append('email', userData.email);
@@ -64,48 +76,37 @@ function Register() {
     formData.append('companyName', companyData.companyName);
     formData.append('companyAddress', companyData.companyAddress);
 
-    if (Array.isArray(companyData.cr12)) {
-      companyData.cr12.forEach((file) => formData.append('cr12', file));
-    } else {
-      formData.append('cr12', companyData.cr12); // Handle single file case
-    }
-
-    if (Array.isArray(companyData.auctioneeringLicense)) {
-      companyData.auctioneeringLicense.forEach((file) =>
-        formData.append('auctioneeringLicense', file)
-      );
-    } else {
-      formData.append('auctioneeringLicense', companyData.auctioneeringLicense); // Handle single file case
-    }
+    documentUrls.cr12.forEach((url) => formData.append('cr12', url));
+    documentUrls.auctioneeringLicense.forEach((url) =>
+      formData.append('auctioneeringLicense', url)
+    );
 
     try {
+      // toast.info('Registering...'); // Displaying toast for registration process
+
       const res = await apiRequest.post('/auth/register', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       if (res.status === 200) {
-        console.log('Registration successful');
+        toast.success('Registration successful');
         updateUser(res.data);
+        dispatch(resetUploads());
         navigate('/');
       } else {
         setError('Failed to register.');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register.');
+    } finally {
+      setLoading(false); // Always set loading back to false, whether success or error
     }
   };
 
   const handlePrevStep = () => {
     setError('');
     setStep((prevStep) => prevStep - 1);
-  };
-
-  const handleUpload = (field, url) => {
-    setCompanyData((prevData) => ({
-      ...prevData,
-      [field]: [...prevData[field], url], // Append the new URL to the array
-    }));
   };
 
   const handleDocumentClick = (field, index) => {
@@ -127,26 +128,31 @@ function Register() {
   };
 
   const renderDocumentUpload = (label, field, reason) => {
-    const documents = companyData[field];
+    const documents = documentUrls[field] || [];
 
     return (
       <div className="uploadSection">
         <h2>{label}</h2>
         <p>{reason}</p>
-        <UploadWidget
+        <UploadDocWidget
           uwConfig={{
-            multiple: true,
             cloudName: 'victorkib',
             uploadPreset: 'estate',
             folder: 'posts',
+            multiple: false,
           }}
-          handleUpload={(url) => handleUpload(field, url)} // Pass a callback to handle the uploaded URL
+          field={field}
         />
         <div className="documentPreview">
           {documents.length > 0 ? (
-            documents.map((file, index) => (
+            documents.map((url, index) => (
               <div className="documentThumbnail" key={index}>
-                <img src={file} alt={`${label} ${index}`} />
+                {url.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+                  <img src={url} alt={`${label} ${index}`} />
+                ) : (
+                  <FontAwesomeIcon icon={faFile} />
+                )}
+                <h6>Document Uploaded✔️</h6>
                 <FontAwesomeIcon
                   icon={faEye}
                   className="viewIcon"
@@ -155,7 +161,7 @@ function Register() {
               </div>
             ))
           ) : (
-            <img src={faFile} alt="file" />
+            <FontAwesomeIcon icon={faFile} />
           )}
         </div>
       </div>
@@ -166,9 +172,7 @@ function Register() {
     if (!fullDocumentView) return null;
 
     const { field, index } = fullDocumentView;
-    const documentUrl = companyData[field][index];
-
-    console.log('Full Document URL:', documentUrl);
+    const documentUrl = documentUrls[field][index];
 
     return (
       <div className="fullDocumentView">
@@ -183,11 +187,15 @@ function Register() {
           >
             Close
           </button>
-          <img
-            className="fullDocImg"
-            src={documentUrl}
-            alt={`${field} ${index}`}
-          />
+          {documentUrl.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+            <img src={documentUrl} alt={`${field} ${index}`} />
+          ) : (
+            <iframe
+              className="fullDocIframe"
+              src={documentUrl}
+              title={`${field} ${index}`}
+            />
+          )}
         </div>
       </div>
     );
@@ -195,6 +203,12 @@ function Register() {
 
   return (
     <div className="registerPage">
+      <ToastContainer />
+      {loading && (
+        <div className="loader">
+          <ThreeDots color="#333" height={80} width={80} />
+        </div>
+      )}
       {renderFullDocumentView()}
       <div className="firstRegPage">
         <div className="stepper">
@@ -242,10 +256,13 @@ function Register() {
                 }
                 required
               />
+              {error && <p className="errorMessage">{error}</p>}
+              {renderBackButton()}
               {renderNextButton()}
-              {error && <span>{error}</span>}
+              <span>
+                Already have an account? <Link to="/login">Login here</Link>
+              </span>
             </form>
-            <Link to="/login">Already have an account? Login</Link>
           </div>
         )}
         {step === 2 && (
@@ -278,33 +295,29 @@ function Register() {
                 }
                 required
               />
-              <div className="regbuttons">
-                {renderBackButton()}
-                {renderNextButton()}
-              </div>
-              {error && <span>{error}</span>}
+              {error && <p className="errorMessage">{error}</p>}
+              {renderBackButton()}
+              {renderNextButton()}
             </form>
           </div>
         )}
         {step === 3 && (
           <div className="formContainer">
             <form onSubmit={handleSubmitStep3}>
-              <h1>Step 3: Upload Documents</h1>
+              <h1>Step 3: Upload PDF Documents</h1>
               {renderDocumentUpload(
                 'CR12',
                 'cr12',
-                'Upload your CR12 document for verification purposes.'
+                'Please upload the CR12 document.'
               )}
               {renderDocumentUpload(
                 'Auctioneering License',
                 'auctioneeringLicense',
-                'Upload your auctioneering license for verification purposes.'
+                'Please upload the Auctioneering License document.'
               )}
-              <div className="regbuttons">
-                {renderBackButton()}
-                {renderNextButton()}
-              </div>
-              {error && <span>{error}</span>}
+              {error && <p className="errorMessage">{error}</p>}
+              {renderBackButton()}
+              {renderNextButton()}
             </form>
           </div>
         )}

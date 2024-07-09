@@ -157,3 +157,22 @@ model PostOnSession {
 
   @@unique([postId, sessionId])
 }
+
+model Bidder {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  email     String    @unique
+  username  String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  bids      Bid[]
+}
+
+model Bid {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount    Float
+  itemId    String   @db.ObjectId
+  itemImage String
+  createdAt DateTime @default(now())
+  bidder    Bidder   @relation(fields: [bidderId], references: [id])
+  bidderId  String   @db.ObjectId
+}

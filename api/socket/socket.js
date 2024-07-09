@@ -2,7 +2,7 @@ import { Server } from 'socket.io';
 
 const io = new Server({
   cors: {
-    origin: 'http://localhost:5173',
+    origin: 'https://bidders-hub.onrender.com',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     allowedHeaders: ['Content-Type'],
     credentials: true,

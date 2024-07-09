@@ -155,7 +155,14 @@ export const getSession = async (req, res) => {
   try {
     const session = await prisma.session.findUnique({
       where: { id: req.params.id },
-      include: { createdBy: true },
+      include: {
+        createdBy: true,
+        posts: {
+          include: {
+            post: true,
+          },
+        },
+      },
     });
     if (!session) return res.status(404).json({ message: 'Session not found' });
 
