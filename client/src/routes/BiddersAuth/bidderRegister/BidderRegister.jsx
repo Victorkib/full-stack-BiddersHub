@@ -27,8 +27,7 @@ function BiddersRegister() {
 
       if (res.status) {
         console.log('Registered Bidder:', res.data);
-        localStorage.setItem('biddersToken', res.data.token);
-        navigate('/usersSession');
+        navigate('/biddersLogin');
       } else {
         setError(res.data.error || 'Error registering bidder');
       }

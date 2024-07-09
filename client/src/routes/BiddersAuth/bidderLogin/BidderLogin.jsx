@@ -2,13 +2,15 @@ import { useState } from 'react';
 import './BidderLogin.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import apiRequest from '../../../lib/apiRequest';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../../Features/bidderToken/bidderTokenSlice';
 
 function BidderLogin() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -26,6 +28,8 @@ function BidderLogin() {
 
       if (res.status === 200) {
         console.log('Logged in Bidder:', res.data);
+        dispatch(setToken(res.data.token));
+        localStorage.setItem('biddersToken', res.data.token);
         navigate('/usersSession');
       }
     } catch (err) {

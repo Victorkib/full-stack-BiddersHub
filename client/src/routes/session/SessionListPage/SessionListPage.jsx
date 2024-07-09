@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import { ThreeDots } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import apiRequest from '../../../lib/apiRequest';
 import styles from './SessionListPage.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeToken } from '../../../Features/bidderToken/bidderTokenSlice';
 
 const SessionListPage = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // Use useNavigate for navigation
+  const token = useSelector((store) => store.bidderToken.token); // Get token from Redux store
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchSessions();
@@ -60,26 +64,36 @@ const SessionListPage = () => {
   };
 
   useEffect(() => {
-    const biddersToken = localStorage.getItem('biddersToken');
-    if (!biddersToken) {
+    if (!token) {
       navigate('/biddersRegister');
     }
-  }, [navigate]);
+  }, [token, navigate]);
 
-  //  useEffect(() => {
-  //    const biddersToken = document.cookie.replace(
-  //      /(?:(?:^|.*;\s*)biddersToken\s*\=\s*([^;]*).*$)|^.*$/,
-  //      '$1'
-  //    );
-  //    if (!biddersToken) {
-  //      navigate('/biddersRegister');
-  //    }
-  //  }, [navigate]);
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      const response = await apiRequest.get('/bidders/logout');
+      console.log('logout res ', response.data);
+      dispatch(removeToken());
+      localStorage.removeItem('biddersToken');
+      navigate('/');
+    } catch (error) {
+      console.error('Error logging out: ', error);
+      toast.error('Error logging out');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={styles.sessionListMain}>
       <ToastContainer />
       <h1>Available Sessions</h1>
+      <span>
+        {' '}
+        <h5 onClick={handleLogout}>logout</h5>
+      </span>
+
       {loading ? (
         <div className={styles.loader}>
           <ThreeDots
