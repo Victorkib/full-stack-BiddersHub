@@ -44,8 +44,8 @@ export const registerBidder = async (req, res) => {
       .cookie('biddersToken', token, {
         httpOnly: true,
         maxAge: age,
-        // sameSite: 'none', // Allows cross-site requests
-        // secure: true, // Ensures the cookie is only sent over HTTPS
+        sameSite: 'none', // Allows cross-site requests
+        secure: true, // Ensures the cookie is only sent over HTTPS
       })
       .status(201)
       .json({ message: 'Bidder registered successfully', newBidder, token });
@@ -93,8 +93,8 @@ export const loginBidder = async (req, res) => {
       .cookie('biddersToken', token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
-        // secure: true, // Uncomment in production to ensure cookie is only sent over HTTPS
-        // sameSite: 'None', // Uncomment for cross-site requests
+        secure: true, // Uncomment in production to ensure cookie is only sent over HTTPS
+        sameSite: 'None', // Uncomment for cross-site requests
       })
       .status(200)
       .json({ message: 'Login successful', bidder });

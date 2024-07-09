@@ -93,7 +93,7 @@ function Register() {
         toast.success('Registration successful');
         updateUser(res.data);
         dispatch(resetUploads());
-        navigate('/');
+        navigate('/login');
       } else {
         setError('Failed to register.');
       }

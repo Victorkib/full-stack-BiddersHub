@@ -95,15 +95,13 @@ export const register = async (req, res) => {
     newUser.password = undefined;
 
     // Set cookie and respond with user data and token
-    res
-      .cookie('token', token, {
-        httpOnly: true,
-        maxAge: age,
-        sameSite: 'none', // Allows cross-site requests
-        secure: true, // Ensures the cookie is only sent over HTTPS
-      })
-      .status(200)
-      .json(newUser);
+    //  .cookie('token', token, {
+    //     httpOnly: true,
+    //     maxAge: age,
+    //     sameSite: 'none', // Allows cross-site requests
+    //     secure: true, // Ensures the cookie is only sent over HTTPS
+    //   })
+    res.status(200).json(newUser);
   } catch (err) {
     console.error('Error registering user:', err);
     res.status(500).json({ message: 'Failed to create user' });
