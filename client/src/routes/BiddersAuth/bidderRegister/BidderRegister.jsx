@@ -29,9 +29,11 @@ function BiddersRegister() {
         console.log('Registered Bidder:', res.data);
         localStorage.setItem('biddersToken', res.data.token);
         navigate('/usersSession');
+      } else {
+        setError(res.data.error || 'Failed to register bidder');
       }
     } catch (err) {
-      setError(err.response.data.error || 'Failed to register bidder');
+      setError(err.response?.data?.error || 'Failed to register bidder');
     } finally {
       setIsLoading(false);
     }

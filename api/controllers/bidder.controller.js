@@ -7,17 +7,25 @@ export const registerBidder = async (req, res) => {
   const { email, username, password } = req.body;
 
   try {
-    // Check if bidder with the same email or username already exists
-    const existingBidder = await prisma.bidder.findFirst({
-      where: {
-        OR: [{ email }, { username }],
-      },
+    // Check if bidder with the same email  already exists
+    const existingBidderEmail = await prisma.bidder.findUnique({
+      where: { email },
     });
 
-    if (existingBidder) {
+    if (existingBidderEmail) {
       return res
         .status(400)
-        .json({ error: 'Bidder with this email or username already exists' });
+        .json({ error: 'Bidder with this email already exists' });
+    }
+    // Check if bidder with the same username already exists
+    const existingBidderUserName = await prisma.bidder.findUnique({
+      where: { username },
+    });
+
+    if (existingBidderUserName) {
+      return res
+        .status(400)
+        .json({ error: 'Bidder with this username already exists' });
     }
 
     // Hash the password
