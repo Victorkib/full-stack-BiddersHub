@@ -59,6 +59,7 @@ app.use('/api/bidders', biddersRoute);
 // Serve static files from the frontend/dist folder
 app.use(express.static(staticPath));
 
+// Serve index.html for all other routes
 app.get('*', (req, res) => {
   res.sendFile(indexPath);
 });
