@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { ThreeDots } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -59,15 +59,22 @@ const SessionListPage = () => {
     });
   };
 
-  useEffect(() => {
-    const biddersToken = document.cookie.replace(
-      /(?:(?:^|.*;\s*)biddersToken\s*\=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    );
-    if (!biddersToken) {
-      navigate('/biddersRegister');
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const biddersToken = localStorage.getItem('biddersToken');
+  //   if (!biddersToken) {
+  //     navigate('/biddersRegister');
+  //   }
+  // }, [navigate]);
+
+  //  useEffect(() => {
+  //    const biddersToken = document.cookie.replace(
+  //      /(?:(?:^|.*;\s*)biddersToken\s*\=\s*([^;]*).*$)|^.*$/,
+  //      '$1'
+  //    );
+  //    if (!biddersToken) {
+  //      navigate('/biddersRegister');
+  //    }
+  //  }, [navigate]);
 
   return (
     <div className={styles.sessionListMain}>
