@@ -6,7 +6,6 @@ import apiRequest from '../../../lib/apiRequest';
 function BiddersRegister() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,12 +24,13 @@ function BiddersRegister() {
         username,
         password,
       });
+
       if (res.status) {
         console.log('Registered Bidder:', res.data);
         localStorage.setItem('biddersToken', res.data.token);
         navigate('/usersSession');
       } else {
-        setError(res.data.error || 'Error Registering bidder');
+        setError(res.data.error || 'Error registering bidder');
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to register bidder');
@@ -60,7 +60,7 @@ function BiddersRegister() {
             placeholder="Password"
           />
           <button disabled={isLoading}>Register</button>
-          {error && <span>{error}</span>}
+          {error && <span className="error">{error}</span>}
           <Link to="/biddersLogin">Already have an account? Login</Link>
         </form>
       </div>

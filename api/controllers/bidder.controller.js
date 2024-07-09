@@ -7,22 +7,25 @@ export const registerBidder = async (req, res) => {
   const { email, username, password } = req.body;
 
   try {
-    // Check if bidder with the same email  already exists
+    // Check if bidder with the same email already exists
     const existingBidderEmail = await prisma.bidder.findUnique({
       where: { email },
     });
 
     if (existingBidderEmail) {
+      console.log('Bidder with this email already exists:', email);
       return res
         .status(400)
         .json({ error: 'Bidder with this email already exists' });
     }
+
     // Check if bidder with the same username already exists
     const existingBidderUserName = await prisma.bidder.findUnique({
       where: { username },
     });
 
     if (existingBidderUserName) {
+      console.log('Bidder with this username already exists:', username);
       return res
         .status(400)
         .json({ error: 'Bidder with this username already exists' });
@@ -47,6 +50,7 @@ export const registerBidder = async (req, res) => {
     });
 
     newBidder.password = undefined;
+
     // Set cookie and respond with token and newBidder data
     res
       .cookie('biddersToken', token, {
@@ -69,11 +73,7 @@ export const loginBidder = async (req, res) => {
 
   try {
     // Find bidder by email
-    const bidder = await prisma.bidder.findUnique({
-      where: {
-        email,
-      },
-    });
+    const bidder = await prisma.bidder.findUnique({ where: { email } });
 
     // If bidder not found, return 404
     if (!bidder) {
@@ -90,7 +90,7 @@ export const loginBidder = async (req, res) => {
 
     // Generate token and send in a cookie
     const token = jwt.sign({ id: bidder.id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: '2d', // Token expires in 2 days
+      expiresIn: '2d',
     });
 
     // Clear sensitive fields before sending bidder data

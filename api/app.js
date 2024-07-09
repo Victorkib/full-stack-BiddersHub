@@ -50,10 +50,14 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/bidders', biddersRoute);
 
 // Serve static files from the frontend/dist folder
-app.use(express.static(path.join(__dirname, '/client/dist')));
+const staticPath = path.join(__dirname, 'client', 'dist');
+console.log('Serving static files from:', staticPath);
+app.use(express.static(staticPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  const indexPath = path.join(staticPath, 'index.html');
+  console.log('Sending index file from:', indexPath);
+  res.sendFile(indexPath);
 });
 
 // Start the server
