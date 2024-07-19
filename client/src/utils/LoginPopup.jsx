@@ -22,7 +22,9 @@ const LoginPopup = ({ onClose }) => {
         <h2>Bid</h2>
         <p>A brief description about bidding.</p>
         <span className={styles.link}>
-          <a href="http://localhost:5174/login">Go to Bid Page</a>
+          <a href="https://bidderspagefront.onrender.com/login">
+            Go to Bid Page
+          </a>
         </span>
       </div>
     </div>
