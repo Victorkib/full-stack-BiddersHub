@@ -43,7 +43,9 @@ const Categories = () => {
   useEffect(() => {
     const fetchDataToUse = async () => {
       try {
-        const res = await fetch('http://localhost:8800/api/posts/getAllPosts');
+        const res = await fetch(
+          'https://biddershubbackend.onrender.com/api/posts/getAllPosts'
+        );
         //const specials = data.filter((item) => item.category === 'popular');
         const data = await res.json();
         console.log('sessions fetched: ' + data);
@@ -106,8 +108,8 @@ const Categories = () => {
       {recipes?.length > 0 ? (
         <div className="container">
           <div className="text-left">
-            <p className="subtitle">Favorites Auction Items</p>
-            <h2 className="title">Popular Auctions</h2>
+            <p className="subtitle">A taste of the Auction Items</p>
+            <h2 className="title">Auctions Items</h2>
           </div>
           <div className="buttons">
             <button

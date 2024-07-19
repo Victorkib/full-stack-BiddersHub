@@ -12,7 +12,7 @@ const Cards = ({ item }) => {
 
   return (
     <div to={`/menu/${item.id}`} className="card">
-      <Link to={`/menu/${item.id}`}>
+      <Link to={'/liveAuctions'}>
         <figure>
           <img
             src={item.images[0] || 'BeeCar.jpg'} // Adjust this line if there is no image property
@@ -22,11 +22,11 @@ const Cards = ({ item }) => {
         </figure>
       </Link>
       <div className="card-body">
-        <Link to={`/menu/${item.id}`}>
+        <Link to={'/liveAuctions'}>
           <h2 className="card-title">{item.title}</h2>
         </Link>
         <div className="card-actions">
-          <p className="timeRemainingP">price:{item.price}</p>
+          <p className="timeRemainingP">Base Price:{item.basePrice}</p>
         </div>
       </div>
     </div>

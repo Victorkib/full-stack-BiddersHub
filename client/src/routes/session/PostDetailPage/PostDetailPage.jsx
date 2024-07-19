@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { ThreeDots } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import apiRequest from '../../../lib/apiRequest';
 import styles from './PostDetailPage.module.scss';
-import SessionEndPage from '../SessionEndPage/SessionEndPage'; // Adjust the path as needed
+import { AiOutlineWallet } from 'react-icons/ai';
+import CreditWalletPopup from '../../Bidders/Wallet/CreditWalletPopup';
 
 const PostDetailPage = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const [post, setPost] = useState(location.state?.post || null);
-  const [title, setTitle] = useState(location.state?.title || '');
-  const [image, setImage] = useState(location.state?.image || '');
   const [highestBid, setHighestBid] = useState(null);
   const [newBid, setNewBid] = useState('');
   const [loading, setLoading] = useState(!post);
@@ -20,18 +20,51 @@ const PostDetailPage = () => {
   const [remainingTime, setRemainingTime] = useState('');
   const [endTime, setEndTime] = useState(null);
   const [error, setError] = useState('');
+  const [walletBalance, setWalletBalance] = useState(0);
+  const [showCreditPopup, setShowCreditPopup] = useState(false);
 
-  const sessionDetailId = location.state?.sessionDetailId; // Get sessionDetailId from location state
+  const sessionDetailId = location.state?.sessionDetailId;
+
+  const fetchWalletBalance = async () => {
+    const bidderId = localStorage.getItem('bidderId');
+    try {
+      const response = await apiRequest.get(`/wallet/balance/${bidderId}`);
+      console.log(response.data.balance);
+      setWalletBalance(response.data.balance);
+    } catch (error) {
+      console.error('Error fetching wallet balance', error);
+      toast.error('Failed to fetch wallet balance');
+    }
+  };
+
+  const updateRemainingTime = (endTime) => {
+    const interval = setInterval(() => {
+      const timeDifference = endTime - new Date();
+      if (timeDifference <= 0) {
+        setRemainingTime(null);
+        clearInterval(interval);
+        navigate(`/session-end/${sessionDetailId}`);
+      } else {
+        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+        const minutes = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+        setRemainingTime(`${hours}h ${minutes}m ${seconds}s`);
+      }
+    }, 1000); // Update every second
+
+    // Clear interval on component unmount
+    return () => clearInterval(interval);
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
       if (!post) {
         setLoading(true);
         try {
-          const response = await apiRequest.get(`/api/posts/${id}`);
+          const response = await apiRequest.get(`/posts/${id}`);
           setPost(response.data);
-          setTitle(response.data.title);
-          setImage(response.data.images[0]); // Assuming the first image is the main one if not provided in state
         } catch (error) {
           console.error('Error fetching post', error);
           toast.error('Failed to fetch post details');
@@ -43,12 +76,11 @@ const PostDetailPage = () => {
 
     const fetchSessionEndTime = async () => {
       try {
-        const response = await apiRequest.get(`/sessions/${sessionDetailId}`); // Fetch session using sessionDetailId
-        console.log('valid endtime:', response.data);
+        const response = await apiRequest.get(`/sessions/${sessionDetailId}`);
         const session = response.data;
         if (session) {
           setEndTime(new Date(session.endTime));
-          updateRemainingTime(new Date(session.endTime)); // Update remaining time immediately after fetching end time
+          updateRemainingTime(new Date(session.endTime));
         } else {
           console.error('Session not found for the post');
           toast.error('Session not found for the post');
@@ -62,7 +94,7 @@ const PostDetailPage = () => {
     const fetchHighestBid = async () => {
       try {
         const response = await apiRequest.get(
-          `/bidders/highest-bid?itemId=${id}&img=${image}`
+          `/bidders/highest-bid?itemId=${id}`
         );
         console.log('Highest bid: ', response.data);
         setHighestBid(response.data);
@@ -72,35 +104,18 @@ const PostDetailPage = () => {
       }
     };
 
-    const updateRemainingTime = (endTime) => {
-      const interval = setInterval(() => {
-        const timeDifference = endTime - new Date();
-        if (timeDifference <= 0) {
-          setRemainingTime(null);
-          clearInterval(interval);
-        } else {
-          const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-          const minutes = Math.floor(
-            (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-          );
-          const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-          setRemainingTime(`${hours}h ${minutes}m ${seconds}s`);
-        }
-      }, 1000); // Update every second
-
-      // Clear interval on component unmount
-      return () => clearInterval(interval);
-    };
-
     fetchPost();
     fetchSessionEndTime();
     fetchHighestBid();
+    fetchWalletBalance();
 
     return () => {}; // No cleanup needed on component unmount
-  }, [id, post, sessionDetailId]);
+  }, [id, post, sessionDetailId, navigate]);
 
   const handleBidSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate bid amount against highest bid
     if (parseFloat(newBid) <= highestBid?.amount) {
       setError(
         `Bid amount must be higher than current highest bid ($${highestBid?.amount?.toLocaleString()})`
@@ -108,11 +123,19 @@ const PostDetailPage = () => {
       return;
     }
 
+    // Check if wallet balance is sufficient
+    if (walletBalance < post?.price) {
+      setError(
+        `Insufficient wallet balance. Your balance is $${walletBalance}`
+      );
+      setShowCreditPopup(true); // Show credit popup
+      return;
+    }
+
     setSubmitting(true);
     try {
       const response = await apiRequest.post(`/bidders/postBid`, {
         itemId: id,
-        itemImage: image,
         amount: newBid,
       });
       console.log('bid res: ', response.data);
@@ -141,53 +164,81 @@ const PostDetailPage = () => {
     );
   }
 
-  if (!remainingTime) {
-    return (
-      <SessionEndPage
-        winners={[
-          {
-            username: highestBid?.bidder?.username,
-            postTitle: title,
-            amount: formatAmount(highestBid?.amount),
-          },
-        ]}
-      />
-    );
-  }
-
   return (
     <div className={styles.postDetailMain}>
       <ToastContainer />
-      <h1>{title}</h1>
-      <img src={image} alt={title} className={styles.postImage} />
-      <p>{post.description}</p>
-      <p>
-        Current Highest Bid: $
-        {highestBid ? formatAmount(highestBid.amount) : 'No bids yet'}
-      </p>
-      {highestBid?.bidder && (
-        <h5>Bid Holder: {highestBid?.bidder?.username}</h5>
-      )}
-      <p>Ends in: {remainingTime}</p>
-      <form onSubmit={handleBidSubmit}>
-        <input
-          type="number"
-          value={newBid}
-          onChange={(e) => setNewBid(e.target.value)}
-          placeholder="Enter your bid"
-          min="0"
-          required
-          className={styles.bidInput}
+      <div className={styles.imageSlider}>
+        {post.images.map((img, index) => (
+          <img
+            src={img}
+            alt={`Image ${index}`}
+            key={index}
+            className={styles.postImage}
+          />
+        ))}
+      </div>
+      <div className={styles.postDetails}>
+        <h1>{post.title}</h1>
+        <p>{post.description}</p>
+        <p>
+          <strong>City:</strong> {post.city}
+        </p>
+        <p>
+          <strong>Auctioneer:</strong> {post.userId.username}
+        </p>
+        <p>
+          <strong>Session Ends:</strong> {new Date(endTime).toLocaleString()}
+        </p>
+        <p>
+          <strong>Remaining Time:</strong> {remainingTime}
+        </p>
+        <p>
+          <strong>Highest Bid:</strong> $
+          {highestBid ? formatAmount(highestBid.amount) : 'No bids yet'}
+        </p>
+        <p>
+          <strong>Base Price:</strong> ${formatAmount(post.price)}
+        </p>
+      </div>
+      <div className={styles.bidSection}>
+        <h2>Place Your Bid</h2>
+        <form onSubmit={handleBidSubmit}>
+          <input
+            type="number"
+            value={newBid}
+            onChange={(e) => setNewBid(e.target.value)}
+            placeholder="Enter your bid"
+            min="0"
+            required
+            className={styles.bidInput}
+          />
+          <button
+            type="submit"
+            disabled={submitting}
+            className={styles.bidButton}
+          >
+            {submitting ? 'Placing Bid...' : 'Place Bid'}
+          </button>
+          {error && <p className={styles.error}>{error}</p>}
+        </form>
+      </div>
+      <div className={styles.walletSection}>
+        <AiOutlineWallet
+          className={styles.walletIcon}
+          onClick={() => setShowCreditPopup(true)}
         />
-        <button
-          type="submit"
-          disabled={submitting}
-          className={styles.bidButton}
-        >
-          {submitting ? 'Placing Bid...' : 'Place Bid'}
-        </button>
-        {error && <p className={styles.error}>{error}</p>}
-      </form>
+        <CreditWalletPopup
+          show={showCreditPopup}
+          onClose={() => setShowCreditPopup(false)}
+          walletId={localStorage.getItem('walletId')}
+          onCreditSuccess={() => {
+            fetchWalletBalance(); // Refresh the wallet balance after a successful credit
+          }}
+        />
+        <p className={styles.walletBalance}>
+          Wallet Balance: ${formatAmount(walletBalance)}
+        </p>
+      </div>
     </div>
   );
 };

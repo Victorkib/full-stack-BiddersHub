@@ -1,9 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
+import { ThreeDots } from 'react-loader-spinner'; // Import loader
 
 // Create a context to manage the script loading state
 const CloudinaryScriptContext = createContext();
 
-function UploadWidget({ uwConfig, setState }) {
+function UploadWidget({ uwConfig, setState, setLoading }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -26,10 +27,12 @@ function UploadWidget({ uwConfig, setState }) {
   }, [loaded]);
 
   const initializeCloudinaryWidget = () => {
+    setLoading(true);
     if (loaded) {
       const myWidget = window.cloudinary.createUploadWidget(
         uwConfig,
         (error, result) => {
+          setLoading(false);
           if (!error && result && result.event === 'success') {
             console.log('Done! Here is the image info:', result.info);
             console.log('Uploaded Document URL:', result.info.secure_url);
@@ -44,14 +47,18 @@ function UploadWidget({ uwConfig, setState }) {
 
   return (
     <CloudinaryScriptContext.Provider value={{ loaded }}>
-      <button
-        type="button"
-        id="upload_widget"
-        className="cloudinary-button"
-        onClick={initializeCloudinaryWidget}
-      >
-        Upload
-      </button>
+      {loaded ? (
+        <button
+          type="button"
+          id="upload_widget"
+          className="cloudinary-button"
+          onClick={initializeCloudinaryWidget}
+        >
+          Upload
+        </button>
+      ) : (
+        <ThreeDots color="#333" height={80} width={80} /> // Display loader while script is loading
+      )}
     </CloudinaryScriptContext.Provider>
   );
 }

@@ -3,13 +3,21 @@ import './searchBar.scss';
 import { Link } from 'react-router-dom';
 
 const types = ['Auctions', 'Pre-Auctions'];
+const propertyTypes = [
+  'flowers',
+  'vehicles',
+  'house',
+  'condo',
+  'land',
+  'other',
+];
 
 function SearchBar() {
   const [query, setQuery] = useState({
     type: 'Auctions',
-    city: '',
-    minPrice: 0,
-    maxPrice: 0,
+    property: '',
+    minBasePrice: 0,
+    maxBasePrice: 0,
   });
 
   const switchType = (val) => {
@@ -34,33 +42,42 @@ function SearchBar() {
         ))}
       </div>
       <form>
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
+        <select
+          name="property"
           onChange={handleChange}
-        />
+          value={query.property}
+          required
+        >
+          <option value="" disabled>
+            Select Product Type
+          </option>
+          {propertyTypes.map((property) => (
+            <option key={property} value={property}>
+              {property.charAt(0).toUpperCase() + property.slice(1)}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
-          name="minPrice"
+          name="minBasePrice"
           min={0}
           max={10000000}
-          placeholder="Min Price"
+          placeholder="minBasePrice"
           onChange={handleChange}
         />
         <input
           type="number"
-          name="maxPrice"
+          name="maxBasePrice"
           min={0}
           max={10000000}
           placeholder="Max Price"
           onChange={handleChange}
         />
         <Link
-          to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}
+          to={`/list?type=${query.type}&property=${query.property}&minBasePrice=${query.minBasePrice}&maxBasePrice=${query.maxBasePrice}`}
         >
           <button>
-            <img src="/search.png" alt="" />
+            <img src="/search.png" alt="search" />
           </button>
         </Link>
       </form>

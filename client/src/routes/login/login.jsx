@@ -4,6 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import apiRequest from '../../lib/apiRequest';
 import { AuthContext } from '../../context/AuthContext';
 import ForgotPassword from '../forgotPassword/ForgotPassword'; // Import ForgotPassword component
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import react-toastify styles
+import { setUser } from '../../Features/userSuccesRegData/userSlice';
+import { useDispatch } from 'react-redux';
 
 function Login() {
   const [error, setError] = useState('');
@@ -12,7 +16,7 @@ function Login() {
 
   const { updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -27,11 +31,32 @@ function Login() {
         username,
         password,
       });
-
-      updateUser(res.data);
-      navigate('/');
+      console.log('logedInDt: ', res.data);
+      if (res.status) {
+        updateUser(res.data);
+        dispatch(setUser(res.data));
+        // toast.success('Login successful!');
+        navigate('/');
+      } else {
+        const errorMessage =
+          res.status === 403
+            ? 'Please verify your email first.'
+            : res.data.message;
+        setError(errorMessage);
+        navigate(`/verification`, {
+          state: {
+            verificationDt: res.data.user,
+          },
+        });
+        // toast.error(errorMessage);
+      }
     } catch (err) {
-      setError(err.response.data.message);
+      const errorMessage =
+        err.response.status === 403
+          ? 'Please verify your email first.'
+          : err.response.data.message;
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -39,6 +64,7 @@ function Login() {
 
   return (
     <div className="login">
+      <ToastContainer /> {/* Add ToastContainer */}
       {isForgotPassword ? (
         <ForgotPassword setIsForgotPassword={setIsForgotPassword} /> // Render ForgotPassword component
       ) : (

@@ -1,0 +1,84 @@
+// CreditWalletPopup.module.scss
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 500px;
+  max-width: 90%;
+}
+
+.popup h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+.formContainer {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 3px;
+  // border: 1px solid crimson;
+
+  .inputGroup {
+    margin-bottom: 15px;
+    width: 40%;
+    box-shadow: 2px 2px 4px rgb(167, 115, 18);
+    // border: 1px solid crimson;
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    input[type='number'],
+    input[type='text'] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .cancelBtn,
+    .submitBtn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ccc;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #291597;
+      }
+    }
+  }
+
+  .actions {
+    height: 100%;
+    width: 60%;
+
+    .paypalButton {
+      height: 100%;
+      overflow: scroll;
+      box-shadow: 2px 2px 4px rgb(167, 115, 18);
+    }
+  }
+}

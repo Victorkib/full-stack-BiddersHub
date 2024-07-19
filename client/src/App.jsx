@@ -19,14 +19,26 @@ import NotFoundPage from './components/underDeve/NotFound';
 import EmailSent from './routes/EmailSent/EmailSent';
 import ResetPassword from './routes/ResetPassword/ResetPassword';
 import EditSingle from './routes/Edit/EditSingle';
-import SessionForm from './routes/session/SessionForm';
+import SessionForm from './routes/session/createSession/SessionForm';
 import 'react-toastify/dist/ReactToastify.css';
 import PostDetailPage from './routes/session/PostDetailPage/PostDetailPage';
 import SessionEndPage from './routes/session/SessionEndPage/SessionEndPage';
 import SessionListPage from './routes/session/SessionListPage/SessionListPage';
 import SessionDetailPage from './routes/session/SessionDetailPage/SessionDetailPage';
-import BiddersRegister from './routes/BiddersAuth/bidderRegister/BidderRegister';
-import BidderLogin from './routes/BiddersAuth/bidderLogin/BidderLogin';
+import BiddersRegister from './routes/Bidders/BiddersAuth/bidderRegister/BidderRegister';
+import BidderLogin from './routes/Bidders/BiddersAuth/bidderLogin/BidderLogin';
+import VerificationPage from './components/verification/VerificationPage';
+import EmailClickVerification from './components/verification/EmailClickVerification';
+import UnderDev from './components/underDeve/Deve';
+import TrackSessionPage from './routes/session/TrackSession/TrackSessionPage';
+import BidderProfile from './routes/Bidders/BidderProfile/BidderProfile';
+import TrackIndividualItem from './routes/session/TrackMore/TrackIndividualItem';
+import Popup from './utils/Popup';
+import LoginPopup from './utils/LoginPopup';
+import SessionsHistory from './routes/session/sessionHistory/SessionHistory';
+import SeeMorePastSessionPage from './routes/session/moreSessionHistory/SeeMorePastSessionPage';
+import MoreOnPastSessionItem from './routes/session/moreOnPastSessionItem/MoreOnPastSessionItem';
+import Products from './routes/products/Products';
 
 function App() {
   const router = createBrowserRouter([
@@ -37,6 +49,14 @@ function App() {
         {
           path: '/',
           element: <HomePage />,
+        },
+        {
+          path: '/loginPopup',
+          element: <LoginPopup />,
+        },
+        {
+          path: '/popup',
+          element: <Popup />,
         },
         {
           path: '/list',
@@ -58,6 +78,14 @@ function App() {
           element: <Register />,
         },
         {
+          path: '/verification',
+          element: <VerificationPage />,
+        },
+        {
+          path: '/verifylink/:userId/:token',
+          element: <EmailClickVerification />,
+        },
+        {
           path: '/emailSent',
           element: <EmailSent />,
         },
@@ -75,6 +103,10 @@ function App() {
           element: <BiddersRegister />,
         },
         {
+          path: '/bidderProfile',
+          element: <BidderProfile />,
+        },
+        {
           path: '/biddersLogin',
           element: <BidderLogin />,
         },
@@ -87,6 +119,11 @@ function App() {
         {
           path: '/profile',
           element: <ProfilePage />,
+          loader: profilePageLoader,
+        },
+        {
+          path: '/products',
+          element: <Products />,
           loader: profilePageLoader,
         },
         {
@@ -109,6 +146,7 @@ function App() {
           path: '/liveAuctions/create',
           element: <SessionForm />,
         },
+
         //users's side
         {
           path: '/usersSession',
@@ -123,8 +161,30 @@ function App() {
           element: <PostDetailPage />,
         },
         {
-          path: '/session-end',
+          path: '/session-end/:id',
           element: <SessionEndPage />,
+        },
+        //track session
+        {
+          path: '/trackSession/:id',
+          element: <TrackSessionPage />,
+        },
+        {
+          path: '/trackMore/:id',
+          element: <TrackIndividualItem />,
+        },
+        //history
+        {
+          path: '/sessionsHistory',
+          element: <SessionsHistory />,
+        },
+        {
+          path: '/seePastSessionMore/:sessionId',
+          element: <SeeMorePastSessionPage />,
+        },
+        {
+          path: '/moreOnPastSessionItem/:id',
+          element: <MoreOnPastSessionItem />,
         },
       ],
     },

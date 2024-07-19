@@ -16,6 +16,8 @@ import chatRoute from './routes/chat.route.js';
 import messageRoute from './routes/message.route.js';
 import sessionRoutes from './routes/session.js';
 import biddersRoute from './routes/bidder.route.js';
+import walletRoute from './routes/wallet.routes.js';
+import paypalRoutes from './routes/paypal.routes.js';
 
 const app = express();
 const port = process.env.PORT || 8800;
@@ -23,7 +25,7 @@ const port = process.env.PORT || 8800;
 // Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL, process.env.BIDDER_URL],
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     allowedHeaders: ['Content-Type'],
     credentials: true,
@@ -43,8 +45,8 @@ const __dirname = path.dirname(__filename);
 const staticPath = path.join(__dirname, '..', 'client', 'dist');
 const indexPath = path.join(staticPath, 'index.html');
 
-console.log('Static files directory:', staticPath);
-console.log('Index HTML path:', indexPath);
+// console.log('Static files directory:', staticPath);
+// console.log('Index HTML path:', indexPath);
 
 // Routes setup
 app.use('/api/auth', authRoute);
@@ -55,6 +57,8 @@ app.use('/api/chats', chatRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/bidders', biddersRoute);
+app.use('/api/wallet', walletRoute);
+app.use('/api/paypal', paypalRoutes);
 
 // Serve static files from the frontend/dist folder
 app.use(express.static(staticPath));

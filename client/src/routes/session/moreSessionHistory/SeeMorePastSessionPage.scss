@@ -1,0 +1,183 @@
+@import '../../../responsive.scss';
+
+.seeMorePage {
+  display: flex;
+  // justify-content: center;
+  // align-items: center;
+  padding: 12px;
+  height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+  // border: 1px solid violet;
+
+  @include md {
+    height: 100%;
+    overflow: auto;
+  }
+  @include sm {
+    height: 100%;
+    overflow: auto;
+  }
+}
+
+.sessionDetails {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 90%;
+  gap: 5px;
+  padding: 8px;
+  // box-shadow: 2px 4px 8px violet;
+  border-radius: 15px;
+  // border: 1px solid wheat;
+
+  @include md {
+    display: flex;
+    flex-direction: column;
+  }
+  @include sm {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.leftSection {
+  width: 30%; /* Adjust as needed */
+  height: 100%;
+  border: 1px solid rgba(178, 34, 34, 0.486);
+  // box-shadow: 2px 4px 8px violet;
+  padding: 5px;
+  border-radius: 15px;
+
+  @include md {
+    width: 100%; /* Adjust as needed */
+  }
+  @include sm {
+    width: 100%; /* Adjust as needed */
+  }
+}
+
+.leftCard {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(180, 36, 36, 0.555);
+  text-transform: capitalize;
+}
+
+.rightSection {
+  width: 70%; /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  height: 100%;
+  padding: 5px;
+  overflow: scroll;
+  overflow-x: hidden;
+  border: 1px solid rgba(178, 34, 34, 0.486);
+  // box-shadow: 2px 4px 8px violet;
+  border-radius: 15px;
+
+  @include md {
+    width: 100%; /* Adjust as needed */
+    height: auto;
+  }
+  @include sm {
+    width: 100%; /* Adjust as needed */
+    height: auto;
+  }
+}
+
+.postCard {
+  width: calc(50% - 10px); /* Adjust as needed for responsiveness */
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  height: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  //   border: 1px solid firebrick;
+}
+
+.topMiniCard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 70%; /* Set height of topMiniCard */
+  overflow: hidden;
+}
+
+.sliderContainer {
+  width: 100%;
+  height: 100%; /* Ensure sliderContainer takes full height of topMiniCard */
+  // border: 1px solid salmon;
+}
+
+.slick-slider {
+  height: 100%; /* Set height of slick-slider */
+  width: 100%;
+  padding: 10px;
+
+  // border: 1px solid salmon;
+}
+
+.slick-list {
+  height: 100%; /* Set height of slick-list */
+  // width: 100%;
+  // border: 1px solid crimson;
+}
+
+.slick-slide img {
+  height: 40vh;
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.moreButton {
+  margin-top: auto;
+  border: 1px solid wheat;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  width: 25%;
+  padding: 2px;
+  text-align: center;
+  transition: background-color 300ms ease-in-out;
+
+  @include md {
+    width: 100%;
+  }
+  @include sm {
+    width: 100%;
+  }
+}
+.moreButton:hover {
+  background-color: wheat;
+  cursor: pointer;
+}
+
+.bottomMiniCard {
+  width: 100%;
+  padding: 10px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}

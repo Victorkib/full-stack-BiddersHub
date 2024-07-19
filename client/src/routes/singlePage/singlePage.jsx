@@ -4,7 +4,6 @@ import Map from '../../components/map/Map';
 import { useNavigate, useLoaderData, Await } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { useContext, useState, Suspense } from 'react';
-
 import { AuthContext } from '../../context/AuthContext';
 import apiRequest from '../../lib/apiRequest';
 import { ThreeDots } from 'react-loader-spinner';
@@ -46,13 +45,18 @@ function SinglePage() {
   };
 
   const handleSendMessage = async (e, post) => {
-    setIsLoading(true);
     e.preventDefault();
+    if (!message.trim()) {
+      toast.error('Message cannot be empty');
+      return;
+    }
+    setIsLoading(true);
     try {
       const res = await apiRequest.post('/chats', { message });
       if (res.status) {
         toast.success('Message sent successfully');
         setFormDisplay(false);
+        setMessage('');
       }
     } catch (err) {
       console.log(err);
@@ -93,7 +97,7 @@ function SinglePage() {
                             <img src="/pin.png" alt="" />
                             <span>{post?.data?.address}</span>
                           </div>
-                          <div className="price">$ {post?.data?.price}</div>
+                          <div className="price">$ {post?.data?.basePrice}</div>
                         </div>
                         <div className="user">
                           <img src={post?.data?.user?.avatar} alt="" />
@@ -116,76 +120,45 @@ function SinglePage() {
                     <p className="title">General</p>
                     <div className="listVertical">
                       <div className="feature">
-                        <img src="/utility.png" alt="" />
-                        <div className="featureText">
-                          <span>Utilities</span>
-                          {post?.data?.postDetail?.utilities === 'owner' ? (
-                            <p>Owner is responsible</p>
-                          ) : (
-                            <p>Tenant is responsible</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="feature">
-                        <img src="/Mybg.png" alt="" />
-                        <div className="featureText">
-                          <span>Credit Policy</span>
-                          {post?.data?.postDetail?.pet === 'allowed' ? (
-                            <p>Pets Allowed</p>
-                          ) : (
-                            <p>Pets not Allowed</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="feature">
                         <img src="/fee.png" alt="" />
                         <div className="featureText">
-                          <span>Income Policy</span>
-                          <p>{post?.data?.postDetail?.income}</p>
+                          <span>Product</span>
+                          <p>{post?.data?.property}</p>
+                        </div>
+                      </div>
+                      <div className="feature">
+                        <img src="/utility.png" alt="" />
+                        <div className="featureText">
+                          <span>Condition:</span>
+                          {post?.data?.postDetail?.condition}
+                        </div>
+                      </div>
+                      <div className="feature">
+                        <img src="/Mybg.png" alt="" />
+                        <div className="featureText">
+                          <span>Functionality:</span>
+                          {post?.data?.postDetail?.functionality}
                         </div>
                       </div>
                     </div>
-                    <p className="title">Sizes</p>
-                    <div className="sizes">
-                      <div className="size">
-                        <img src="/size.png" alt="" />
-                        <span>{post?.data?.postDetail?.size} sqft</span>
-                      </div>
-                      <div className="size">
-                        <img src="/Mybg.png" alt="" />
-                        <span>{post?.data?.bedroom} TestNo</span>
-                      </div>
-                      <div className="size">
-                        <img src="/Mybg.png" alt="" />
-                        <span>{post?.data?.bathroom} TestNo</span>
-                      </div>
-                    </div>
-                    <p className="title">Nearby Places</p>
                     <div className="listHorizontal">
                       <div className="feature">
                         <img src="/Mybg.png" alt="" />
                         <div className="featureText">
-                          <span>TestNo</span>
+                          <h6>Sold Status</h6>
+                          <p>{post?.data?.isSold ? 'Sold' : 'Not Sold'}</p>
+                        </div>
+                      </div>
+                      <div className="feature">
+                        <img src="/Mybg.png" alt="" />
+                        <div className="featureText">
+                          <h6>Rating</h6>
                           <p>
-                            {post.postDetail?.school > 999
-                              ? post?.data?.postDetail?.school / 1000 + 'km'
-                              : post?.data?.postDetail?.school + 'm'}{' '}
-                            away
+                            {post.postDetail?.rating < 5
+                              ? post.postDetail?.rating
+                              : 5}{' '}
+                            / 5
                           </p>
-                        </div>
-                      </div>
-                      <div className="feature">
-                        <img src="/Mybg.png" alt="" />
-                        <div className="featureText">
-                          <span>TestNo</span>
-                          <p>{post?.data?.postDetail?.bus}m away</p>
-                        </div>
-                      </div>
-                      <div className="feature">
-                        <img src="/Mybg.png" alt="" />
-                        <div className="featureText">
-                          <span>TestNo</span>
-                          <p>{post?.data?.postDetail?.restaurant}m away</p>
                         </div>
                       </div>
                     </div>
@@ -204,19 +177,14 @@ function SinglePage() {
                           <input
                             type="text"
                             value={message}
-                            onChange={(e) => {
-                              setMessage(e.target.value);
-                            }}
+                            onChange={(e) => setMessage(e.target.value)}
                           />
                           <button>Send</button>
                         </form>
                       )}
-
                       <button
                         onClick={() => handleSave(post)}
-                        style={{
-                          backgroundColor: saved ? '#fece51' : 'white',
-                        }}
+                        // style={{ backgroundColor: saved ? '#fece51' : 'white' }}
                       >
                         <img src="/save.png" alt="" />
                         {saved ? 'Place Saved' : 'Save the Place'}

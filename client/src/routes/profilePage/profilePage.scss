@@ -10,12 +10,20 @@
   }
 
   .details {
-    flex: 3;
+    flex: 2;
     overflow-y: scroll;
     padding-bottom: 50px;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    //border: 1px solid salmon;
 
     @include md {
       flex: none;
+      // display: flex;
+      // align-items: center;
+      justify-content: flex-start;
       height: max-content;
     }
 
@@ -24,11 +32,20 @@
       display: flex;
       flex-direction: column;
       gap: 50px;
+      padding: 5px;
+      border-radius: 9px;
+      box-shadow: 2px 2px 4px crimson;
+      //border: 1px solid red;
+      @include md {
+        width: 50%;
+        padding: 10px;
+      }
 
       .title {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        // border: 1px solid firebrick;
 
         h1 {
           font-weight: 300;
@@ -93,6 +110,8 @@
     flex: 2;
     background-color: #fcf5f3;
     height: 100%;
+    border-radius: 13px;
+    // border: 1px solid crimson;
 
     @include md {
       flex: none;

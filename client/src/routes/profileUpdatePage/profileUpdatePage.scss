@@ -2,11 +2,17 @@
   height: 100%;
   display: flex;
 
+  box-shadow: 2px 2px 4px crimson;
+  border-radius: 13px;
+
   .formContainer {
-    flex:3;
+    flex: 2;
+    margin: 3px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    // border: 1px solid gray;
     form {
       display: flex;
       flex-direction: column;
@@ -47,8 +53,9 @@
     align-items: center;
     justify-content: center;
 
-    .avatar{
+    .avatar {
       width: 50%;
+      border-radius: 20%;
       object-fit: cover;
     }
   }

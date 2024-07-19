@@ -1,0 +1,231 @@
+{
+    [
+            // This is your Prisma schema file,
+      // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+      // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+      // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+      // This is your corrected Prisma schema
+
+      // This is your corrected Prisma schema
+
+      generator client {
+        provider = "prisma-client-js"
+      }
+
+      datasource db {
+        provider = "mongodb"
+        url      = env("DATABASE_URL")
+      }
+
+      model Post {
+        id            String      @id @default(auto()) @map("_id") @db.ObjectId
+        title         String
+        price         Int
+        images        String[]
+        address       String
+        city          String
+        numberInStock Int
+        varietyNumber Int
+        latitude      String
+        longitude     String
+        purchaseType  PurchaseType
+        property      Property
+        createdAt     DateTime    @default(now())
+        user          User        @relation(fields: [userId], references: [id])
+        userId        String      @db.ObjectId
+        postDetail    PostDetail?
+        savedPosts    SavedPost[]
+        sessions      PostOnSession[]
+      }
+
+      enum PurchaseType {
+        buy
+        rent
+      }
+
+      enum Property {
+        vehicles
+        house
+        condo
+        land
+        flowers
+        other
+      }
+      model PostDetail {
+        id              String  @id @default(auto()) @map("_id") @db.ObjectId
+        desc            String
+        utilities       String?
+        credit          String?
+        higherPurchase  String?
+        size            Int?    @default(0)
+        rating          Int?
+        condition       String?
+        functionality   String?
+        post            Post    @relation(fields: [postId], references: [id])
+        postId          String  @unique @db.ObjectId
+      }
+
+      model SavedPost {
+        id        String   @id @default(auto()) @map("_id") @db.ObjectId
+        user      User     @relation(fields: [userId], references: [id])
+        post      Post     @relation(fields: [postId], references: [id])
+        userId    String   @db.ObjectId
+        postId    String   @db.ObjectId
+        createdAt DateTime @default(now())
+
+        @@unique([userId, postId])
+      }
+
+      model User {
+        id         String      @id @default(auto()) @map("_id") @db.ObjectId
+        email      String      @unique
+        username   String      @unique
+        password   String
+        avatar     String?
+        createdAt  DateTime    @default(now())
+        posts      Post[]
+        savedPosts SavedPost[]
+        sessions   Session[]
+        chats      Chat[]      @relation(fields: [chatIDs], references: [id])
+        chatIDs    String[]    @db.ObjectId
+        company    Company     @relation(fields: [companyId], references: [id]) // Specify fields and references here
+        companyId  String      @db.ObjectId
+        documents  Document[]  // Relation to Document
+        verified   Boolean     @default(false)  
+      }
+
+      model Company {
+        id            String    @id @default(auto()) @map("_id") @db.ObjectId
+        companyName   String
+        companyAddress String
+        users         User[]    // Define the relation without `fields` or `references`
+      }
+
+      model Document {
+        id           String   @id @default(auto()) @map("_id") @db.ObjectId
+        documentType String
+        url          String
+        user         User     @relation(fields: [userId], references: [id])
+        userId       String   @db.ObjectId
+      }
+      model Verification {
+        id         String   @id @default(auto()) @map("_id") @db.ObjectId
+        userId     String   @unique  
+        token      String
+        createdAt  DateTime @default(now())
+        expiresAt  DateTime
+      }
+
+      model Chat {
+        id        String    @id @default(auto()) @map("_id") @db.ObjectId
+        users     User[]    @relation(fields: [userIDs], references: [id])
+        userIDs   String[]  @db.ObjectId
+        createdAt DateTime  @default(now())
+        seenBy    String[]  @db.ObjectId
+        messages  Message[]
+        lastMessage String?
+      }
+
+      model Message {
+        id        String   @id @default(auto()) @map("_id") @db.ObjectId
+        text      String
+        userId    String
+        chat      Chat     @relation(fields: [chatId], references: [id])
+        chatId    String   @db.ObjectId
+        createdAt DateTime @default(now())
+      }
+
+      model Session {
+        id          String        @id @default(auto()) @map("_id") @db.ObjectId
+        title       String
+        description String
+        startTime   DateTime
+        endTime     DateTime
+        createdBy   User          @relation(fields: [createdById], references: [id])
+        createdById String        @db.ObjectId
+        isActive    Boolean       @default(false)
+        items       Item[]
+        posts       PostOnSession[]
+      }
+
+      model Item {
+        id          String   @id @default(auto()) @map("_id") @db.ObjectId
+        title       String
+        description String
+        startTime   DateTime
+        endTime     DateTime
+        session     Session  @relation(fields: [sessionId], references: [id])
+        sessionId   String   @db.ObjectId
+      }
+
+      model PostOnSession {
+        id        String @id @default(auto()) @map("_id") @db.ObjectId
+        postId    String @db.ObjectId
+        sessionId String @db.ObjectId
+        post      Post   @relation(fields: [postId], references: [id])
+        session   Session @relation(fields: [sessionId], references: [id])
+
+        @@unique([postId, sessionId])
+      }
+
+
+
+      model Bidder {
+        id            String          @id @default(auto()) @map("_id") @db.ObjectId
+        email         String          @unique
+        username      String          @unique
+        password      String
+        profile       String?
+        createdAt     DateTime        @default(now())
+        bids          Bid[]
+        wallet        Wallet?
+        historicalBids HistoricalBid[] // Added relation to HistoricalBid
+      }
+
+      model Bid {
+        id        String   @id @default(auto()) @map("_id") @db.ObjectId
+        amount    Float
+        itemId    String   @db.ObjectId
+        createdAt DateTime @default(now())
+        bidder    Bidder   @relation(fields: [bidderId], references: [id])
+        bidderId  String   @db.ObjectId
+      }
+
+
+      model HistoricalBid {
+        id        String   @id @default(auto()) @map("_id") @db.ObjectId
+        amount    Float
+        itemId    String   @db.ObjectId
+        createdAt DateTime @default(now())
+        bidder    Bidder   @relation(fields: [bidderId], references: [id])
+        bidderId  String   @db.ObjectId
+      }
+
+
+      model Wallet {
+        id         String       @id @default(auto()) @map("_id") @db.ObjectId
+        balance    Float        @default(0)
+        transactions Transaction[]
+        bidder     Bidder       @relation(fields: [bidderId], references: [id])
+        bidderId   String       @db.ObjectId @unique
+      }
+
+      model Transaction {
+        id         String       @id @default(auto()) @map("_id") @db.ObjectId
+        amount     Float
+        type       String       // 'credit' or 'debit'
+        description String?
+        wallet     Wallet       @relation(fields: [walletId], references: [id])
+        walletId   String       @db.ObjectId
+        createdAt  DateTime     @default(now())
+      }
+
+    ]
+}
+so we will check the user's wallet balace to see if he has suficient deposit to enter the bid room if not then we display the CreditWalletPopup for the bidder to credit their wallet.
+
+
+
+
+sendIBlue aPI ket : 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

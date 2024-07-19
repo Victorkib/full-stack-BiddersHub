@@ -1,0 +1,76 @@
+.verification-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  /* border: 1px solid firebrick; */
+}
+
+.verification-container h2,
+h4 {
+  border: 1px solid wheat;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.verification-container p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btnHolder {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: flex-start;
+  width: 50%;
+  height: 50%;
+}
+
+.verification-container button {
+  margin: 0.5rem 0;
+  display: inline-flex;
+  justify-content: center;
+  border-radius: 16px;
+  background-color: chocolate;
+  padding: 8px;
+  text-align: center;
+  font-size: medium;
+  color: #fff;
+  outline: none;
+}
+
+.message {
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.verification-container button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #721c24;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #f70e1a;
+  outline: none;
+}

@@ -1,0 +1,66 @@
+.sessionEndPage {
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  background-color: bisque;
+  border: 1px solid yellow;
+
+  .fireworks {
+    height: 90%;
+    width: 60%;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .holderOfBoth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: 40%;
+    // border: 1px solid crimson;
+
+    .Secondfireworks {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      justify-content: center;
+      height: 90%;
+      width: 90%;
+      border: 1px solid chocolate;
+      background-color: cadetblue;
+      filter: drop-shadow(2px 2px 4px crimson);
+      border-radius: 50%;
+      gap: 5px;
+
+      .innerDiv {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: center;
+        text-transform: capitalize;
+        text-align: center;
+        text-wrap: wrap;
+      }
+      h1,
+      p {
+        color: crimson;
+        font-size: 2rem;
+        font-weight: 300;
+      }
+    }
+    .emailSent {
+      width: 100%;
+      height: 10%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // border: 1px solid crimson;
+    }
+  }
+}

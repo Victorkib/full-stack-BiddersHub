@@ -7,10 +7,13 @@ import {
   getSession,
   updateSession,
   deleteSession,
+  validEndtimeSessionsBidders,
   getSummarizedPosts, // New
   getDetailedPost, // New
+  isItemInActiveSession,
 } from '../controllers/sessionController.js';
 import auth from '../middleware/auth.js';
+import { authenticateBidder } from '../middleware/biddersAuth.js';
 
 // addItemToSession,
 // updateItemInSession,
@@ -20,8 +23,15 @@ const router = express.Router();
 
 router.get('/', auth, getSessions);
 router.get('/validEndtimeSessions', auth, getCurrentValidSessions);
+router.get(
+  '/validEndtimeSessionsBidders',
+  authenticateBidder,
+  validEndtimeSessionsBidders
+);
 router.get('/userPostedData', auth, userPostedData);
 router.get('/:id', auth, getSession);
+router.get('/isItemInActiveSession/:id', auth, isItemInActiveSession);
+router.get('/indiSessBidders/:id', authenticateBidder, getSession);
 router.post('/', auth, createSession);
 router.put('/:id', auth, updateSession);
 router.delete('/:id', auth, deleteSession);

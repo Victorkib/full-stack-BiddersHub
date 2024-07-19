@@ -1,101 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-$primary-color: #00bfff;
-$secondary-color: #fff;
-$background-color: #f4f4f4;
-$card-shadow: rgba(0, 0, 0, 0.1);
-
 .sessionDetailMain {
-  font-family: 'Roboto', sans-serif;
-  padding: 20px;
-  background-color: $background-color;
-  height: 100vh;
-  overflow: scroll;
-  // border: 1px solid coral;
+  padding: 2rem;
+}
+.loaderContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.threeDots {
+  color: rgb(52, 138, 18);
+}
 
-  h1 {
-    text-align: center;
-    margin-bottom: 10px;
-  }
+.postList {
+  display: flex;
+  align-items: flex-start; /* Align items at the start */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+}
 
-  p {
-    text-align: center;
-    margin-bottom: 5px;
-    color: darken($background-color, 40%);
-  }
+.postItem {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: calc(40% - 4rem); /* Adjusted width with gap */
+  margin-bottom: 2rem;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
 
-  .postList {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    padding: 0;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    overflow: scroll;
-    // border: 1px solid firebrick;
+.postItem:hover {
+  transform: translateY(-5px);
+}
 
-    .postItem {
-      background: $secondary-color;
-      box-shadow: 0 4px 8px $card-shadow;
-      border-radius: 8px;
-      transition: transform 0.2s;
-      cursor: pointer;
-      border: 1px solid goldenrod;
-      width: 70%;
-      height: 100%;
-      margin: 0 auto;
-      overflow: scroll;
+.postItem h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
 
-      &:hover {
-        transform: translateY(-5px);
-      }
+.sliderContainer {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-      h2 {
-        margin: 0;
-        padding: 15px;
-        font-size: 1.5em;
-        background: $primary-color;
-        color: $secondary-color;
-      }
+.slider {
+  display: flex;
+}
 
-      .imagesContainer {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-      }
+.slick-slide {
+  width: 100%; /* Ensure slides take full width */
+}
 
-      .imgHolder {
-        flex: 1 1 calc(50% - 10px);
-        max-width: calc(50% - 10px);
-        background: $background-color;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.2s;
+.slick-slide img {
+  width: 100%;
+  height: 100%; /* Maintain aspect ratio */
+}
 
-        &:hover {
-          transform: scale(1.05);
-        }
-
-        .vehicle {
-          padding: 10px;
-          text-align: center;
-
-          h5 {
-            margin: 0 0 10px;
-            font-weight: 500;
-            color: darken($background-color, 40%);
-          }
-
-          img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-          }
-        }
-      }
-    }
-  }
+.cardTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  text-align: center;
 }

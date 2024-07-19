@@ -1,0 +1,149 @@
+@import '../../../responsive.scss';
+.trackIndividualItem {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+
+  @include lg {
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+
+  @include md {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    // border: 1px solid firebrick;
+    // flex-wrap: wrap;
+  }
+
+  @include sm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    // border: 1px solid firebrick;
+    // flex-wrap: wrap;
+  }
+
+  .mainCard {
+    width: 50%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.3s;
+
+    @include md {
+      width: 100%;
+    }
+    @include sm {
+      width: 100%;
+    }
+
+    .imageWrapper {
+      height: 300px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .detailsCard {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      h2 {
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin: 5px 0;
+      }
+    }
+  }
+
+  .bidsCard {
+    width: 50%;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    transition: transform 0.3s;
+
+    @include md {
+      width: 100%;
+    }
+    @include sm {
+      width: 100%;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+
+        @include md {
+          padding: 0px;
+        }
+        @include sm {
+          padding: 0px;
+        }
+      }
+
+      th {
+        background-color: #f4f4f4;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+    }
+  }
+
+  .mainCard:hover,
+  .bidsCard:hover {
+    transform: translateY(-10px);
+  }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: #007bff;
+}

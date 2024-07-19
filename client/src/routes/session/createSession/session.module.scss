@@ -1,0 +1,180 @@
+@import '../../../responsive.scss';
+
+// session.module.scss
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.1));
+
+  @include lg {
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+  @include md {
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+  @include sm {
+    height: auto;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .threeDots {
+    color: rgb(52, 138, 18);
+  }
+}
+
+.form {
+  flex: 1;
+  min-width: 300px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  div {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #8d5555;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+  }
+
+  .buttonGroup {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
+
+.postsContainer {
+  flex: 2;
+  min-width: 300px;
+  height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #8d5555;
+  }
+
+  .postGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    .postItem {
+      flex: 1 1 calc(33.333% - 20px);
+      padding: 2px 2px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      height: 40vh;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid green;
+
+      .imgContainer {
+        width: 100%;
+        height: 66%;
+        // border: 1px solid green;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 10px;
+          margin-bottom: 5px;
+        }
+      }
+
+      span {
+        display: block;
+        font-size: 14px;
+        color: #333;
+      }
+
+      input[type='checkbox'] {
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .postsContainer {
+    margin-top: 20px;
+  }
+
+  .postGrid {
+    .postItem {
+      flex: 1 1 calc(50% - 20px);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .postGrid {
+    .postItem {
+      flex: 1 1 calc(100% - 20px);
+    }
+  }
+}

@@ -159,11 +159,11 @@
 
       @include md {
         border: 1px solid crimson;
-        overflow-x: auto;
+        overflow: auto;
       }
       @include sm {
         border: 1px solid crimson;
-        overflow-x: auto;
+        overflow: auto;
       }
 
       .imageContainer {

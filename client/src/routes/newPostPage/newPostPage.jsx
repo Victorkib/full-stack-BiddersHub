@@ -5,11 +5,14 @@ import 'react-quill/dist/quill.snow.css';
 import apiRequest from '../../lib/apiRequest';
 import UploadWidget from '../../components/uploadWidget/UploadWidget';
 import { useNavigate } from 'react-router-dom';
+import { ThreeDots } from 'react-loader-spinner';
 
 function NewPostPage() {
   const [value, setValue] = useState('');
   const [images, setImages] = useState([]);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [propertyType, setPropertyType] = useState('flowers'); // Add state for property type
 
   const navigate = useNavigate();
 
@@ -18,36 +21,43 @@ function NewPostPage() {
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
 
+    // Add conditional logic for size
+    const postDetail = {
+      desc: value, //stay
+      size: inputs.size ? parseInt(inputs.size) : undefined, // Conditional size
+      rating: parseInt(inputs.rating), //replace with deposit
+      condition: inputs.condition, //stay
+      functionality: inputs.functionality, //stay
+    };
+
+    // Remove size if not applicable
+    if (propertyType !== 'house') {
+      delete postDetail.size;
+    }
+
     try {
+      setLoading(true);
       const res = await apiRequest.post('/posts', {
         postData: {
-          title: inputs.title,
-          price: parseInt(inputs.price),
-          address: inputs.address,
-          city: inputs.city,
-          bedroom: parseInt(inputs.bedroom),
-          bathroom: parseInt(inputs.bathroom),
-          type: inputs.type,
-          property: inputs.property,
-          latitude: inputs.latitude,
-          longitude: inputs.longitude,
-          images: images,
+          title: inputs.title, //stay
+          basePrice: parseInt(inputs.basePrice), //stay
+          deposit: parseInt(inputs.deposit), //stay
+          address: inputs.address, //stay
+          city: inputs.city, //stay
+          property: inputs.property, //stay
+          latitude: '-1.2860648473335243', //stay
+          longitude: '36.794800775775435', //stay
+          images: images, //stay
         },
-        postDetail: {
-          desc: value,
-          utilities: inputs.utilities,
-          pet: inputs.pet,
-          income: inputs.income,
-          size: parseInt(inputs.size),
-          school: parseInt(inputs.school),
-          bus: parseInt(inputs.bus),
-          restaurant: parseInt(inputs.restaurant),
-        },
+        //title,price,address,city,property,latitude,longitude, images, desc, soldStatus,size,rating(deposit),condition,funtionality
+        postDetail: postDetail,
       });
+      setLoading(false);
       navigate('/' + res.data.id);
     } catch (err) {
       console.log(err);
       setError(err);
+      setLoading(false);
     }
   };
 
@@ -59,117 +69,106 @@ function NewPostPage() {
           <form onSubmit={handleSubmit}>
             <div className="item">
               <label htmlFor="title">Title</label>
-              <input id="title" name="title" type="text" />
+              <input id="title" name="title" type="text" required />
             </div>
             <div className="item">
-              <label htmlFor="price">Base Price</label>
-              <input id="price" name="price" type="number" />
+              <label htmlFor="basePrice">
+                BasePrice(The start amount of bidding an Item)
+              </label>
+              <input id="basePrice" name="basePrice" type="number" required />
+            </div>
+            <div className="item">
+              <label htmlFor="deposit">
+                Deposit(miminum amount to enter a bid room)
+              </label>
+              <input id="deposit" name="deposit" type="number" required />
             </div>
             <div className="item">
               <label htmlFor="address">Address</label>
-              <input id="address" name="address" type="text" />
+              <input id="address" name="address" type="text" required />
             </div>
             <div className="item description">
               <label htmlFor="desc">Description</label>
               <ReactQuill theme="snow" onChange={setValue} value={value} />
             </div>
             <div className="item">
-              <label htmlFor="city">City</label>
-              <input id="city" name="city" type="text" />
-            </div>
-            <div className="item">
-              <label htmlFor="bedroom">Number In stock</label>
-              <input min={1} id="bedroom" name="bedroom" type="number" />
-            </div>
-            <div className="item">
-              <label htmlFor="bathroom">Variety Number</label>
-              <input min={1} id="bathroom" name="bathroom" type="number" />
-            </div>
-            <div className="item">
-              <label htmlFor="latitude">Latitude</label>
-              <input id="latitude" name="latitude" type="text" />
-            </div>
-            <div className="item">
-              <label htmlFor="longitude">Longitude</label>
-              <input id="longitude" name="longitude" type="text" />
-            </div>
-            <div className="item">
-              <label htmlFor="type">Type</label>
-              <select name="type">
-                <option value="rent" defaultChecked>
-                  Rent
-                </option>
-                <option value="buy">Buy</option>
-              </select>
-            </div>
-            <div className="item">
-              <label htmlFor="type">Property</label>
-              <select name="property">
-                <option value="apartment">Vehicles</option>
-                <option value="house">Houses</option>
-                <option value="condo">Utilities</option>
-                <option value="land">Paintings</option>
-              </select>
+              <label htmlFor="city">Item City Location</label>
+              <input id="city" name="city" type="text" required />
             </div>
 
             <div className="item">
-              <label htmlFor="utilities">Utilities Policy</label>
-              <select name="utilities">
-                <option value="owner">Owner is responsible</option>
-                <option value="tenant">Tenant is responsible</option>
-                <option value="shared">Shared</option>
+              <label htmlFor="property">Product Type</label>
+              <select
+                name="property"
+                onChange={(e) => setPropertyType(e.target.value)}
+                required
+              >
+                <option value="flowers">Flowers</option>
+                <option value="vehicles">Vehicles</option>
+                <option value="house">Houses</option>
+                <option value="condo">Utilities</option>
+                <option value="land">Paintings</option>
+                <option value="other">Other</option>
               </select>
             </div>
+            {propertyType === 'house' && (
+              <div className="item">
+                <label htmlFor="size">Product Size (sqft)</label>
+                <input min={0} id="size" name="size" type="number" required />
+              </div>
+            )}
             <div className="item">
-              <label htmlFor="pet">Credit Policy</label>
-              <select name="pet">
-                <option value="allowed">Allowed</option>
-                <option value="not-allowed">Not Allowed</option>
-              </select>
-            </div>
-            <div className="item">
-              <label htmlFor="income">Income Policy</label>
+              <label htmlFor="rating">Rate item 0-5 scale</label>
               <input
-                id="income"
-                name="income"
-                type="text"
-                placeholder="Income Policy"
+                min={0}
+                max={5}
+                id="rating"
+                name="rating"
+                type="number"
+                required
               />
             </div>
             <div className="item">
-              <label htmlFor="size">Total Size (sqft)</label>
-              <input min={0} id="size" name="size" type="number" />
+              <label htmlFor="condition">Condition</label>
+              <select name="condition" required>
+                <option value="brandNew">Brand New</option>
+                <option value="used">Used</option>
+                <option value="refurbished">Refurbished</option>
+              </select>
             </div>
             <div className="item">
-              <label htmlFor="school">TestNo</label>
-              <input min={0} id="school" name="school" type="number" />
-            </div>
-            <div className="item">
-              <label htmlFor="bus">TestNo</label>
-              <input min={0} id="bus" name="bus" type="number" />
-            </div>
-            <div className="item">
-              <label htmlFor="restaurant">TestNo</label>
-              <input min={0} id="restaurant" name="restaurant" type="number" />
+              <label htmlFor="functionality">Functionality</label>
+              <select name="functionality" required>
+                <option value="great">Great</option>
+                <option value="good">Good</option>
+                <option value="useable">Useable</option>
+              </select>
             </div>
             <button className="sendButton">Add</button>
-            {error && <span>error</span>}
+            {error && <span>{error.message}</span>}
           </form>
         </div>
       </div>
       <div className="sideContainer">
-        {images.map((image, index) => (
-          <img src={image} key={index} alt="" />
-        ))}
-        <UploadWidget
-          uwConfig={{
-            multiple: true,
-            cloudName: 'victorkib',
-            uploadPreset: 'estate',
-            folder: 'posts',
-          }}
-          setState={setImages}
-        />
+        {loading ? (
+          <ThreeDots color="#333" height={80} width={80} />
+        ) : (
+          <>
+            {images.map((image, index) => (
+              <img src={image} key={index} alt="" />
+            ))}
+            <UploadWidget
+              uwConfig={{
+                multiple: true,
+                cloudName: 'victorkib',
+                uploadPreset: 'estate',
+                folder: 'posts',
+              }}
+              setState={setImages}
+              setLoading={setLoading}
+            />
+          </>
+        )}
       </div>
     </div>
   );

@@ -14,7 +14,9 @@ function EditSingle() {
   const [images, setImages] = useState([]);
   const [error, setError] = useState('');
   const [product, setProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); // Loading state for UploadWidget
+  const [isLoading, setIsLoading] = useState(false); // Loading state for form submission
+  const [propertyType, setPropertyType] = useState('flowers'); // Property type state
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ function EditSingle() {
         setProduct(data);
         setValue(data.postDetail.desc);
         setImages(data.images);
+        setPropertyType(data.property);
       } catch (err) {
         console.log(err);
         setError(err.message);
@@ -38,44 +41,46 @@ function EditSingle() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading to true on form submit
+    setIsLoading(true);
+
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
 
+    const postDetail = {
+      desc: value,
+      size: propertyType === 'house' ? parseInt(inputs.size) : undefined,
+      rating: parseInt(inputs.rating),
+      condition: inputs.condition,
+      functionality: inputs.functionality,
+    };
+
     try {
+      // Display loader for backend update
+      setLoading(true);
+
       const res = await apiRequest.put(`/posts/${id}`, {
         postData: {
           title: inputs.title,
-          price: parseInt(inputs.price),
+          basePrice: parseInt(inputs.basePrice),
+          deposit: parseInt(inputs.deposit),
           address: inputs.address,
           city: inputs.city,
-          bedroom: parseInt(inputs.bedroom),
-          bathroom: parseInt(inputs.bathroom),
-          type: inputs.type,
           property: inputs.property,
-          latitude: inputs.latitude,
-          longitude: inputs.longitude,
+          latitude: '-1.2860648473335243',
+          longitude: '36.794800775775435',
           images: images,
         },
-        postDetail: {
-          desc: value,
-          utilities: inputs.utilities,
-          pet: inputs.pet,
-          income: inputs.income,
-          size: parseInt(inputs.size),
-          school: parseInt(inputs.school),
-          bus: parseInt(inputs.bus),
-          restaurant: parseInt(inputs.restaurant),
-        },
+        postDetail: postDetail,
       });
-      toast.success('Post updated successfully'); // Success toast
+      toast.success('Post updated successfully');
       navigate('/' + res.data.id);
     } catch (err) {
       console.log(err);
-      toast.error('Failed to update post'); // Error toast
+      toast.error('Failed to update post');
       setError(err.message);
     } finally {
-      setIsLoading(false); // Set loading to false after request completes
+      setIsLoading(false);
+      setLoading(false); // Hide backend update loader
     }
   };
 
@@ -89,7 +94,6 @@ function EditSingle() {
       <form onSubmit={handleSubmit}>
         <div className="formContainer">
           <div className="wrapper">
-            {/* Other form fields */}
             <div className="item">
               <label htmlFor="title">Title</label>
               <input
@@ -97,15 +101,27 @@ function EditSingle() {
                 name="title"
                 type="text"
                 defaultValue={product?.title}
+                required
               />
             </div>
             <div className="item">
-              <label htmlFor="price">Base Price</label>
+              <label htmlFor="basePrice">Base Price {`($)`}</label>
               <input
-                id="price"
-                name="price"
+                id="basePrice"
+                name="basePrice"
                 type="number"
-                defaultValue={product?.price}
+                defaultValue={product?.basePrice}
+                required
+              />
+            </div>
+            <div className="item">
+              <label htmlFor="deposit">Deposit {`($)`}</label>
+              <input
+                id="deposit"
+                name="deposit"
+                type="number"
+                defaultValue={product?.deposit}
+                required
               />
             </div>
             <div className="item">
@@ -115,6 +131,7 @@ function EditSingle() {
                 name="address"
                 type="text"
                 defaultValue={product?.address}
+                required
               />
             </div>
             <div className="item description">
@@ -128,128 +145,73 @@ function EditSingle() {
                 name="city"
                 type="text"
                 defaultValue={product?.city}
+                required
               />
             </div>
             <div className="item">
-              <label htmlFor="bedroom">Number In stock</label>
-              <input
-                min={1}
-                id="bedroom"
-                name="bedroom"
-                type="number"
-                defaultValue={product?.bedroom}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="bathroom">Variety Number</label>
-              <input
-                min={1}
-                id="bathroom"
-                name="bathroom"
-                type="number"
-                defaultValue={product?.bathroom}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="latitude">Latitude</label>
-              <input
-                id="latitude"
-                name="latitude"
-                type="text"
-                defaultValue={product?.latitude}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="longitude">Longitude</label>
-              <input
-                id="longitude"
-                name="longitude"
-                type="text"
-                defaultValue={product?.longitude}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="type">Type</label>
-              <select name="type" defaultValue={product?.type}>
-                <option value="rent">Rent</option>
-                <option value="buy">Buy</option>
-              </select>
-            </div>
-            <div className="item">
-              <label htmlFor="property">Property</label>
-              <select name="property" defaultValue={product?.property}>
-                <option value="apartment">Vehicles</option>
+              <label htmlFor="property">Product Type</label>
+              <select
+                name="property"
+                defaultValue={product?.property}
+                onChange={(e) => setPropertyType(e.target.value)}
+                required
+              >
+                <option value="flowers">Flowers</option>
+                <option value="vehicles">Vehicles</option>
                 <option value="house">Houses</option>
                 <option value="condo">Utilities</option>
                 <option value="land">Paintings</option>
+                <option value="other">Other</option>
               </select>
             </div>
+            {propertyType === 'house' && (
+              <div className="item">
+                <label htmlFor="size">Product Size (sqft)</label>
+                <input
+                  min={0}
+                  id="size"
+                  name="size"
+                  type="number"
+                  defaultValue={product?.postDetail?.size}
+                  required
+                />
+              </div>
+            )}
             <div className="item">
-              <label htmlFor="utilities">Utilities Policy</label>
+              <label htmlFor="rating">Rate item 0-5 scale</label>
+              <input
+                min={0}
+                max={5}
+                id="rating"
+                name="rating"
+                type="number"
+                defaultValue={product?.postDetail?.rating}
+                required
+              />
+            </div>
+            <div className="item">
+              <label htmlFor="condition">Condition</label>
               <select
-                name="utilities"
-                defaultValue={product?.postDetail?.utilities}
+                name="condition"
+                defaultValue={product?.postDetail?.condition}
+                required
               >
-                <option value="owner">Owner is responsible</option>
-                <option value="tenant">Tenant is responsible</option>
-                <option value="shared">Shared</option>
+                <option value="brandNew">Brand New</option>
+                <option value="used">Used</option>
+                <option value="refurbished">Refurbished</option>
               </select>
             </div>
             <div className="item">
-              <label htmlFor="pet">Credit Policy</label>
-              <select name="pet" defaultValue={product?.postDetail?.pet}>
-                <option value="allowed">Allowed</option>
-                <option value="not-allowed">Not Allowed</option>
+              <label htmlFor="functionality">Functionality</label>
+              <select
+                name="functionality"
+                defaultValue={product?.postDetail?.functionality}
+                required
+              >
+                <option value="great">Great</option>
+                <option value="good">Good</option>
+                <option value="useable">Useable</option>
               </select>
-            </div>
-            <div className="item">
-              <label htmlFor="income">Income Policy</label>
-              <input
-                id="income"
-                name="income"
-                type="text"
-                defaultValue={product?.postDetail?.income}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="size">Total Size (sqft)</label>
-              <input
-                min={0}
-                id="size"
-                name="size"
-                type="number"
-                defaultValue={product?.postDetail?.size}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="school">TestNo</label>
-              <input
-                min={0}
-                id="school"
-                name="school"
-                type="number"
-                defaultValue={product?.postDetail?.school}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="bus">TestNo</label>
-              <input
-                min={0}
-                id="bus"
-                name="bus"
-                type="number"
-                defaultValue={product?.postDetail?.bus}
-              />
-            </div>
-            <div className="item">
-              <label htmlFor="restaurant">TestNo</label>
-              <input
-                min={0}
-                id="restaurant"
-                name="restaurant"
-                type="number"
-                defaultValue={product?.postDetail?.restaurant}
-              />
             </div>
             <div className="item">
               <label>Add Photos</label>
@@ -261,6 +223,7 @@ function EditSingle() {
                   folder: 'posts',
                 }}
                 setState={setImages}
+                setLoading={setLoading}
               />
             </div>
             <button className="sendButton" type="submit" disabled={isLoading}>
@@ -274,6 +237,12 @@ function EditSingle() {
             </button>
           </div>
         </div>
+        {loading && (
+          <div className="loaderContainer">
+            <ThreeDots className="backendLoader" height={80} width={80} />
+            <p>Updating post...</p>
+          </div>
+        )}
         <hr />
         <div className="sideContainer">
           {images.map((img, index) => (

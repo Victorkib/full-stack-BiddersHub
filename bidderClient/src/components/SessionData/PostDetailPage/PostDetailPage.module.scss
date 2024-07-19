@@ -1,0 +1,180 @@
+//I just twicked this
+.postDetailMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  max-width: 80%;
+  margin: 0 auto;
+  height: 100%;
+  border-radius: 20px;
+  border: 1px solid wheat;
+}
+
+.imageSlider {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 30%;
+  margin-right: 20px;
+  overflow: scroll;
+  height: 100%;
+  // border: 1px solid crimson;
+}
+
+.postImage {
+  width: 100%;
+  height: auto;
+  box-shadow: -2px 2px 4px rgb(179, 12, 48);
+  margin-bottom: 10px;
+}
+
+.postDetails {
+  flex: 2;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  padding: 3px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.postDetails h1 {
+  margin-bottom: 20px;
+}
+
+.postDetails p {
+  margin: 5px 0;
+}
+
+.bidSection {
+  flex: 1;
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.bidSection h2 {
+  margin-bottom: 20px;
+}
+
+.bidInput {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.bidButton {
+  padding: 10px;
+  font-size: 16px;
+  background-color: crimson;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bidButton:disabled {
+  background-color: #ccc;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.walletSection {
+  position: fixed;
+  bottom: 20px;
+  right: 20%;
+  display: flex;
+  align-items: center;
+}
+
+.walletIcon {
+  font-size: 40px;
+  cursor: pointer;
+  color: crimson;
+}
+
+// Add these styles to your PostDetailPage.module.scss
+.amountPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.amountPopup {
+  position: fixed;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50% -50%);
+  background: #fff;
+  background-color: coral;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 1000;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  height: 20vh;
+}
+
+.creditInput {
+  width: calc(100% - 40px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.amountBtn {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+}
+
+.amountButton {
+  background-color: #0070ba;
+  color: #fff;
+  border: none;
+  width: 100px;
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}

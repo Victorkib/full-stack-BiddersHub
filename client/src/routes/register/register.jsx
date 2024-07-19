@@ -5,7 +5,9 @@ import apiRequest from '../../lib/apiRequest';
 import { AuthContext } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faFile } from '@fortawesome/free-solid-svg-icons';
-import UploadDocWidget from '../../components/uploadWidget/UploadDocWidget';
+import UploadDocWidget, {
+  CloudinaryScriptContext,
+} from '../../components/uploadWidget/UploadDocWidget';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addCr12,
@@ -15,6 +17,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ThreeDots } from 'react-loader-spinner';
+import { setUser } from '../../Features/userSuccesRegData/userSlice';
 
 function Register() {
   const [error, setError] = useState('');
@@ -35,6 +38,8 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const documentUrls = useSelector((state) => state.uploads);
+
+  const handleUploadLoading = useContext(CloudinaryScriptContext);
 
   const handleSubmitStep1 = async (e) => {
     e.preventDefault();
@@ -90,10 +95,16 @@ function Register() {
         },
       });
       if (res.status === 200) {
-        toast.success('Registration successful');
+        const newUser = res.data.newUser;
+        // toast.success('Registration successful');
         updateUser(res.data);
         dispatch(resetUploads());
-        navigate('/login');
+        dispatch(setUser(res.data));
+        navigate(`/verification`, {
+          state: {
+            verificationDt: newUser,
+          },
+        });
       } else {
         setError('Failed to register.');
       }
@@ -134,15 +145,22 @@ function Register() {
       <div className="uploadSection">
         <h2>{label}</h2>
         <p>{reason}</p>
-        <UploadDocWidget
-          uwConfig={{
-            cloudName: 'victorkib',
-            uploadPreset: 'estate',
-            folder: 'posts',
-            multiple: false,
-          }}
-          field={field}
-        />
+        {handleUploadLoading ? (
+          <div className="loader">
+            <ThreeDots color="#333" height={80} width={80} />
+          </div>
+        ) : (
+          <UploadDocWidget
+            uwConfig={{
+              cloudName: 'victorkib',
+              uploadPreset: 'estate',
+              folder: 'documents',
+              multiple: false,
+            }}
+            field={field}
+            setLoading={setLoading} // Pass setLoading to manage loading state in UploadDocWidget
+          />
+        )}
         <div className="documentPreview">
           {documents.length > 0 ? (
             documents.map((url, index) => (

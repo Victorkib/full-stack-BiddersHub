@@ -9,13 +9,11 @@ export const getPosts = async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       where: {
-        city: query.city || undefined,
         type: query.type || undefined,
         property: query.property || undefined,
-        bedroom: parseInt(query.bedroom) || undefined,
-        price: {
-          gte: parseInt(query.minPrice) || undefined,
-          lte: parseInt(query.maxPrice) || undefined,
+        basePrice: {
+          gte: parseInt(query.minBasePrice) || undefined,
+          lte: parseInt(query.maxBasePrice) || undefined,
         },
       },
       include: { user: true },
@@ -91,25 +89,64 @@ export const getPost = async (req, res) => {
   }
 };
 
+export const getsinglePostData = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const singlePostData = await prisma.post.findUnique({
+      where: { id },
+      include: {
+        postDetail: true,
+        user: {
+          select: {
+            username: true,
+            email: true,
+          },
+        },
+      },
+    });
+    if (!singlePostData) {
+      return res.status(400).json({ message: 'Failed to get posts' });
+    }
+    console.log('singlPostData: ', singlePostData);
+    res.status(200).json(singlePostData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Failed to get posts' });
+  } finally {
+    await prisma.$disconnect(); // Disconnect Prisma client
+  }
+};
+
 //add post
 export const addPost = async (req, res) => {
-  const body = req.body;
+  const { postData, postDetail } = req.body;
   const tokenUserId = req.userId;
-  console.log(body);
+
+  // Validate incoming data
+  if (!postData || !postDetail) {
+    return res
+      .status(400)
+      .json({ message: 'Post data and post details are required' });
+  }
+  console.log('postData', postData);
+  console.log('postDetail', postDetail);
+
   try {
     const newPost = await prisma.post.create({
       data: {
-        ...body.postData,
+        ...postData,
         userId: tokenUserId,
         postDetail: {
-          create: body.postDetail,
+          create: postDetail,
         },
       },
     });
     res.status(200).json(newPost);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Failed to create post' });
+    res
+      .status(500)
+      .json({ message: 'Failed to create post', error: err.message });
   }
 };
 
@@ -150,6 +187,47 @@ export const updatePost = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Failed to update post' });
+  }
+};
+// Update post
+export const updateIsSoldStatus = async (req, res) => {
+  const id = req.params.id;
+  const tokenUserId = req.userId;
+
+  try {
+    // Find the post by ID
+    const post = await prisma.post.findUnique({
+      where: { id },
+    });
+
+    // Check if the user is authorized to update the post
+    if (post.userId !== tokenUserId) {
+      return res.status(403).json({ message: 'Not Authorized!' });
+    }
+
+    // Check if there are any bids for the post
+    const bids = await prisma.bid.findMany({
+      where: { itemId: id },
+    });
+
+    // Determine the new isSold status based on the presence of bids
+    const isSold = bids.length > 0;
+
+    // Update the post
+    const updatedIsSoldStatus = await prisma.post.update({
+      where: { id },
+      data: {
+        isSold: isSold,
+      },
+      include: {
+        postDetail: true,
+      },
+    });
+
+    res.status(200).json(updatedIsSoldStatus);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Failed to update isSoldStatus of post' });
   }
 };
 

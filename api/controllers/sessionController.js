@@ -26,12 +26,24 @@ export const createSession = async (req, res) => {
 
 // Get all sessions ever created by the current authenticated user
 export const getSessions = async (req, res) => {
+  const currentDateTime = new Date();
   try {
     const sessions = await prisma.session.findMany({
       where: {
         createdById: req.userId,
+        endTime: {
+          lt: currentDateTime,
+        },
       },
-      include: { createdBy: true },
+      orderBy: { startTime: 'desc' },
+      include: {
+        createdBy: true,
+        posts: {
+          include: {
+            post: true,
+          },
+        },
+      },
     });
 
     const sessionsWithoutPassword = sessions.map((session) => ({
@@ -41,13 +53,42 @@ export const getSessions = async (req, res) => {
         password: undefined,
       },
     }));
-
+    console.log('past sessions: ', sessionsWithoutPassword);
     res.status(200).json(sessionsWithoutPassword);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
+// Check if item is in current session
+export const isItemInActiveSession = async (req, res) => {
+  const currentDateTime = new Date();
+  try {
+    const sessions = await prisma.session.findMany({
+      where: {
+        endTime: {
+          gt: currentDateTime,
+        },
+        posts: {
+          some: {
+            postId: req.params.id,
+          },
+        },
+      },
+    });
+
+    console.log(sessions);
+
+    if (sessions && sessions.length > 0) {
+      res.status(200).json({ sessions, value: true });
+    } else {
+      res.status(200).json({ value: false });
+    }
+  } catch (error) {
+    console.error('Error checking if item is in active session:', error);
+    res.status(500).json({ error: 'Failed to fetch active sessions' });
+  }
+};
 // Get sessions for current authenticated user that have valid endtime
 export const getCurrentValidSessions = async (req, res) => {
   const currentDateTime = new Date();
@@ -84,6 +125,41 @@ export const getCurrentValidSessions = async (req, res) => {
   }
 };
 
+// Get all sessions
+export const validEndtimeSessionsBidders = async (req, res) => {
+  const currentDateTime = new Date();
+  try {
+    const sessions = await prisma.session.findMany({
+      where: {
+        endTime: {
+          gt: currentDateTime,
+        },
+      },
+      include: {
+        createdBy: true,
+        posts: {
+          include: {
+            post: true,
+          },
+        },
+      },
+    });
+
+    const sessionsWithPostImages = sessions.map((session) => ({
+      ...session,
+      postImages: session.posts.map((post) => post.post.images[0]),
+      createdBy: {
+        ...session.createdBy,
+        password: undefined,
+      },
+    }));
+
+    res.status(200).json(sessionsWithPostImages);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // Get posted data for selection in creating session
 export const userPostedData = async (req, res) => {
   try {
@@ -91,11 +167,8 @@ export const userPostedData = async (req, res) => {
       where: {
         userId: req.userId,
       },
-      select: {
-        id: true,
-        title: true,
-        price: true,
-        images: true,
+      include: {
+        postDetail: true,
       },
     });
     res.status(200).json(postedData);

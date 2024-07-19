@@ -31,18 +31,39 @@ function Navbar() {
         >
           <img src="/logo.png" alt="" />
         </Link>
-        <Link
-          to="/usersSession"
-          className={location.pathname === '/usersSession' ? 'active' : ''}
-        >
-          Actioneers
-        </Link>
+
         {currentUser && (
           <Link
             to="/liveAuctions"
             className={location.pathname === '/liveAuctions' ? 'active' : ''}
           >
-            live-Auctions
+            Live-Sessions
+          </Link>
+        )}
+        {currentUser && (
+          <Link
+            to="/liveAuctions/create"
+            className={
+              location.pathname === '/liveAuctions/create' ? 'active' : ''
+            }
+          >
+            CreateSession
+          </Link>
+        )}
+        {currentUser && (
+          <Link
+            to="/sessionsHistory"
+            className={location.pathname === '/sessionsHistory' ? 'active' : ''}
+          >
+            History
+          </Link>
+        )}
+        {currentUser && (
+          <Link
+            to="/products"
+            className={location.pathname === '/products' ? 'active' : ''}
+          >
+            Products
           </Link>
         )}
       </div>
@@ -54,7 +75,7 @@ function Navbar() {
               alt=""
               onClick={handleClick}
             />
-            <span onClick={handleClick}>{currentUser.username}</span>
+            {/* <span onClick={handleClick}>{currentUser.username}</span> */}
             <Link
               to="/profile"
               className={`profile ${
@@ -68,13 +89,13 @@ function Navbar() {
         ) : (
           <>
             <Link
-              to="/login"
+              to="/loginPopup"
               className={location.pathname === '/login' ? 'active' : ''}
             >
               Sign in
             </Link>
             <Link
-              to="/register"
+              to="/popup"
               className={
                 location.pathname === '/register'
                   ? 'active register'
@@ -105,12 +126,14 @@ function Navbar() {
             </Link>
           )}
 
-          <Link
-            to="/usersSession"
-            className={location.pathname === '/agents' ? 'active' : ''}
-          >
-            Actioneers
-          </Link>
+          {currentUser && (
+            <Link
+              to="/sessionsHistory"
+              className={location.pathname === '/usersSession' ? 'active' : ''}
+            >
+              History
+            </Link>
+          )}
           <Link
             to="/profile"
             className={`profile ${

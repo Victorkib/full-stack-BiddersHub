@@ -8,6 +8,9 @@ import { AuthContext } from '../../context/AuthContext';
 import { ThreeDots } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux';
+import { resetUser } from '../../Features/userSuccesRegData/userSlice';
+import ProfileUpdatePage from '../profileUpdatePage/profileUpdatePage';
 
 function ProfilePage() {
   const data = useLoaderData();
@@ -15,11 +18,13 @@ function ProfilePage() {
   const { updateUser, currentUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
       await apiRequest.post('/auth/logout');
       updateUser(null);
+      dispatch(resetUser());
       navigate('/');
     } catch (err) {
       console.log(err);
@@ -33,13 +38,16 @@ function ProfilePage() {
   return (
     <div className="profilePage">
       <ToastContainer />
+      <div className="chatContainer">
+        <ProfileUpdatePage />
+      </div>
       <div className="details">
         <div className="wrapper">
           <div className="title">
             <h1>User Information</h1>
-            <Link to="/profile/update">
+            {/* <Link to="/profile/update">
               <button>Update Profile</button>
-            </Link>
+            </Link> */}
           </div>
           <div className="info">
             <span>
@@ -54,7 +62,7 @@ function ProfilePage() {
             </span>
             <button onClick={handleLogout}>Logout</button>
           </div>
-          <div className="title">
+          {/* <div className="title">
             <h1>My Products</h1>
             <Link to="/add">
               <button>New Product</button>
@@ -79,8 +87,8 @@ function ProfilePage() {
             >
               {(postResponse) => <List posts={postResponse.data.userPosts} />}
             </Await>
-          </Suspense>
-          <div className="title">
+          </Suspense> */}
+          {/* <div className="title">
             <h1>Pending Bidding Products</h1>
           </div>
           <Suspense
@@ -93,10 +101,10 @@ function ProfilePage() {
             >
               {(postResponse) => <List posts={postResponse.data.savedPosts} />}
             </Await>
-          </Suspense>
+          </Suspense> */}
         </div>
       </div>
-      <div className="chatContainer">
+      {/* <div className="chatContainer">
         <div className="wrapper">
           <Suspense
             fallback={<ThreeDots color="#00BFFF" height={80} width={80} />}
@@ -110,7 +118,7 @@ function ProfilePage() {
             </Await>
           </Suspense>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

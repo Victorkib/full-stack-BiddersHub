@@ -22,7 +22,7 @@ function HomePage() {
               facilis id pariatur fugit quos laudantium temporibus dolor ea
               repellat provident impedit!
             </p>
-            <SearchBar />
+            {/* <SearchBar /> */}
             <Stats />
           </div>
         </div>
@@ -30,7 +30,7 @@ function HomePage() {
           <img src="/bg.png" alt="" />
         </div>
       </div>
-      <div className="homeChildParent">
+      {/* <div className="homeChildParent">
         <div className="firstchild">
           <img src="/BeeCar.jpg" alt="" />
         </div>
@@ -43,8 +43,8 @@ function HomePage() {
         <div className="forthChild">
           <img src="/BeeCar.jpg" alt="" />
         </div>
-      </div>
-      {/* <Categoriess /> */}
+      </div> */}
+      <Categories />
       {/* New Sections */}
       <div className="aboutSection">
         <div className="wrapper">

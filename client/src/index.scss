@@ -14,3 +14,8 @@ body {
   overflow-x: hidden;
   background-color: whitesmoke;
 }
+/* dark mode looking scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  display: none;
+}

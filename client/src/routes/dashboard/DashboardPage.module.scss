@@ -1,201 +1,156 @@
-@import '../../responsive.scss';
-
 .dashboardMain {
+  padding: 20px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.loaderContainer {
+  display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-image: url('/auction-hammer.jpg');
-  background-color: #121212;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  gap: 8px;
+  height: 100vh;
+}
+
+.sessionsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 10px;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  border: 1px solid crimson;
-  height: 100%;
+}
 
-  @include md {
-    height: 100%;
-  }
-  @include sm {
-    height: 100%;
-  }
+.sessionCard {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 400px;
+  height: 250px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-  .dhsImg img {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    margin-bottom: 20px;
-    border-radius: 15px;
-  }
+  // border: 1px solid firebrick;
 
-  .dshcontainer {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    max-width: 800px;
-    background: #becabfb7;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(110, 22, 22, 0.1);
-    padding: 20px;
-    text-align: center;
-    opacity: 0.98;
-    // border: 4px solid olivedrab;
+  .slider {
+    width: 50%;
+    max-height: 300px;
 
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
+    .slick-dots li button:before {
+      font-size: 1em;
+      color: #007bff;
+      display: none;
     }
 
+    .slick-dots li.slick-active button:before {
+      color: #0056b3;
+    }
+  }
+
+  .sliderImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .sessionDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 50%;
+    padding: 0px 15px;
+    // border: 1px solid blue;
+  }
+
+  .sessionInfo {
+    .expandButton {
+      background: none;
+      border: none;
+      color: rgb(10, 10, 68);
+      cursor: pointer;
+      margin-left: 5px;
+      text-decoration: underline;
+    }
+
+    p {
+      color: #0da10d;
+    }
+    p:last-of-type {
+      color: brown;
+    }
+  }
+
+  .sessionActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    // border: 1px solid firebrick;
+
     button {
-      background-color: #007bff;
+      padding: 5px 12px;
+      // font-size: 1em;
       color: #fff;
-      padding: 10px 20px;
+      background-color: #0da10d;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-bottom: 20px;
       transition: background-color 0.3s;
 
       &:hover {
         background-color: #0056b3;
       }
-    }
 
-    .loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255, 255, 255, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+      &.deleteButton {
+        background-color: brown;
 
-      .threeDots {
-        color: rgb(52, 138, 18);
-      }
-    }
-
-    .holderOfSessionList {
-      height: 80%;
-      // border: 1px solid crimson;
-      overflow: scroll;
-      overflow-x: hidden;
-
-      .sessionList {
-        list-style: none;
-        height: 100%;
-        // border: 1px solid yellow;
-        padding: 0;
-        margin: 0;
-
-        .sessionItem {
-          // background: #fafafa;
-          border: 1px solid #ddd;
-          border-radius: 20px;
-          margin-bottom: 10px;
-          padding: 15px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          align-items: center;
-          text-align: left;
-
-          .mainSessionArea {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 80%;
-            height: auto;
-            // border: 1px solid #0056b3;
-            .firstSessionArea {
-              // border: 1px solid crimson;
-              height: 55vh;
-              width: 70%;
-              display: flex;
-              justify-content: center;
-              align-items: baseline;
-              position: relative;
-              overflow: hidden;
-              margin-right: 8px;
-
-              @include md {
-                height: 20%;
-              }
-              @include sm {
-                height: 20%;
-              }
-              .sessionImage {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-                border-radius: 20px;
-                margin-bottom: 10px;
-
-                @include md {
-                  height: 20%;
-                }
-                @include sm {
-                  height: 20%;
-                }
-              }
-            }
-
-            .secondSessionArea {
-              width: 30%;
-              border: 1px solid violet;
-              border-radius: 15px;
-              h4 {
-                text-transform: capitalize;
-                font-size: larger;
-                color: #0d8a56;
-                text-align: center;
-                margin: 0 0 10px;
-              }
-              h4:hover {
-                color: brown;
-                cursor: pointer;
-              }
-              p {
-                color: #0056b3;
-              }
-              button {
-                background-color: #28a745;
-                color: #fff;
-                padding: 5px 10px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                margin-right: 5px;
-                transition: background-color 0.3s;
-
-                &:hover {
-                  background-color: #218838;
-                }
-
-                &:last-child {
-                  background-color: #dc3545;
-                  margin-right: 0;
-
-                  &:hover {
-                    background-color: #c82333;
-                  }
-                }
-              }
-            }
-          }
+        &:hover {
+          background-color: crimson;
         }
       }
     }
   }
 }
-/*Scroll bar css*/
-::-webkit-scrollbar {
-  display: none;
+
+.horizontalSlider {
+  display: flex;
+
+  .slider {
+    width: 50%;
+    max-height: 100%;
+    border: 1px solid rgb(38, 197, 17);
+
+    .slick-dots li button:before {
+      font-size: 1em;
+      color: #007bff;
+    }
+
+    .slick-dots li.slick-active button:before {
+      color: #0056b3;
+    }
+  }
+
+  .sliderImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+}
+.nothing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  gap: 5px;
+  padding: 5px;
+  width: 100%;
 }
