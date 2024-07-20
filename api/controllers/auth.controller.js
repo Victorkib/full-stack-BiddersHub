@@ -43,7 +43,6 @@ export const register = async (req, res) => {
         email,
         username,
         password: hashedPassword,
-        verified: true,
         company: {
           create: {
             companyName,
