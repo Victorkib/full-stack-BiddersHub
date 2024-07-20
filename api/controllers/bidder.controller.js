@@ -31,7 +31,7 @@ export const registerBidder = async (req, res) => {
 
     // Check if bidder with the same username already exists
     const existingBidderUserName = await prisma.bidder.findUnique({
-      where: { username },
+      where: { username: username },
     });
 
     if (existingBidderUserName) {
