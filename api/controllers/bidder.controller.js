@@ -62,6 +62,8 @@ export const registerBidder = async (req, res) => {
 
     newBidder.password = undefined;
 
+    console.log(newBidder);
+    console.log(wallet);
     // Set cookie and respond with token and newBidder data
     res.status(201).json({
       message: 'Bidder registered successfully',
