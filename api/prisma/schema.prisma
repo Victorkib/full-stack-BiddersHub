@@ -19,7 +19,7 @@ datasource db {
 model Post {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   title         String
-  basePrice     Int
+  basePrice     Int?
   deposit       Int
   images        String[]
   address       String
