@@ -49,7 +49,6 @@ function NewPostPage() {
           longitude: '36.794800775775435', //stay
           images: images, //stay
         },
-        //title,price,address,city,property,latitude,longitude, images, desc, soldStatus,size,rating(deposit),condition,funtionality
         postDetail: postDetail,
       });
       setLoading(false);
