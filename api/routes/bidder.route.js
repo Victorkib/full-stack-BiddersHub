@@ -33,7 +33,7 @@ router.put('/updateProfilePic/:id', updateProfilePic);
 //bidders bid
 router.post('/postBid', authenticateBidder, createBid);
 router.get('/highest-bid', authenticateBidder, getHighestBid);
-router.get('/topFiveBidsOnItem', authenticateBidder, topFiveBidsOnItem);
+router.get('/topFiveBidsOnItem', verifyToken, topFiveBidsOnItem);
 router.get('/allBidsOnItem/:itemId', verifyToken, AllBidsOnItem);
 router.get(
   '/getBidsAndPostsByBidder/:bidderId',
