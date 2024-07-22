@@ -19,7 +19,7 @@ export const registerBidder = async (req, res) => {
   try {
     // Check if bidder with the same email already exists
     const existingBidderEmail = await prisma.bidder.findUnique({
-      where: { email },
+      where: { email: email },
     });
 
     if (existingBidderEmail) {
