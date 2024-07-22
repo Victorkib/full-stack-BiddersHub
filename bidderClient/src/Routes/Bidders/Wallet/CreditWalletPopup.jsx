@@ -15,11 +15,13 @@ const CreditWalletPopup = ({
 
   // script.src = `https://www.paypal.com/sdk/js?client-id=AVP1SYh7rx65ywvhK1DxyQToKuW0an-M-uZm5IuxTJSmooP8rltjb5Dwyv2RJSl7FGTfrgVUdl8I5Eqq`;
 
+  //  script.src = `https://www.paypal.com/sdk/js?client-id=AZufVO1YzT982fFI1y2Km-OO4zV8YjYhaKBS2OfZkVFOk2Ctevwh6R9ewhbD-HlzkjTMNPYto5Rrks_K`;
+
   useEffect(() => {
     if (!show) return;
 
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=AZufVO1YzT982fFI1y2Km-OO4zV8YjYhaKBS2OfZkVFOk2Ctevwh6R9ewhbD-HlzkjTMNPYto5Rrks_K`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=AVP1SYh7rx65ywvhK1DxyQToKuW0an-M-uZm5IuxTJSmooP8rltjb5Dwyv2RJSl7FGTfrgVUdl8I5Eqq`;
     script.async = true;
 
     script.onload = () => {

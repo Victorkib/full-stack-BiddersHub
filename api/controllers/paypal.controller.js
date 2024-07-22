@@ -3,8 +3,8 @@ import { creditWallet } from './walletController.js';
 
 // PayPal environment
 const environment = new paypal.core.SandboxEnvironment(
-  'AZufVO1YzT982fFI1y2Km-OO4zV8YjYhaKBS2OfZkVFOk2Ctevwh6R9ewhbD-HlzkjTMNPYto5Rrks_K',
-  'EDNTBu_-wiWFToQ7kwLIGC1NLjAqRbpJ4yZhMQ4V3VUPVzr1vJFGopmxV2yvUcIyXqjdEZkQnL-QNaoL'
+  'AVP1SYh7rx65ywvhK1DxyQToKuW0an-M-uZm5IuxTJSmooP8rltjb5Dwyv2RJSl7FGTfrgVUdl8I5Eqq',
+  'ED4ydQZVq0YmQIqse2K6hksL1VPPk82A3jfCZlkSdzkZNVCq3YTtSLWkPV3ykPS5_k07SqbsO9KI9_ea'
 );
 
 // PayPal client
