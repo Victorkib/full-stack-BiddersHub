@@ -48,7 +48,7 @@ const CreditWalletPopup = ({
         createOrder: async (data, actions) => {
           try {
             const res = await fetch(
-              'https://full-stack-estate-main.onrender.com/api/paypal/create-order',
+              'https://biddershubbackend.onrender.com/api/paypal/create-order',
               {
                 method: 'POST',
                 headers: {
@@ -74,7 +74,7 @@ const CreditWalletPopup = ({
         onApprove: async (data, actions) => {
           try {
             const res = await fetch(
-              'https://full-stack-estate-main.onrender.com/api/paypal/capture-order',
+              'https://biddershubbackend.onrender.com/api/paypal/capture-order',
               {
                 method: 'POST',
                 headers: {

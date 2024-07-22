@@ -38,7 +38,7 @@ const CreditWalletPopup = ({ show, onClose, walletId, onCreditSuccess }) => {
           try {
             // 'http://localhost:8800/api/paypal/create-order',
             const res = await fetch(
-              'https://full-stack-estate-main.onrender.com/api/paypal/create-order',
+              'https://biddershubbackend.onrender.com/api/paypal/create-order',
               {
                 method: 'POST',
                 headers: {
@@ -68,7 +68,7 @@ const CreditWalletPopup = ({ show, onClose, walletId, onCreditSuccess }) => {
           try {
             // 'http://localhost:8800/api/paypal/capture-order',
             const res = await fetch(
-              'https://full-stack-estate-main.onrender.com/api/paypal/capture-order',
+              'https://biddershubbackend.onrender.com/api/paypal/capture-order',
               {
                 method: 'POST',
                 headers: {
