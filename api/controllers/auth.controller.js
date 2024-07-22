@@ -21,14 +21,16 @@ export const register = async (req, res) => {
 
   try {
     // Validate email
-    const userExists = await prisma.user.findUnique({ where: { email } });
+    const userExists = await prisma.user.findUnique({
+      where: { email: email },
+    });
     if (userExists) {
       return res.status(400).json({ message: 'Email already exists' });
     }
 
     // Validate username
     const usernameExists = await prisma.user.findUnique({
-      where: { username },
+      where: { username: username },
     });
     if (usernameExists) {
       return res.status(400).json({ message: 'Username already exists' });
@@ -187,7 +189,9 @@ export const login = async (req, res) => {
 
   try {
     // Check if the user exists
-    const user = await prisma.user.findUnique({ where: { username } });
+    const user = await prisma.user.findUnique({
+      where: { username: username },
+    });
     if (!user) return res.status(400).json({ message: 'Invalid Credentials!' });
 
     // Check if the password is correct
@@ -235,7 +239,7 @@ export const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email: email } });
     if (!user) return res.status(404).json({ message: 'User not found!' });
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
@@ -283,7 +287,7 @@ export const resendVerificationEmail = async (req, res) => {
   try {
     // Find the user by email
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: email },
     });
     console.log(user);
 
