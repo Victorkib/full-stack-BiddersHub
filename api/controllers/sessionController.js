@@ -184,7 +184,7 @@ export const getSummarizedPosts = async (req, res) => {
       select: {
         id: true,
         title: true,
-        price: true,
+        basePrice: true,
         images: true,
       },
     });
@@ -192,7 +192,7 @@ export const getSummarizedPosts = async (req, res) => {
     const summarizedPosts = posts.map((post) => ({
       id: post.id,
       title: post.title,
-      price: post.price,
+      basePrice: post.basePrice,
       image: post.images[0], // Assuming images is an array
     }));
 
