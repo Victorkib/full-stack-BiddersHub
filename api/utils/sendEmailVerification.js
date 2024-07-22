@@ -70,6 +70,7 @@ async function sendNodemailerEmail(mailOptions) {
 }
 
 export async function sendVerificationEmail(newUser) {
+  console.log(newUser);
   const { id, email, username } = newUser;
   const token = id + uuidv4();
   const link = `${CLIENT_URL}/verifylink/${id}/${token}`;

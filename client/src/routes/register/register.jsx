@@ -100,7 +100,7 @@ function Register() {
         updateUser(res.data);
         dispatch(resetUploads());
         dispatch(setUser(res.data));
-        navigate(`/verification`, {
+        navigate(`/login`, {
           state: {
             verificationDt: newUser,
           },
