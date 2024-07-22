@@ -85,7 +85,7 @@ export const loginBidder = async (req, res) => {
   try {
     // Find bidder by email
     const bidder = await prisma.bidder.findUnique({
-      where: { email },
+      where: { email: email },
       include: { wallet: true },
     });
     console.log('bidder: ', bidder);
@@ -133,7 +133,7 @@ export const bidderProfile = async (req, res) => {
 
   try {
     const bidder = await prisma.bidder.findUnique({
-      where: { id },
+      where: { id: id },
     });
 
     if (!bidder) {
@@ -157,7 +157,7 @@ export const updateProfilePic = async (req, res) => {
 
   try {
     const bidder = await prisma.bidder.findUnique({
-      where: { id },
+      where: { id: id },
     });
 
     if (!bidder) {
