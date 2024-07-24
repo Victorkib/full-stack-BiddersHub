@@ -53,7 +53,10 @@ const PostDetailPage = () => {
 
   const updateRemainingTime = (endTime) => {
     const interval = setInterval(async () => {
-      const timeDifference = endTime - new Date();
+      // Subtract 3 hours from endTime
+      const adjustedEndTime = new Date(endTime.getTime() - 3 * 60 * 60 * 1000);
+      const timeDifference = adjustedEndTime - new Date();
+
       if (timeDifference <= 0) {
         clearInterval(interval); // Stop the interval
 
