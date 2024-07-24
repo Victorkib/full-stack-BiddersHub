@@ -154,7 +154,7 @@ const PostDetailPage = () => {
 
     const intervalId = setInterval(() => {
       fetchHighestBid();
-    }, 5000);
+    }, 1000);
 
     return () => clearInterval(intervalId); // Clean up interval on component unmount
   }, [id, post, sessionDetailId, navigate]); // Dependency array
