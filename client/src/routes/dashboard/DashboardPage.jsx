@@ -65,21 +65,26 @@ const DashboardPage = () => {
   };
 
   const getRemainingTime = (endTime) => {
-    // Parse the endTime in UTC and convert it to Kenya timezone
-    const localEndTime = moment.utc(endTime).tz('Africa/Nairobi');
+    // Convert the endTime to the local time (Kenya timezone)
+    const options = { timeZone: 'Africa/Nairobi', hour12: false };
+    const localEndTime = new Date(
+      new Intl.DateTimeFormat('en-US', options).format(new Date(endTime))
+    );
 
-    // Get the current time in Kenya timezone
-    const localCurrentTime = moment().tz('Africa/Nairobi');
+    // Get the current time in the Kenya timezone
+    const localCurrentTime = new Date(
+      new Intl.DateTimeFormat('en-US', options).format(new Date())
+    );
 
     // Calculate the time difference
-    const timeDifference = localEndTime.diff(localCurrentTime);
+    const timeDifference = localEndTime - localCurrentTime;
     if (timeDifference <= 0) return null;
 
-    const duration = moment.duration(timeDifference);
-
-    const hours = Math.floor(duration.asHours());
-    const minutes = duration.minutes();
-    const seconds = duration.seconds();
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
     return `${hours}h ${minutes}m ${seconds}s`;
   };
