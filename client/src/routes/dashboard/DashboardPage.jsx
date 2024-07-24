@@ -63,18 +63,18 @@ const DashboardPage = () => {
   const handleTrackSession = (id) => {
     navigate(`/trackSession/${id}`);
   };
-
   const getRemainingTime = (endTime) => {
-    console.log('UTC End Time:', moment.utc(endTime).format());
-    console.log(
-      'Local End Time:',
-      moment.utc(endTime).tz('Africa/Nairobi').format()
-    );
-    console.log('Local Current Time:', moment().tz('Africa/Nairobi').format());
+    // Parse the endTime in UTC
+    const localEndTime = moment.utc(endTime);
 
-    const localEndTime = moment.utc(endTime).tz('Africa/Nairobi');
+    // Subtract 3 hours to adjust for the extra time being added
+    const adjustedEndTime = localEndTime.subtract(3, 'hours');
+
+    // Get the current time in Kenya timezone
     const localCurrentTime = moment().tz('Africa/Nairobi');
-    const timeDifference = localEndTime.diff(localCurrentTime);
+
+    // Calculate the time difference
+    const timeDifference = adjustedEndTime.diff(localCurrentTime);
 
     if (timeDifference <= 0) return null;
 
