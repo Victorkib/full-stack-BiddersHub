@@ -82,7 +82,7 @@ export async function sendVerificationEmail(newUser) {
   const token = id + uuidv4();
   const link = `${BIDDER_URL}/verifylink/${id}/${token}`;
   const mailOptions = {
-    from: MAILER_USER,
+    from: AUTH_EMAIL,
     to: email,
     subject: `Congragulations ${username}`,
     html: `
