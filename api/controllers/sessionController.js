@@ -28,6 +28,8 @@ export const createSession = async (req, res) => {
 // Get all sessions ever created by the current authenticated user
 export const getSessions = async (req, res) => {
   // Subtract 3 hours from the current time
+  const currentDate = new Date();
+  console.log('currentDate: ', currentDate);
   const currentDateTime = moment().subtract(3, 'hours').toDate();
   console.log('currentDateTime: ', currentDateTime);
 
