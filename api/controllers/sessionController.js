@@ -276,6 +276,7 @@ export const getSession = async (req, res) => {
     });
     if (!session) return res.status(404).json({ message: 'Session not found' });
 
+    console.log('session: ', session);
     session.createdBy.password = undefined;
 
     res.status(200).json(session);
