@@ -145,9 +145,11 @@ const SessionForm = ({ onSuccess, session = {} }) => {
             </>
           ) : (
             <div className={styles.nothing}>
-              <h3>There are currently no products available to display</h3>
+              <h3>
+                There are currently no products available to Create Session
+              </h3>
               <button>
-                <Link to="/liveAuctions/create">Create Session</Link>
+                <Link to="/add">Add Product</Link>
               </button>
             </div>
           )}

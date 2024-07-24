@@ -12,6 +12,7 @@ const {
   AUTH_PASSWORD,
   APP_PASS,
   CLIENT_URL,
+  BIDDER_URL,
   MAILJET_API_KEY,
   MAILJET_SECRET_KEY,
 } = process.env;
@@ -100,18 +101,7 @@ export async function sendVerificationEmail(newUser) {
   // <a href=${link} style="color: #fff; padding: 14px; text-decoration: none; background-color: #000; border-radius: 8px; font-size: 18px;">Verify Email Address</a>
 
   try {
-    const hashedToken = await hashString(token);
-
-    const newVerifiedEmail = await prisma.verification.create({
-      data: {
-        userId: id,
-        token: hashedToken,
-        createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 3600000),
-      },
-    });
-
-    if (newVerifiedEmail) {
+    if (username) {
       try {
         await sendNodemailerEmail(mailOptions);
         return { success: true, emailMessage: 'Email sent' };

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,6 +14,9 @@ const PostDetailCreditWalletPopup = ({
 }) => {
   const paypalButtonRef = useRef(null);
   // script.src = `https://www.paypal.com/sdk/js?client-id=AVP1SYh7rx65ywvhK1DxyQToKuW0an-M-uZm5IuxTJSmooP8rltjb5Dwyv2RJSl7FGTfrgVUdl8I5Eqq`;
+
+  // const backendUrl = `http://localhost:8800/api`;
+  const backendUrl = `https://biddershubbackend.onrender.com/api`;
 
   useEffect(() => {
     if (!show) return;
@@ -33,7 +37,7 @@ const PostDetailCreditWalletPopup = ({
           createOrder: async (data, actions) => {
             try {
               const response = await fetch(
-                'https://biddershubbackend.onrender.com/api/paypal/create-order',
+                `${backendUrl}/paypal/create-order`,
                 {
                   method: 'POST',
                   headers: {
@@ -62,7 +66,7 @@ const PostDetailCreditWalletPopup = ({
           onApprove: async (data, actions) => {
             try {
               const response = await fetch(
-                'https://biddershubbackend.onrender.com/api/paypal/capture-order',
+                `${backendUrl}/paypal/capture-order`,
                 {
                   method: 'POST',
                   headers: {

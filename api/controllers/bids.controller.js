@@ -272,6 +272,7 @@ export const getBidsAndPostsByBidder = async (req, res) => {
 export const highestBidderOnItem = async (req, res) => {
   const { bidderId } = req.params;
   const { email } = req.query;
+  console.log('email: ', email);
   const currentDate = new Date();
 
   try {

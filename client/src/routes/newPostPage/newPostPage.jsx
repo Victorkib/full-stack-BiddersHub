@@ -12,7 +12,9 @@ function NewPostPage() {
   const [images, setImages] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [propertyType, setPropertyType] = useState('flowers'); // Add state for property type
+  const [propertyType, setPropertyType] = useState('flowers');
+  const [functionality, setFunctionality] = useState(''); // State for functionality
+  const [condition, setCondition] = useState(''); // State for condition
 
   const navigate = useNavigate();
 
@@ -21,16 +23,14 @@ function NewPostPage() {
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
 
-    // Add conditional logic for size
     const postDetail = {
-      desc: value, //stay
-      size: inputs.size ? parseInt(inputs.size) : undefined, // Conditional size
-      rating: parseInt(inputs.rating), //replace with deposit
-      condition: inputs.condition, //stay
-      functionality: inputs.functionality, //stay
+      desc: value,
+      size: inputs.size ? parseInt(inputs.size) : undefined,
+      rating: parseInt(inputs.rating),
+      condition: condition, // Use state for condition
+      functionality: functionality, // Use state for functionality
     };
 
-    // Remove size if not applicable
     if (propertyType !== 'house') {
       delete postDetail.size;
     }
@@ -39,15 +39,15 @@ function NewPostPage() {
       setLoading(true);
       const res = await apiRequest.post('/posts', {
         postData: {
-          title: inputs.title, //stay
-          basePrice: parseInt(inputs.basePrice), //stay
-          deposit: parseInt(inputs.deposit), //stay
-          address: inputs.address, //stay
-          city: inputs.city, //stay
-          property: inputs.property, //stay
-          latitude: '-1.2860648473335243', //stay
-          longitude: '36.794800775775435', //stay
-          images: images, //stay
+          title: inputs.title,
+          basePrice: parseInt(inputs.basePrice),
+          deposit: parseInt(inputs.deposit),
+          address: inputs.address,
+          city: inputs.city,
+          property: inputs.property,
+          latitude: '-1.2860648473335243',
+          longitude: '36.794800775775435',
+          images: images,
         },
         postDetail: postDetail,
       });
@@ -72,13 +72,13 @@ function NewPostPage() {
             </div>
             <div className="item">
               <label htmlFor="basePrice">
-                BasePrice(The start amount of bidding an Item)
+                BasePrice (The start amount of bidding an Item)
               </label>
               <input id="basePrice" name="basePrice" type="number" required />
             </div>
             <div className="item">
               <label htmlFor="deposit">
-                Deposit(miminum amount to enter a bid room)
+                Deposit (minimum amount to enter a bid room)
               </label>
               <input id="deposit" name="deposit" type="number" required />
             </div>
@@ -102,6 +102,7 @@ function NewPostPage() {
                 onChange={(e) => setPropertyType(e.target.value)}
                 required
               >
+                <option value="">Select Product Type</option>
                 <option value="flowers">Flowers</option>
                 <option value="vehicles">Vehicles</option>
                 <option value="house">Houses</option>
@@ -117,7 +118,7 @@ function NewPostPage() {
               </div>
             )}
             <div className="item">
-              <label htmlFor="rating">Rate item 0-5 scale</label>
+              <label htmlFor="rating">Rate item (0-5 scale)</label>
               <input
                 min={0}
                 max={5}
@@ -129,18 +130,30 @@ function NewPostPage() {
             </div>
             <div className="item">
               <label htmlFor="condition">Condition</label>
-              <select name="condition" required>
-                <option value="brandNew">Brand New</option>
+              <select
+                name="condition"
+                value={condition}
+                onChange={(e) => setCondition(e.target.value)}
+                required
+              >
+                <option value="">Select Condition</option>
                 <option value="used">Used</option>
+                <option value="brandNew">Brand New</option>
                 <option value="refurbished">Refurbished</option>
               </select>
             </div>
             <div className="item">
               <label htmlFor="functionality">Functionality</label>
-              <select name="functionality" required>
+              <select
+                name="functionality"
+                value={functionality}
+                onChange={(e) => setFunctionality(e.target.value)}
+                required
+              >
+                <option value="">Select Functionality</option>
+                <option value="useable">Useable</option>
                 <option value="great">Great</option>
                 <option value="good">Good</option>
-                <option value="useable">Useable</option>
               </select>
             </div>
             <button className="sendButton">Add</button>

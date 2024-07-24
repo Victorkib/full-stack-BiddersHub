@@ -18,12 +18,6 @@ nav {
         display: block;
       }
 
-      @include sm {
-        &:nth-of-type(2) {
-          display: none;
-        }
-      }
-
       &:hover {
         transform: scale(1.05); /* Corrected property name */
       }
@@ -31,6 +25,12 @@ nav {
       &.active {
         color: coral; /* Adjust color for active link */
         font-weight: bold;
+      }
+      @include md {
+        display: block;
+      }
+      @include sm {
+        display: none;
       }
     }
     .hmImg {
@@ -94,7 +94,12 @@ nav {
         cursor: pointer;
         border: none;
         position: relative;
-
+        @include md {
+          display: block;
+        }
+        @include sm {
+          display: none;
+        }
         .notification {
           position: absolute;
           top: -8px;

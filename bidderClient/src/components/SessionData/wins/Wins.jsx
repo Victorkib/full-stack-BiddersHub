@@ -9,6 +9,7 @@ import { ThreeDots } from 'react-loader-spinner';
 
 const Wins = () => {
   const bidder = JSON.parse(localStorage.getItem('bidder'));
+  console.log('bidder: ', bidder);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -17,9 +18,9 @@ const Wins = () => {
       setLoading(true);
       try {
         const res = await apiRequest.get(
-          `/bidders/highestBidderOnItem/${
-            bidder?.id
-          }?email=${encodeURIComponent(bidder.email)}`
+          `/bidders/highestBidderOnItem/${bidder.id}?email=${encodeURIComponent(
+            bidder.email
+          )}`
         );
 
         if (res.status) {

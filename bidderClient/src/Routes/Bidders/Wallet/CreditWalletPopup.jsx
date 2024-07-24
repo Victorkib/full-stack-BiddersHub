@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +18,9 @@ const CreditWalletPopup = ({
   // script.src = `https://www.paypal.com/sdk/js?client-id=AVP1SYh7rx65ywvhK1DxyQToKuW0an-M-uZm5IuxTJSmooP8rltjb5Dwyv2RJSl7FGTfrgVUdl8I5Eqq`;
 
   //  script.src = `https://www.paypal.com/sdk/js?client-id=AZufVO1YzT982fFI1y2Km-OO4zV8YjYhaKBS2OfZkVFOk2Ctevwh6R9ewhbD-HlzkjTMNPYto5Rrks_K`;
+
+  // const backendUrl = `http://localhost:8800/api`;
+  const backendUrl = `https://biddershubbackend.onrender.com/api`;
 
   useEffect(() => {
     if (!show) return;
@@ -49,20 +54,17 @@ const CreditWalletPopup = ({
       .Buttons({
         createOrder: async (data, actions) => {
           try {
-            const res = await fetch(
-              'https://biddershubbackend.onrender.com/api/paypal/create-order',
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  walletId: walletId,
-                  amount: parseFloat(amount).toFixed(2),
-                }),
-                credentials: 'include',
-              }
-            );
+            const res = await fetch(`${backendUrl}/paypal/create-order`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                walletId: walletId,
+                amount: parseFloat(amount).toFixed(2),
+              }),
+              credentials: 'include',
+            });
             const order = await res.json();
             if (res.status) {
               return order.orderId;
@@ -75,20 +77,17 @@ const CreditWalletPopup = ({
         },
         onApprove: async (data, actions) => {
           try {
-            const res = await fetch(
-              'https://biddershubbackend.onrender.com/api/paypal/capture-order',
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  orderId: data.orderID,
-                  walletId: walletId,
-                }),
-                credentials: 'include',
-              }
-            );
+            const res = await fetch(`${backendUrl}/paypal/capture-order`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                orderId: data.orderID,
+                walletId: walletId,
+              }),
+              credentials: 'include',
+            });
             const result = await res.json();
             if (result.success) {
               toast.success('Wallet credited successfully');
