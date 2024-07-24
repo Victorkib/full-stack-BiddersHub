@@ -55,8 +55,21 @@ const PostDetailPage = () => {
   const updateRemainingTime = (endTime) => {
     const interval = setInterval(async () => {
       // Subtract 3 hours from endTime using moment
-      const adjustedEndTime = moment(endTime).subtract(3, 'hours').toDate();
-      const timeDifference = adjustedEndTime - new Date();
+
+      const localEndTime = moment.utc(endTime);
+
+      // Subtract 3 hours to adjust for the extra time being added
+      const adjustedEndTime = localEndTime.subtract(3, 'hours');
+
+      // // Get the current time in Kenya timezone
+      const localCurrentTime = moment().tz('Africa/Nairobi');
+
+      // // Calculate the time difference
+      // const timeDifference = adjustedEndTime.diff(localCurrentTime);
+
+      // const adjustedEndTime = moment(endTime).subtract(3, 'hours').toDate();
+      // const timeDifference = adjustedEndTime - new Date();
+      const timeDifference = adjustedEndTime.diff(localCurrentTime);
 
       if (timeDifference <= 0) {
         clearInterval(interval); // Stop the interval
