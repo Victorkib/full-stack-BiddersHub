@@ -29,6 +29,7 @@ export const createSession = async (req, res) => {
 export const getSessions = async (req, res) => {
   // Subtract 3 hours from the current time
   const currentDateTime = moment().subtract(3, 'hours').toDate();
+  console.log('currentDateTime: ', currentDateTime);
 
   try {
     const sessions = await prisma.session.findMany({
@@ -49,6 +50,7 @@ export const getSessions = async (req, res) => {
       },
     });
 
+    console.log('endedSessions: ', sessions);
     const sessionsWithoutPassword = sessions.map((session) => ({
       ...session,
       createdBy: {
@@ -56,7 +58,7 @@ export const getSessions = async (req, res) => {
         password: undefined,
       },
     }));
-    console.log('past sessions: ', sessionsWithoutPassword);
+    console.log('pastSessions: ', sessionsWithoutPassword);
     res.status(200).json(sessionsWithoutPassword);
   } catch (err) {
     res.status(500).json({ error: err.message });
