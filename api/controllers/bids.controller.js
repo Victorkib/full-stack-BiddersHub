@@ -351,16 +351,16 @@ export const highestBidderOnItem = async (req, res) => {
     const user = postsWhereBidderIsHighest[0].highestBid.bidder;
     console.log('user: ', user);
 
-    const emailResult = await sendVerificationEmail(user);
+    // const emailResult = await sendVerificationEmail(user);
 
-    console.log('results of SendEMail: ' + emailResult.emailMessage);
-    if (!emailResult.success) {
-      return res.status(500).json({
-        success: false,
-        message: emailResult.error,
-        // emailMessage: emailResult.emailMessage,
-      });
-    }
+    // console.log('results of SendEMail: ' + emailResult.emailMessage);
+    // if (!emailResult.success) {
+    //   return res.status(500).json({
+    //     success: false,
+    //     message: emailResult.error,
+    //     // emailMessage: emailResult.emailMessage,
+    //   });
+    // }
 
     res.status(200).json(postsWhereBidderIsHighest);
   } catch (error) {
