@@ -52,37 +52,25 @@ const PostDetailPage = () => {
   };
 
   const updateRemainingTime = (endTime) => {
-    const interval = setInterval(async () => {
-      // Subtract 3 hours from endTime
-      const adjustedEndTime = new Date(endTime.getTime() - 3 * 60 * 60 * 1000);
-      const timeDifference = adjustedEndTime - new Date();
+    const interval = setInterval(() => {
+      const now = new Date();
+      const adjustedEndTime = new Date(endTime.getTime() - 3 * 60 * 60 * 1000); // Subtract 3 hours
+      const timeDifference = adjustedEndTime - now;
 
       if (timeDifference <= 0) {
-        clearInterval(interval); // Stop the interval
-
-        try {
-          const res = await apiRequest.put(`/posts/updateIsSold/${id}`, {
-            data: {
-              isSold: true,
-            },
-          });
-          if (res.status) {
-            console.log('Post status updated:', res.data);
-          }
-        } catch (error) {
-          console.log('Error occurred updating isSold status:', error);
-        }
-
-        setRemainingTime('Auction Ended'); // Optional: Display a message
-        console.log('highestBidDataToDispatch:', highestBidDataValue);
-        console.log('postToDispatch:', post);
-        dispatch(setHighestBidData(highestBidDataValue));
-        dispatch(setItemBided(post));
-        toast.success('Auction ended successfully!');
-        // Optionally navigate after a delay
-        // setTimeout(() => {
-        //   navigate('/usersSession');
-        // }, 1000);
+        clearInterval(interval);
+        setRemainingTime('Auction Ended');
+        // Update post status and notify
+        apiRequest
+          .put(`/posts/updateIsSold/${id}`, { data: { isSold: true } })
+          .then((res) => {
+            if (res.status) {
+              dispatch(setHighestBidData(highestBidDataValue));
+              dispatch(setItemBided(post));
+              toast.success('Auction ended successfully!');
+            }
+          })
+          .catch((error) => console.log('Error updating post status:', error));
       } else {
         const hours = Math.floor(timeDifference / (1000 * 60 * 60));
         const minutes = Math.floor(
@@ -91,9 +79,8 @@ const PostDetailPage = () => {
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
         setRemainingTime(`${hours}h ${minutes}m ${seconds}s`);
       }
-    }, 1000); // Update every second
+    }, 1000);
 
-    // Clean up the interval on component unmount
     return () => clearInterval(interval);
   };
 
