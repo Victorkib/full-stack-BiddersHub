@@ -64,7 +64,7 @@ const SessionListPage = () => {
       return prevSessions.filter((session) => {
         const remainingTime = getRemainingTime(session.endTime);
         if (remainingTime === null) {
-          toast.success('Session Ended');
+          // toast.success('Session Ended');
           return false;
         } else {
           session.remainingTime = remainingTime;

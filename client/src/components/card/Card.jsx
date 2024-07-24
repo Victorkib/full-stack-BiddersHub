@@ -85,7 +85,7 @@ function Card({ item, handleDelete }) {
           <img src="/pin.png" alt="" />
           <span>{item.address}</span>
         </p>
-        <p className="price">Base Price: ${item.basePrice}</p>
+        <p className="price">Base Price: KSh{item.basePrice}</p>
         <div className="bottom">
           <div className="features">
             <div className="feature">
