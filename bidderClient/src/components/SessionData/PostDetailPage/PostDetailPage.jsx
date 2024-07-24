@@ -151,8 +151,14 @@ const PostDetailPage = () => {
     fetchHighestBid();
     fetchWalletBalance();
 
-    return () => {}; // No cleanup needed on component unmount
-  }, [id, post, sessionDetailId, navigate]);
+    // Set up an interval to fetch the highest bid every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchHighestBid();
+    }, 5000); // 5000 milliseconds = 5 seconds
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [id, post, sessionDetailId, navigate]); // Dependency array
 
   const handleBidSubmit = async (e) => {
     e.preventDefault();
