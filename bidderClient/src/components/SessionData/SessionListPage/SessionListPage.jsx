@@ -5,7 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './SessionListPage.module.scss';
 import apiRequest from '../../../lib/apiRequest';
-import moment from 'moment-timezone';
 
 const SessionListPage = () => {
   const [sessions, setSessions] = useState([]);
@@ -37,24 +36,25 @@ const SessionListPage = () => {
   };
 
   const getRemainingTime = (endTime) => {
-    // Parse the endTime in UTC
-    const localEndTime = moment.utc(endTime);
+    // Convert endTime to a Date object
+    const endDate = new Date(endTime);
+    console.log('endDate: ', endDate);
+    // Create a new Date object for the current time
+    const now = new Date();
 
-    // Subtract 3 hours to adjust for the extra time being added
-    const adjustedEndTime = localEndTime.subtract(3, 'hours');
-
-    // Get the current time in Kenya timezone
-    const localCurrentTime = moment().tz('Africa/Nairobi');
-
+    // Subtract 3 hours from the end time
+    const adjustedEndDate = new Date(endDate.getTime() - 3 * 60 * 60 * 1000);
+    console.log('adjustedEndDate: ', adjustedEndDate);
     // Calculate the time difference
-    const timeDifference = adjustedEndTime.diff(localCurrentTime);
+    const timeDifference = adjustedEndDate - now;
 
     if (timeDifference <= 0) return null;
 
-    const duration = moment.duration(timeDifference);
-    const hours = Math.floor(duration.asHours());
-    const minutes = duration.minutes();
-    const seconds = duration.seconds();
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
     return `${hours}h ${minutes}m ${seconds}s`;
   };
@@ -64,7 +64,7 @@ const SessionListPage = () => {
       return prevSessions.filter((session) => {
         const remainingTime = getRemainingTime(session.endTime);
         if (remainingTime === null) {
-          toast.error('Session Ended');
+          toast.success('Session Ended');
           return false;
         } else {
           session.remainingTime = remainingTime;
