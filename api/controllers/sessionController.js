@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js';
+import moment from 'moment';
 
 //create sesssion
 export const createSession = async (req, res) => {
@@ -26,7 +27,9 @@ export const createSession = async (req, res) => {
 
 // Get all sessions ever created by the current authenticated user
 export const getSessions = async (req, res) => {
-  const currentDateTime = new Date();
+  // Subtract 3 hours from the current time
+  const currentDateTime = moment().subtract(3, 'hours').toDate();
+
   try {
     const sessions = await prisma.session.findMany({
       where: {
