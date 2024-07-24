@@ -54,8 +54,10 @@ const PostDetailPage = () => {
     if (!endTime) return null;
 
     const localEndTime = moment.utc(endTime); // End time in UTC
+    console.log('localEndTime: ', localEndTime);
     const adjustedEndTime = localEndTime.subtract(3, 'hours'); // Adjust if needed
 
+    console.log('adjustedEndTime: ', adjustedEndTime);
     const localCurrentTime = moment().tz('Africa/Nairobi'); // Current time in Nairobi timezone
 
     const timeDifference = adjustedEndTime.diff(localCurrentTime);
