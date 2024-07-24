@@ -1,6 +1,7 @@
 // controllers/bidder.controller.js
 
 import prisma from '../lib/prisma.js';
+import moment from 'moment';
 import { sendVerificationEmail } from '../utils/congratsEmail.js';
 
 // Controller to make a bid on a post/item
@@ -273,14 +274,18 @@ export const highestBidderOnItem = async (req, res) => {
   const { bidderId } = req.params;
   const { email } = req.query;
   console.log('email: ', email);
+
   const currentDate = new Date();
+  console.log('currentDateFrBider: ', currentDate);
+  const currentDateTime = moment().add(3, 'hours').toDate();
+  console.log('currentDateTimeFrBider: ', currentDateTime);
 
   try {
     // Fetch past sessions with their posts
     const pastSessions = await prisma.session.findMany({
       where: {
         endTime: {
-          lt: currentDate,
+          lt: currentDateTime,
         },
       },
       orderBy: { startTime: 'desc' },

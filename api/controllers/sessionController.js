@@ -69,7 +69,11 @@ export const getSessions = async (req, res) => {
 
 // Check if item is in current session
 export const isItemInActiveSession = async (req, res) => {
-  const currentDateTime = new Date();
+  const currentDate = new Date();
+  console.log('currentDate: ', currentDate);
+  const currentDateTime = moment().add(3, 'hours').toDate();
+  console.log('currentDateTime: ', currentDateTime);
+
   try {
     const sessions = await prisma.session.findMany({
       where: {
@@ -134,7 +138,11 @@ export const getCurrentValidSessions = async (req, res) => {
 
 // Get all sessions
 export const validEndtimeSessionsBidders = async (req, res) => {
-  const currentDateTime = new Date();
+  const currentDate = new Date();
+  console.log('currentDate: ', currentDate);
+  const currentDateTime = moment().add(3, 'hours').toDate();
+  console.log('currentDateTime: ', currentDateTime);
+
   try {
     const sessions = await prisma.session.findMany({
       where: {
@@ -181,13 +189,17 @@ export const userPostedData = async (req, res) => {
     const postIds = postedData.map((post) => post.id);
 
     // Get the current time
-    const currentTime = new Date();
+    // const currentTime = new Date();
+    const currentDate = new Date();
+    console.log('currentDate: ', currentDate);
+    const currentDateTime = moment().add(3, 'hours').toDate();
+    console.log('currentDateTime: ', currentDateTime);
 
     // Find all sessions with posts and check active status
     const activeSessions = await prisma.session.findMany({
       where: {
         endTime: {
-          gt: currentTime, // Session endTime greater than current time
+          gt: currentDateTime, // Session endTime greater than current time
         },
       },
       include: {
@@ -325,7 +337,10 @@ export const updateSession = async (req, res) => {
 export const speedUpSession = async (req, res) => {
   const { id } = req.params;
 
-  const currentTime = new Date();
+  const currentDate = new Date();
+  console.log('currentDate: ', currentDate);
+  const currentDateTime = moment().add(3, 'hours').toDate();
+  console.log('currentDateTime: ', currentDateTime);
   try {
     const session = await prisma.session.findUnique({
       where: {
@@ -342,7 +357,7 @@ export const speedUpSession = async (req, res) => {
         id: id,
       },
       data: {
-        endTime: currentTime,
+        endTime: currentDateTime,
       },
     });
 
