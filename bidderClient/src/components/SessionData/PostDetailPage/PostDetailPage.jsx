@@ -8,14 +8,13 @@ import styles from './PostDetailPage.module.scss';
 import { AiOutlineWallet } from 'react-icons/ai';
 import apiRequest from '../../../lib/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
-// import PostDetailCreditWalletPopup from '../../../Routes/Bidders/Wallet/PostDetailsCreditWallet';
 import CreditWalletPopup from '../../../Routes/Bidders/Wallet/CreditWalletPopup';
 import { setHighestBidData } from '../../../Features/sessionEndNotifData/highestBidDataSlice';
 import { setItemBided } from '../../../Features/sessionEndNotifData/itemBidedSlice';
+import moment from 'moment-timezone';
 
 const PostDetailPage = () => {
   const { id } = useParams();
-  // console.log('postId: ', id);
   const location = useLocation();
   const navigate = useNavigate();
   const [post, setPost] = useState(location.state?.post || null);
@@ -38,116 +37,124 @@ const PostDetailPage = () => {
 
   const wallet = useSelector((state) => state.wallet.details);
   const bidder = useSelector((state) => state.bidder.profile);
-  // console.log('bidder: ', bidder);
 
+  // Fetch wallet balance
   const fetchWalletBalance = async () => {
     try {
       const response = await apiRequest.get(`/wallet/balance/${bidder.id}`);
-      console.log(response.data);
       setWalletBalance(response.data.balance);
     } catch (error) {
       console.error('Error fetching wallet balance', error);
-      // toast.error('Failed to fetch wallet balance');
+      toast.error('Failed to fetch wallet balance');
     }
   };
 
-  const updateRemainingTime = (endTime) => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const adjustedEndTime = new Date(endTime.getTime() - 3 * 60 * 60 * 1000); // Subtract 3 hours
-      const timeDifference = adjustedEndTime - now;
+  // Get remaining time function
+  const getRemainingTime = (endTime) => {
+    if (!endTime) return null;
 
-      if (timeDifference <= 0) {
-        clearInterval(interval);
-        setRemainingTime('Auction Ended');
-        // Update post status and notify
-        apiRequest
-          .put(`/posts/updateIsSold/${id}`, { data: { isSold: true } })
-          .then((res) => {
-            if (res.status) {
-              dispatch(setHighestBidData(highestBidDataValue));
-              dispatch(setItemBided(post));
-              toast.success('Auction ended successfully!');
-            }
-          })
-          .catch((error) => console.log('Error updating post status:', error));
-      } else {
-        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-        const minutes = Math.floor(
-          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-        );
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-        setRemainingTime(`${hours}h ${minutes}m ${seconds}s`);
+    const localEndTime = moment.utc(endTime); // End time in UTC
+    const adjustedEndTime = localEndTime.subtract(3, 'hours'); // Adjust if needed
+
+    const localCurrentTime = moment().tz('Africa/Nairobi'); // Current time in Nairobi timezone
+
+    const timeDifference = adjustedEndTime.diff(localCurrentTime);
+
+    if (timeDifference <= 0) return null;
+
+    const duration = moment.duration(timeDifference);
+    const hours = Math.floor(duration.asHours());
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
+
+  // Update remaining time function
+  const updateRemainingTime = () => {
+    if (endTime) {
+      const interval = setInterval(() => {
+        const time = getRemainingTime(endTime);
+        if (time === null) {
+          clearInterval(interval);
+          setRemainingTime('Auction Ended'); // Display a message when the auction ends
+          dispatch(setHighestBidData(highestBidDataValue));
+          dispatch(setItemBided(post));
+          toast.success('Auction ended successfully!');
+        } else {
+          setRemainingTime(time);
+        }
+      }, 1000); // Update every second
+
+      return () => clearInterval(interval); // Clean up interval on component unmount
+    }
+  };
+
+  // Fetch post data
+  const fetchPost = async () => {
+    if (!post) {
+      setLoading(true);
+      try {
+        const response = await apiRequest.get(`/posts/${id}`);
+        if (response.status) {
+          setPost(response.data);
+          setEndTime(new Date(response.data.endTime));
+          updateRemainingTime();
+        }
+      } catch (error) {
+        console.error('Error fetching post', error);
+        toast.error('Failed to fetch post details');
+      } finally {
+        setLoading(false);
       }
-    }, 1000);
+    }
+  };
 
-    return () => clearInterval(interval);
+  // Fetch session end time
+  const fetchSessionEndTime = async () => {
+    try {
+      const response = await apiRequest.get(
+        `/sessions/indiSessBidders/${sessionDetailId}`
+      );
+      const session = response.data;
+      if (session) {
+        setEndTime(new Date(session.endTime));
+        updateRemainingTime();
+      } else {
+        console.error('Session not found for the post');
+        toast.error('Session not found for the post');
+      }
+    } catch (error) {
+      console.error('Error fetching session end time', error);
+      toast.error('Failed to fetch session end time');
+    }
+  };
+
+  // Fetch highest bid
+  const fetchHighestBid = async () => {
+    try {
+      const response = await apiRequest.get(
+        `/bidders/highest-bid?itemId=${post.id}`
+      );
+      setHighestBid(response.data);
+      setHighestBidDataValue(response.data);
+    } catch (error) {
+      console.error('Error fetching highest bid', error);
+      toast.error('Failed to fetch highest bid');
+    }
   };
 
   useEffect(() => {
-    const fetchPost = async () => {
-      if (!post) {
-        setLoading(true);
-        try {
-          const response = await apiRequest.get(`/posts/${id}`);
-          if (response.status) {
-            console.log('postDt: ', response.data);
-            setPost(response.data);
-          }
-        } catch (error) {
-          console.error('Error fetching post', error);
-          toast.error('Failed to fetch post details');
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    const fetchSessionEndTime = async () => {
-      try {
-        const response = await apiRequest.get(
-          `/sessions/indiSessBidders/${sessionDetailId}`
-        );
-        const session = response.data;
-        if (session) {
-          setEndTime(new Date(session.endTime));
-          updateRemainingTime(new Date(session.endTime));
-        } else {
-          console.error('Session not found for the post');
-          toast.error('Session not found for the post');
-        }
-      } catch (error) {
-        console.error('Error fetching session end time', error);
-        toast.error('Failed to fetch session end time');
-      }
-    };
-
-    const fetchHighestBid = async () => {
-      try {
-        const response = await apiRequest.get(
-          `/bidders/highest-bid?itemId=${post.id}`
-        );
-        console.log('resOfHighestBidFunc: ', response.data);
-        setHighestBid(response.data);
-        setHighestBidDataValue(response.data);
-      } catch (error) {
-        console.error('Error fetching highest bid', error);
-        toast.error('Failed to fetch highest bid');
-      }
-    };
-
     fetchPost();
     fetchSessionEndTime();
     fetchHighestBid();
     fetchWalletBalance();
 
-    // Set up an interval to fetch the highest bid every 5 seconds
     const intervalId = setInterval(() => {
       fetchHighestBid();
-    }, 5000); // 5000 milliseconds = 5 seconds
+    }, 5000);
 
-    // Clean up the interval on component unmount
-    return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId); // Clean up interval on component unmount
   }, [id, post, sessionDetailId, navigate]); // Dependency array
 
   const handleBidSubmit = async (e) => {
@@ -259,25 +266,21 @@ const PostDetailPage = () => {
             value={newBid}
             onChange={(e) => setNewBid(e.target.value)}
             placeholder="Enter your bid"
-            min="0"
-            required
-            className={styles.bidInput}
+            min={post.basePrice}
+            step="0.01"
           />
-          <button
-            type="submit"
-            disabled={submitting}
-            className={styles.bidButton}
-          >
+          <button type="submit" disabled={submitting}>
             {submitting ? 'Placing Bid...' : 'Place Bid'}
           </button>
           {error && <p className={styles.error}>{error}</p>}
         </form>
       </div>
       <div className={styles.walletSection}>
-        <AiOutlineWallet
-          className={styles.walletIcon}
-          onClick={() => setShowCreditPopup(true)}
-        />
+        <AiOutlineWallet className={styles.walletIcon} />
+        <p>Wallet Balance: ${walletBalance}</p>
+        <button onClick={() => setShowCreditPopup(true)}>Credit Wallet</button>
+      </div>
+      {showCreditPopup && (
         <CreditWalletPopup
           show={showCreditPopup}
           onClose={() => setShowCreditPopup(false)}
@@ -285,17 +288,24 @@ const PostDetailPage = () => {
           amount={creditAmount}
           onCreditSuccess={() => fetchWalletBalance()}
         />
-        <p className={styles.walletBalance}>
-          Wallet Balance: ${formatAmount(walletBalance)}
-        </p>
-      </div>
+      )}
       {showCreditAmountPopup && (
         <AmountPopup
           amount={creditAmount}
           onChange={(e) => setCreditAmount(e.target.value)}
-          onSubmit={() => {
-            setShowCreditAmountPopup(false);
-            setShowCreditPopup(true);
+          onSubmit={async () => {
+            try {
+              await apiRequest.post('/wallet/credit', {
+                bidderId: bidder.id,
+                amount: creditAmount,
+              });
+              toast.success('Wallet credited successfully!');
+              fetchWalletBalance(); // Refresh wallet balance
+              setShowCreditAmountPopup(false);
+            } catch (error) {
+              console.error('Error crediting wallet', error);
+              toast.error('Failed to credit wallet');
+            }
           }}
           onCancel={() => setShowCreditAmountPopup(false)}
         />
@@ -304,8 +314,7 @@ const PostDetailPage = () => {
   );
 };
 
-export default PostDetailPage;
-
+// AmountPopup Component
 const AmountPopup = ({ amount, onChange, onSubmit, onCancel }) => (
   <div className={styles.amountPopup}>
     <label>Credit Wallet</label>
@@ -326,3 +335,5 @@ const AmountPopup = ({ amount, onChange, onSubmit, onCancel }) => (
     </div>
   </div>
 );
+
+export default PostDetailPage;
