@@ -10,6 +10,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { format } from 'timeago.js'; // Import timeago.js
 
+import moment from 'moment-timezone';
+
 const DashboardPage = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -63,13 +65,22 @@ const DashboardPage = () => {
   };
 
   const getRemainingTime = (endTime) => {
-    const timeDifference = new Date(endTime) - new Date();
+    // Parse the endTime in UTC and convert it to Kenya timezone
+    const localEndTime = moment.utc(endTime).tz('Africa/Nairobi');
+
+    // Get the current time in Kenya timezone
+    const localCurrentTime = moment().tz('Africa/Nairobi');
+
+    // Calculate the time difference
+    const timeDifference = localEndTime.diff(localCurrentTime);
     if (timeDifference <= 0) return null;
-    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-    const minutes = Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    const duration = moment.duration(timeDifference);
+
+    const hours = Math.floor(duration.asHours());
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
+
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 

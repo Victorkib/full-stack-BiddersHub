@@ -20,6 +20,7 @@
     "cloudinary-core": "^2.13.1",
     "dompurify": "^3.0.9",
     "leaflet": "^1.9.4",
+    "moment-timezone": "^0.5.45",
     "react": "^18.2.0",
     "react-doc-viewer": "^0.1.13",
     "react-dom": "^18.2.0",
