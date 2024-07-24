@@ -1,7 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import './verification.css';
-import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import apiRequest from '../../lib/apiRequest';
 import { ThreeDots } from 'react-loader-spinner';
@@ -11,21 +10,19 @@ const VerificationPage = () => {
   const location = useLocation();
   const { verificationDt } = location.state || {}; // Destructure state from location
   console.log(verificationDt);
-  const user = useSelector((state) => state.userData.user);
-  console.log(user);
 
-  const [userMessage, setUserMessage] = useState(user);
+  const [userMessage, setUserMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setUserMessage(user);
-  }, [user]);
+    setUserMessage(verificationDt.emailMessage);
+  }, [verificationDt]);
 
   const handleResendEmail = async () => {
     setLoading(true);
     try {
       const res = await apiRequest.post('/auth/resend-verification', {
-        email: verificationDt.email,
+        email: verificationDt.newUser.email,
       });
       if (res.status) {
         console.log('resendEmailDt: ', res.data);
@@ -53,17 +50,18 @@ const VerificationPage = () => {
         </div>
       ) : (
         <>
-          <h2>
+          {/* <h2>
             A Verification Email will be sent shortly after Credential Review by
             the review board.
-          </h2>
-          <h4>
+          </h2> */}
+          <h2>A Verification Email has be sent to your Email.</h2>
+          {/* <h4>
             Verification may take up to 2 hours to ensure credibility and
             Accountability from where you will receive an email{' '}
-          </h4>
-          {user.success ? (
+          </h4> */}
+          {verificationDt.success ? (
             <div className="btnHolder">
-              <p>{userMessage.emailMessage.message}</p>
+              <p>{userMessage}</p>
 
               <button onClick={() => navigate('/register')}>
                 Back to Register

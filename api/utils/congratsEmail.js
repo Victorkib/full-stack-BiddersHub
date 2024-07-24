@@ -8,24 +8,31 @@ import prisma from '../lib/prisma.js';
 dotenv.config();
 
 const {
-  AUTH_EMAIL,
-  AUTH_PASSWORD,
-  APP_PASS,
-  CLIENT_URL,
   BIDDER_URL,
   MAILJET_API_KEY,
   MAILJET_SECRET_KEY,
+
+  MAILER_USER,
+  MAILER_HOST,
+  MAILER_PORT,
+  MAILER_PASSWORD,
 } = process.env;
 
 const transporter = nodemailer.createTransport({
-  service: 'Gmail',
+  host: MAILER_HOST,
+  port: MAILER_PORT,
   secure: false,
   auth: {
-    user: AUTH_EMAIL,
-    pass: 'ltgr jauz zcvx tsey',
+    user: MAILER_USER,
+    pass: MAILER_PASSWORD,
   },
-  debug: true, // Enable debugging output
-  logger: true, // Log to console
+  // debug: true, // Enable debugging output
+  // logger: true, // Log to console
+  tls: {
+    ciphers: 'SSLv3',
+    minVersion: 'TLSv1',
+    rejectUnauthorized: false,
+  },
 });
 
 const mailjet = new Mailjet({
@@ -75,7 +82,7 @@ export async function sendVerificationEmail(newUser) {
   const token = id + uuidv4();
   const link = `${BIDDER_URL}/verifylink/${id}/${token}`;
   const mailOptions = {
-    from: AUTH_EMAIL,
+    from: MAILER_USER,
     to: email,
     subject: `Congragulations ${username}`,
     html: `

@@ -95,12 +95,12 @@ function Register() {
         },
       });
       if (res.status === 200) {
-        const newUser = res.data.newUser;
+        const newUser = res.data;
         // toast.success('Registration successful');
-        updateUser(res.data);
+        // updateUser(res.data);
         dispatch(resetUploads());
-        dispatch(setUser(res.data));
-        navigate(`/login`, {
+        // dispatch(setUser(res.data));
+        navigate(`/verification`, {
           state: {
             verificationDt: newUser,
           },
@@ -314,8 +314,8 @@ function Register() {
                 required
               />
               {error && <p className="errorMessage">{error}</p>}
-              {renderBackButton()}
               {renderNextButton()}
+              {renderBackButton()}
             </form>
           </div>
         )}
@@ -334,8 +334,8 @@ function Register() {
                 'Please upload the Auctioneering License document.'
               )}
               {error && <p className="errorMessage">{error}</p>}
-              {renderBackButton()}
               {renderNextButton()}
+              {renderBackButton()}
             </form>
           </div>
         )}

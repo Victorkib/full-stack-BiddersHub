@@ -15,6 +15,7 @@ const SessionForm = ({ onSuccess, session = {} }) => {
   );
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [postSelectedError, setPostSelectedError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -38,6 +39,12 @@ const SessionForm = ({ onSuccess, session = {} }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (selectedPosts.length === 0) {
+      setPostSelectedError(true);
+      toast.error('Please select at least one product to add to the session.');
+      return;
+    }
+
     try {
       const payload = { title, description, startTime, endTime, selectedPosts };
       if (session?.id) {
@@ -50,6 +57,7 @@ const SessionForm = ({ onSuccess, session = {} }) => {
       if (onSuccess) onSuccess();
     } catch (err) {
       console.error(err);
+      toast.error('Failed to create the session.');
     }
   };
 
@@ -61,6 +69,7 @@ const SessionForm = ({ onSuccess, session = {} }) => {
         return [...prevPosts, postId];
       }
     });
+    setPostSelectedError(false); // Reset error when a post is selected
   };
 
   // Filter out posts where isSold is true
@@ -124,6 +133,11 @@ const SessionForm = ({ onSuccess, session = {} }) => {
               </form>
               <div className={styles.postsContainer}>
                 <label>Select Products To add To Session:</label>
+                {postSelectedError && (
+                  <p className={styles.error}>
+                    Please select at least one product.
+                  </p>
+                )}
                 <div className={styles.postGrid}>
                   {availablePosts.map((post) => (
                     <div key={post.id} className={styles.postItem}>

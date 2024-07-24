@@ -167,11 +167,48 @@ export const userPostedData = async (req, res) => {
       where: {
         userId: req.userId,
       },
+    });
+
+    console.log('postedData: ', postedData);
+    // Extract post IDs
+    const postIds = postedData.map((post) => post.id);
+
+    // Get the current time
+    const currentTime = new Date();
+
+    // Find all sessions with posts and check active status
+    const activeSessions = await prisma.session.findMany({
+      where: {
+        endTime: {
+          gt: currentTime, // Session endTime greater than current time
+        },
+      },
       include: {
-        postDetail: true,
+        posts: {
+          include: {
+            post: true,
+          },
+        },
       },
     });
-    res.status(200).json(postedData);
+    console.log('activeSessions: ', activeSessions);
+
+    // Collect all post IDs that are in active sessions
+    const activePostIds = new Set();
+    activeSessions.forEach((session) => {
+      session.posts.forEach((postItem) => {
+        if (postIds.includes(postItem.post.id)) {
+          activePostIds.add(postItem.post.id);
+        }
+      });
+    });
+
+    // Filter out posts that are in active sessions
+    const availablePosts = postedData.filter(
+      (post) => !activePostIds.has(post.id)
+    );
+    console.log('availablePosts: ', availablePosts);
+    res.status(200).json(availablePosts);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -14,17 +14,27 @@ const {
   CLIENT_URL,
   MAILJET_API_KEY,
   MAILJET_SECRET_KEY,
+  MAILER_USER,
+  MAILER_HOST,
+  MAILER_PORT,
+  MAILER_PASSWORD,
 } = process.env;
 
 const transporter = nodemailer.createTransport({
-  service: 'Gmail',
+  host: MAILER_HOST,
+  port: MAILER_PORT,
   secure: false,
   auth: {
-    user: AUTH_EMAIL,
-    pass: 'ltgr jauz zcvx tsey',
+    user: MAILER_USER,
+    pass: MAILER_PASSWORD,
   },
-  debug: true, // Enable debugging output
-  logger: true, // Log to console
+  // debug: true, // Enable debugging output
+  // logger: true, // Log to console
+  tls: {
+    ciphers: 'SSLv3',
+    minVersion: 'TLSv1',
+    rejectUnauthorized: false,
+  },
 });
 
 const mailjet = new Mailjet({
@@ -75,7 +85,7 @@ export async function sendVerificationEmail(newUser) {
   const token = id + uuidv4();
   const link = `${CLIENT_URL}/verifylink/${id}/${token}`;
   const mailOptions = {
-    from: AUTH_EMAIL,
+    from: MAILER_USER,
     to: email,
     subject: 'Email Verification',
     html: `
@@ -115,6 +125,7 @@ export async function sendVerificationEmail(newUser) {
         await sendNodemailerEmail(mailOptions);
         return { success: true, emailMessage: 'Email sent' };
       } catch (error) {
+        console.log('NodemalerError: ', error);
         console.log('Nodemailer failed, falling back to Mailjet');
         await sendMailjetEmail(mailOptions);
         return { success: true, emailMessage: 'Email sent' }; // Assuming Mailjet succeeded

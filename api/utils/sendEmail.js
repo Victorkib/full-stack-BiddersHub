@@ -1,16 +1,25 @@
 // sendEmail.mjs
 import nodemailer from 'nodemailer';
 import Mailjet from 'node-mailjet';
+import dotenv from 'dotenv';
 
-// Initialize Nodemailer transport
-const transport = nodemailer.createTransport({
-  service: 'gmail',
+dotenv.config();
+
+const { MAILER_USER, MAILER_HOST, MAILER_PORT, MAILER_PASSWORD } = process.env;
+
+const transporter = nodemailer.createTransport({
+  host: MAILER_HOST,
+  port: MAILER_PORT,
   secure: false,
   auth: {
-    user: process.env.AUTH_EMAIL,
-    pass: process.env.AUTH_PASSWORD,
+    user: MAILER_USER,
+    pass: MAILER_PASSWORD,
   },
+  // debug: true, // Enable debugging output
+  // logger: true, // Log to console
   tls: {
+    ciphers: 'SSLv3',
+    minVersion: 'TLSv1',
     rejectUnauthorized: false,
   },
 });
@@ -72,8 +81,8 @@ const sendMailjetEmail = async (to, subject, html) => {
 
 const sendNodemailerEmail = async (to, subject, html) => {
   try {
-    await transport.sendMail({
-      from: process.env.AUTH_EMAIL,
+    await transporter.sendMail({
+      from: process.env.MAILER_USER,
       to,
       subject,
       html,
@@ -89,11 +98,11 @@ const sendResetPasswordEmail = async (email, resetLink) => {
   const html = getResetPasswordEmailContent(resetLink);
 
   try {
-    await sendMailjetEmail(email, subject, html);
+    await sendNodemailerEmail(email, subject, html);
   } catch (err) {
     console.error('Failed to send email via Mailjet, trying Nodemailer', err);
     try {
-      await sendNodemailerEmail(email, subject, html);
+      await sendMailjetEmail(email, subject, html);
     } catch (err) {
       console.error('Failed to send email via Nodemailer as well', err);
       throw new Error('Failed to send email via both Mailjet and Nodemailer');

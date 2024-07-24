@@ -89,20 +89,22 @@ export const register = async (req, res) => {
     });
 
     //send email verification
-    // const emailResult = await sendVerificationEmail(newUser);
-    // console.log('results of SendEMail: ' + emailResult.emailMessage);
-    // if (!emailResult.success) {
-    //   return res.status(500).json({
-    //     success: false,
-    //     message: emailResult.error,
-    //     // emailMessage: emailResult.emailMessage,
-    //   });
-    // }
+    const emailResult = await sendVerificationEmail(newUser);
+    console.log('results of SendEMail: ' + emailResult.emailMessage);
+    if (!emailResult.success) {
+      return res.status(500).json({
+        success: false,
+        message: emailResult.error,
+        emailMessage: emailResult.emailMessage,
+      });
+    }
 
     // Clear sensitive fields before sending user data
     newUser.password = undefined;
     // emailMessage: emailResult.emailMessage;
-    res.status(200).json({ newUser, success: true });
+    res
+      .status(200)
+      .json({ newUser, success: true, emailMessage: emailResult.emailMessage });
   } catch (err) {
     console.error('Error registering user:', err);
     res.status(500).json({ message: 'Failed to create user' });
@@ -198,11 +200,11 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid Credentials!' });
 
     // Check if the user is verified
-    // if (!user.verified) {
-    //   return res
-    //     .status(404)
-    //     .json({ message: 'Please verify your email first.', user });
-    // }
+    if (!user.verified) {
+      return res
+        .status(404)
+        .json({ message: 'Please verify your email first.', user });
+    }
 
     // Generate token and send to user
     const age = 1000 * 60 * 60 * 24 * 2;
