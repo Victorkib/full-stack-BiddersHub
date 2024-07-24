@@ -68,44 +68,50 @@ const SeeMorePastSessionPage = () => {
         </div>
       ) : (
         <>
-          {session && (
-            <div className="sessionDetails">
-              <div className="leftSection">
-                <div className="leftCard">
-                  <h3>{session.title}</h3>
-                  <p>{session.description}</p>
-                  <p>Items Auctioned: {session.posts.length}</p>
-                  <p>
-                    <strong>Started :</strong>{' '}
-                    {new Date(session.startTime).toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Ended :</strong>{' '}
-                    {new Date(session.endTime).toLocaleString()}
-                  </p>
+          {session ? (
+            <>
+              (
+              <div className="sessionDetails">
+                <div className="leftSection">
+                  <div className="leftCard">
+                    <h3>{session.title}</h3>
+                    <p>{session.description}</p>
+                    <p>Items Auctioned: {session.posts.length}</p>
+                    <p>
+                      <strong>Started :</strong>{' '}
+                      {new Date(session.startTime).toLocaleString()}
+                    </p>
+                    <p>
+                      <strong>Ended :</strong>{' '}
+                      {new Date(session.endTime).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+                <div className="rightSection">
+                  {session.posts.map((post) => (
+                    <div className="postCard" key={post.id}>
+                      <div className="topMiniCard">
+                        <div className="sliderContainer">
+                          {renderSlider(post.post.images)}
+                        </div>
+                        <div className="moreButton">
+                          <Link to={`/moreOnPastSessionItem/${post.post.id}`}>
+                            View Item
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="bottomMiniCard">
+                        <h4>{post.post.title}</h4>
+                        <p>Price: ${post.post.basePrice}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="rightSection">
-                {session.posts.map((post) => (
-                  <div className="postCard" key={post.id}>
-                    <div className="topMiniCard">
-                      <div className="sliderContainer">
-                        {renderSlider(post.post.images)}
-                      </div>
-                      <div className="moreButton">
-                        <Link to={`/moreOnPastSessionItem/${post.post.id}`}>
-                          View Item
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="bottomMiniCard">
-                      <h4>{post.post.title}</h4>
-                      <p>Price: ${post.post.basePrice}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+              )
+            </>
+          ) : (
+            <span>No session details to display</span>
           )}
         </>
       )}

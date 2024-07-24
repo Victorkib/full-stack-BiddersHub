@@ -80,7 +80,7 @@ const MoreOnPastSessionItem = () => {
 
   return (
     <>
-      {loading || !posts || !bidData.length ? (
+      {loading ? (
         <div className="loader">
           <ThreeDots
             className="threeDots"
@@ -91,89 +91,98 @@ const MoreOnPastSessionItem = () => {
         </div>
       ) : (
         <div className="moreOnPastItem">
-          <div className="topSection">
-            <div className="leftCard">
-              <Slider {...sliderSettings} className="sliderContainer">
-                {posts.images.map((image, index) => (
-                  <div key={index}>
+          {posts && bidData.length ? (
+            <>
+              {' '}
+              <div className="topSection">
+                <div className="leftCard">
+                  <Slider {...sliderSettings} className="sliderContainer">
+                    {posts.images.map((image, index) => (
+                      <div key={index}>
+                        <img
+                          src={image ? image : '/noavatar.jpg'}
+                          alt={`Slide ${index}`}
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                </div>
+                <div className="rightCard">
+                  <div className="topMiniCard">
+                    <h3>Highest Bidder</h3>
                     <img
-                      src={image ? image : '/noavatar.jpg'}
-                      alt={`Slide ${index}`}
+                      src={
+                        bidData[0].bidder.profile
+                          ? bidData[0].bidder.profile
+                          : '/noavatar.jpg'
+                      }
+                      alt="Bidder Profile"
+                      className="profileImage"
                     />
                   </div>
-                ))}
-              </Slider>
-            </div>
-            <div className="rightCard">
-              <div className="topMiniCard">
-                <h3>Highest Bidder</h3>
-                <img
-                  src={
-                    bidData[0].bidder.profile
-                      ? bidData[0].bidder.profile
-                      : '/noavatar.jpg'
-                  }
-                  alt="Bidder Profile"
-                  className="profileImage"
-                />
+                  <div className="bottomMiniCard">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>Username</td>
+                          <td>{bidData[0].bidder.username}</td>
+                        </tr>
+                        <tr>
+                          <td>Email</td>
+                          <td>{bidData[0].bidder.email}</td>
+                        </tr>
+                        <tr>
+                          <td>Amount</td>
+                          <td>{bidData[0].amount}</td>
+                        </tr>
+                        <tr>
+                          <td>Status</td>
+                          <td>
+                            {posts?.isSold === true ? 'Sold' : 'Not Sold'}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-              <div className="bottomMiniCard">
+              <div className="bottomSection">
                 <table>
+                  <thead>
+                    <tr>
+                      <th>Profile</th>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Bid Amount</th>
+                    </tr>
+                  </thead>
                   <tbody>
-                    <tr>
-                      <td>Username</td>
-                      <td>{bidData[0].bidder.username}</td>
-                    </tr>
-                    <tr>
-                      <td>Email</td>
-                      <td>{bidData[0].bidder.email}</td>
-                    </tr>
-                    <tr>
-                      <td>Amount</td>
-                      <td>{bidData[0].amount}</td>
-                    </tr>
-                    <tr>
-                      <td>Status</td>
-                      <td>{posts?.isSold === true ? 'Sold' : 'Not Sold'}</td>
-                    </tr>
+                    {bidData.map((bid, index) => (
+                      <tr key={index}>
+                        <td>
+                          <img
+                            src={
+                              bid.bidder.profile
+                                ? bid.bidder.profile
+                                : '/noavatar.jpg'
+                            }
+                            alt="Bidder Profile"
+                            className="smallProfileImage"
+                          />
+                        </td>
+                        <td>{bid.bidder.username}</td>
+                        <td>{bid.bidder.email}</td>
+                        <td>{bid.amount}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
+                <button onClick={downloadCSV}>Download Data</button>
               </div>
-            </div>
-          </div>
-          <div className="bottomSection">
-            <table>
-              <thead>
-                <tr>
-                  <th>Profile</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Bid Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bidData.map((bid, index) => (
-                  <tr key={index}>
-                    <td>
-                      <img
-                        src={
-                          bid.bidder.profile
-                            ? bid.bidder.profile
-                            : '/noavatar.jpg'
-                        }
-                        alt="Bidder Profile"
-                        className="smallProfileImage"
-                      />
-                    </td>
-                    <td>{bid.bidder.username}</td>
-                    <td>{bid.bidder.email}</td>
-                    <td>{bid.amount}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <button onClick={downloadCSV}>Download Data</button>
-          </div>
+            </>
+          ) : (
+            <span>Nothing to display currently</span>
+          )}
         </div>
       )}
     </>
