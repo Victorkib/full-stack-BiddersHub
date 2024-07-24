@@ -334,24 +334,55 @@ export const updateSession = async (req, res) => {
   }
 };
 
+// function to speed up session  essentially ending the session
 export const speedUpSession = async (req, res) => {
   const { id } = req.params;
 
   const currentDate = new Date();
   console.log('currentDate: ', currentDate);
-  const currentDateTime = moment().add(3, 'hours').toDate();
+  const currentDateTime = moment().add(3, 'hours').toDate(); // Adjust for timezone
   console.log('currentDateTime: ', currentDateTime);
+
   try {
     const session = await prisma.session.findUnique({
       where: {
         id: id,
       },
+      include: {
+        posts: {
+          include: {
+            post: true,
+          },
+        },
+      },
     });
-
+    console.log('sessionToSpeedUp: ', session);
     if (!session) {
       return res.status(404).json({ message: 'Session not found' });
     }
 
+    for (const sessionPost of session.posts) {
+      const postId = sessionPost.post.id;
+
+      const bids = await prisma.bid.findMany({
+        where: {
+          itemId: postId,
+        },
+      });
+
+      const isSold = bids.length > 0;
+
+      await prisma.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          isSold: isSold,
+        },
+      });
+    }
+
+    // Update the session's endTime
     const updatedSession = await prisma.session.update({
       where: {
         id: id,
