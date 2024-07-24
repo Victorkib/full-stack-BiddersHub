@@ -192,17 +192,19 @@ export const updatePost = async (req, res) => {
 // Update post
 export const updateIsSoldStatus = async (req, res) => {
   const id = req.params.id;
-  const tokenUserId = req.userId;
+  // const tokenUserId = req.bidderId;
 
   try {
     // Find the post by ID
     const post = await prisma.post.findUnique({
       where: { id },
     });
-
+    console.log('postToUpdate: ', post);
     // Check if the user is authorized to update the post
-    if (post.userId !== tokenUserId) {
-      return res.status(403).json({ message: 'Not Authorized!' });
+    if (!post) {
+      return res
+        .status(404)
+        .json({ message: 'No such post to Update Sold Status!' });
     }
 
     // Check if there are any bids for the post
