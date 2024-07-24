@@ -315,6 +315,36 @@ export const updateSession = async (req, res) => {
   }
 };
 
+export const speedUpSession = async (req, res) => {
+  const { id } = req.params;
+
+  const currentTime = new Date();
+  try {
+    const session = await prisma.session.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!session) {
+      return res.status(404).json({ message: 'Session not found' });
+    }
+
+    const updatedSession = await prisma.session.update({
+      where: {
+        id: id,
+      },
+      data: {
+        endTime: currentTime,
+      },
+    });
+
+    return res.status(200).json(updatedSession);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 // Delete a specific session by ID
 export const deleteSession = async (req, res) => {
   try {

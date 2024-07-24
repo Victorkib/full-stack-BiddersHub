@@ -7,6 +7,7 @@ import {
   getSession,
   updateSession,
   deleteSession,
+  speedUpSession,
   validEndtimeSessionsBidders,
   getSummarizedPosts, // New
   getDetailedPost, // New
@@ -35,6 +36,7 @@ router.get('/indiSessBidders/:id', authenticateBidder, getSession);
 router.post('/', auth, createSession);
 router.put('/:id', auth, updateSession);
 router.delete('/:id', auth, deleteSession);
+router.put('/speedUpSession/:id', auth, speedUpSession);
 
 // // CRUD operations for items within a session
 // router.post('/:id/items', auth, addItemToSession);

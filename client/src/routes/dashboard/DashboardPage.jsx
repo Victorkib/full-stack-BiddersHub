@@ -15,7 +15,10 @@ import moment from 'moment-timezone';
 const DashboardPage = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [endTimeDt, setEndTimeDt] = useState('');
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  const adjustedEndTime = moment.utc(endTimeDt).subtract(3, 'hours');
 
   const navigate = useNavigate();
 
@@ -35,6 +38,7 @@ const DashboardPage = () => {
       if (res.status) {
         console.log('Valid endtime sessions', res.data);
         setSessions(res.data);
+        setEndTimeDt(res.data.endTime);
       }
     } catch (err) {
       console.error(err);
@@ -47,10 +51,11 @@ const DashboardPage = () => {
   const handleDelete = async (id) => {
     setLoading(true);
     try {
-      const res = await apiRequest.delete(`/sessions/${id}`);
+      const res = await apiRequest.put(`/sessions/speedUpSession/${id}`);
       if (res.status) {
         fetchSessions();
-        toast.success('Session deleted successfully');
+        console.log('updatedSessionDt: ', res.data);
+        toast.success('Session ended successfully');
       }
     } catch (err) {
       console.error(err);
@@ -184,7 +189,8 @@ const DashboardPage = () => {
                         </button>
                       )}
                     </p>
-                    <p>Session Ends: {format(session.endTime)}</p>
+
+                    <p>Session Ends: {format(adjustedEndTime)}</p>
                     <p>Number of items {session.posts.length}</p>
                     <p>Ends in: {session.remainingTime}</p>
                   </div>
