@@ -27,8 +27,9 @@ const App = () => {
           <Route path="/register" element={<BidderRegister />} />
         </Route>
         <Route path="/" element={<RequireAuth />}>
-          <Route path="/bidderProfile" element={<BidderProfile />} />
+          <Route path="/" element={<SessionListPage />} />
           <Route path="/usersSession" element={<SessionListPage />} />
+          <Route path="/bidderProfile" element={<BidderProfile />} />
           <Route path="/sessions/:id" element={<SessionDetailPage />} />
           <Route path="/posts/:id" element={<PostDetailPage />} />
           <Route path="/session-end/:id" element={<SessionEndPage />} />
