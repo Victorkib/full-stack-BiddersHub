@@ -25,7 +25,7 @@ const App = () => {
         <Route path="/" element={<Layout />}>
           <Route
             path="/"
-            element={bidder.username ? <SessionListPage /> : <BidderLogin />}
+            element={bidder?.username ? <SessionListPage /> : <BidderLogin />}
           />
           {/* <Route path="/" element={<BiddersLandingPage />} /> */}
           <Route path="/login" element={<BidderLogin />} />
