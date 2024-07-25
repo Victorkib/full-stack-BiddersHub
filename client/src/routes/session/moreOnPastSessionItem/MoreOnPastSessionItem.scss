@@ -21,7 +21,7 @@
     justify-content: center;
     margin-bottom: 20px;
     gap: 5px;
-    border: 1px solid wheat;
+    // border: 1px solid wheat;
     border-radius: 8px;
 
     @include md {
@@ -41,7 +41,7 @@
       width: 40%;
       border-radius: 8px;
       height: 100%;
-      // border: 1px solid crimson;
+      border: 1px solid rgba(220, 20, 60, 0.63);
 
       @include md {
         height: 30vh;
@@ -58,7 +58,9 @@
       .sliderContainer {
         height: 100%;
         width: 100%;
-        box-shadow: 2px 4px 8px rgb(226, 197, 144);
+        // box-shadow: 2px 4px 8px rgb(226, 197, 144);
+        outline: none;
+        border: none;
 
         @include md {
           padding: 2px;

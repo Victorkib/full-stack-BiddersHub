@@ -13,23 +13,17 @@ function HomePage() {
       <div className="Homeparent">
         <div className="textContainer">
           <div className="wrapper">
-            <h1 className="title">
-              Auctioneering : We make it happen, rain or shine
-            </h1>
+            <h1 className="title">Bid Hub</h1>
             <p>
-              Discover exciting opportunities on our auction and bidding
-              platform. Here, you can explore a wide range of items up for grabs
-              and compete against other bidders to secure your desired purchase.
-              Whether you{`'`}re a seasoned auction-goer or a first-time
-              participant, our user-friendly interface makes it easy to
-              navigate, place bids, and track your progress.
+              Discover the thrill of the chase with our auction platform—where
+              every bid brings you closer to owning the extraordinary.
             </p>
             {/* <SearchBar /> */}
             <Stats />
           </div>
         </div>
         <div className="imgContainer">
-          <img src="/bg.png" alt="" />
+          <img src="/bid.png" alt="" />
         </div>
       </div>
       {/* <div className="homeChildParent">
@@ -73,15 +67,14 @@ function HomePage() {
           <div className="contactInfo">
             <div>
               <h3>Customer Support</h3>
-              <p>Email: support@actioneering.com</p>
-              <p>Phone: +1-123-456-7890</p>
+              <p>Email: bidhub@actioneering.com</p>
             </div>
             <img src="/Customer-Care-Script.jpg" alt="Contact Us" />
           </div>
         </div>
       </div>
 
-      <div className="footerSection">
+      {/* <div className="footerSection">
         <div className="wrapper">
           <div className="innerFooterWrapper">
             <h2>Footer</h2>
@@ -105,7 +98,7 @@ function HomePage() {
           </div>
           <p>&copy; 2024 BiddersHub. All rights reserved.</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -43,7 +43,7 @@ function NewPostPage() {
           basePrice: parseInt(inputs.basePrice),
           deposit: parseInt(inputs.deposit),
           address: inputs.address,
-          city: inputs.city,
+          city: 'Naoribi',
           property: inputs.property,
           latitude: '-1.2860648473335243',
           longitude: '36.794800775775435',
@@ -68,18 +68,17 @@ function NewPostPage() {
           <form onSubmit={handleSubmit}>
             <div className="item">
               <label htmlFor="title">Title</label>
+              <span className="bp">(Product Name)</span>
               <input id="title" name="title" type="text" required />
             </div>
             <div className="item">
-              <label htmlFor="basePrice">
-                BasePrice (The start amount of bidding an Item)
-              </label>
+              <label htmlFor="basePrice">Base Price</label>
+              <span className="bp">(The start amount of bidding an Item)</span>
               <input id="basePrice" name="basePrice" type="number" required />
             </div>
             <div className="item">
-              <label htmlFor="deposit">
-                Deposit (minimum amount to enter a bid room)
-              </label>
+              <label htmlFor="deposit">Deposit</label>
+              <span className="bp">(minimum amount to bid)</span>
               <input id="deposit" name="deposit" type="number" required />
             </div>
             <div className="item">
@@ -90,11 +89,21 @@ function NewPostPage() {
               <label htmlFor="desc">Description</label>
               <ReactQuill theme="snow" onChange={setValue} value={value} />
             </div>
-            <div className="item">
+            {/* <div className="item">
               <label htmlFor="city">Item City Location</label>
               <input id="city" name="city" type="text" required />
+            </div> */}
+            <div className="item">
+              <label htmlFor="rating">Rate item (0-5 scale)</label>
+              <input
+                min={0}
+                max={5}
+                id="rating"
+                name="rating"
+                type="number"
+                required
+              />
             </div>
-
             <div className="item">
               <label htmlFor="property">Product Type</label>
               <select
@@ -117,17 +126,7 @@ function NewPostPage() {
                 <input min={0} id="size" name="size" type="number" required />
               </div>
             )}
-            <div className="item">
-              <label htmlFor="rating">Rate item (0-5 scale)</label>
-              <input
-                min={0}
-                max={5}
-                id="rating"
-                name="rating"
-                type="number"
-                required
-              />
-            </div>
+
             <div className="item">
               <label htmlFor="condition">Condition</label>
               <select

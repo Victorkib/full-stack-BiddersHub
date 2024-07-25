@@ -63,7 +63,7 @@
           }
 
           input {
-            padding: 20px;
+            padding: 10px;
             border-radius: 5px;
             width: 100%;
             text-wrap: wrap;
@@ -77,9 +77,12 @@
               // border: 1px solid blueviolet;
             }
           }
+          .bp {
+            font-size: x-small;
+          }
 
           select {
-            padding: 19px;
+            padding: 10px;
             width: 100%;
             text-wrap: wrap;
           }
