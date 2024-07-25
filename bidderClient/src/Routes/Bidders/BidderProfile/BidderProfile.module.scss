@@ -38,7 +38,10 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 40%;
-  text-align: left;
+  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .icon {
