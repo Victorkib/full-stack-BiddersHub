@@ -18,7 +18,7 @@ import Participation from './components/SessionData/participations/Participation
 
 const App = () => {
   const bidder = JSON.parse(localStorage.getItem('bidder'));
-  console.log('localStorageBidder: ', bidder);
+  console.log('localStorageBidderDt: ', bidder);
   return (
     <Router>
       <Routes>

@@ -10,6 +10,7 @@ import { TiMessages } from 'react-icons/ti';
 function Chat({ chats }) {
   const [chat, setChat] = useState(null);
   const { currentUser } = useContext(AuthContext);
+  console.log(currentUser);
   const { socket } = useContext(SocketContext);
 
   const messageEndRef = useRef();
