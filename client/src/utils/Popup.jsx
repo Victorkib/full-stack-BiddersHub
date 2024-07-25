@@ -22,9 +22,7 @@ const Popup = ({ onClose }) => {
         <h2>Bid</h2>
         <p>A brief description about bidding.</p>
         <span className={styles.link}>
-          <a href="https://bidderspagefront.onrender.com/usersSession">
-            Go to Bid Page
-          </a>
+          <a href="https://bidderspagefront.onrender.com">Go to Bid Page</a>
         </span>
       </div>
     </div>
