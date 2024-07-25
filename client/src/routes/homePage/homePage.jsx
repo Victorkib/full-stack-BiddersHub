@@ -103,7 +103,7 @@ function HomePage() {
               Instagram
             </a>
           </div>
-          <p>&copy; 2024 Actioneering. All rights reserved.</p>
+          <p>&copy; 2024 BiddersHub. All rights reserved.</p>
         </div>
       </div>
     </div>
