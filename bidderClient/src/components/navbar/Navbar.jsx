@@ -76,8 +76,8 @@ function Navbar() {
               onClick={handleClick}
             />
             <div className="usernameWallet">
-              <span onClick={handleClick}>Wallet: {wallet?.balance}</span>
               <span onClick={handleClick}>{currentUser?.username}</span>
+              <span onClick={handleClick}>Wallet: {wallet?.balance}</span>
             </div>
 
             <Link
