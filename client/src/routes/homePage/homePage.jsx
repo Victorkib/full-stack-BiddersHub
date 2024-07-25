@@ -14,13 +14,15 @@ function HomePage() {
         <div className="textContainer">
           <div className="wrapper">
             <h1 className="title">
-              Actioneering: We make it happen, rain or shine
+              Auctioneering : We make it happen, rain or shine
             </h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-              explicabo suscipit cum eius, iure est nulla animi consequatur
-              facilis id pariatur fugit quos laudantium temporibus dolor ea
-              repellat provident impedit!
+              Discover exciting opportunities on our auction and bidding
+              platform. Here, you can explore a wide range of items up for grabs
+              and compete against other bidders to secure your desired purchase.
+              Whether you{`'`}re a seasoned auction-goer or a first-time
+              participant, our user-friendly interface makes it easy to
+              navigate, place bids, and track your progress.
             </p>
             {/* <SearchBar /> */}
             <Stats />
@@ -48,13 +50,16 @@ function HomePage() {
       {/* New Sections */}
       <div className="aboutSection">
         <div className="wrapper">
-          <h2>About Us</h2>
-          <p>
-            Actioneering is dedicated to making auctioneering accessible and
-            efficient for everyone. With a team of passionate experts, we ensure
-            that your auction experiences are seamless and successful.
-          </p>
-          <img src="/about-image.jpg" alt="About Us" />
+          <div className="innerWrapper">
+            <h2>About Us</h2>
+            <p>
+              Actioneering is dedicated to making auctioneering accessible and
+              efficient for everyone. With a team of passionate experts, we
+              ensure that your auction experiences are seamless and successful.
+            </p>
+          </div>
+
+          <img src="/auction-hammer.jpg" alt="About Us" />
         </div>
       </div>
 
@@ -71,22 +76,32 @@ function HomePage() {
               <p>Email: support@actioneering.com</p>
               <p>Phone: +1-123-456-7890</p>
             </div>
-            <img src="/contact-image.jpg" alt="Contact Us" />
+            <img src="/Customer-Care-Script.jpg" alt="Contact Us" />
           </div>
         </div>
       </div>
 
       <div className="footerSection">
         <div className="wrapper">
-          <h2>Footer</h2>
-          <p>
-            Stay updated with the latest auction news and events. Follow us on
-            social media and subscribe to our newsletter for exclusive updates.
-          </p>
+          <div className="innerFooterWrapper">
+            <h2>Footer</h2>
+            <p>
+              Stay updated with the latest auction news and events. Follow us on
+              social media and subscribe to our newsletter for exclusive
+              updates.
+            </p>
+          </div>
+
           <div className="socialLinks">
-            <a href="#">Facebook</a>
-            <a href="#">Twitter</a>
-            <a href="#">Instagram</a>
+            <a href="#" target="_blank">
+              Facebook
+            </a>
+            <a href="#" target="_blank">
+              Twitter
+            </a>
+            <a href="#" target="_blank">
+              Instagram
+            </a>
           </div>
           <p>&copy; 2024 Actioneering. All rights reserved.</p>
         </div>

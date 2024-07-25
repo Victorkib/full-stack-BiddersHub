@@ -4,10 +4,14 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
 
   .Homeparent {
     display: flex;
     flex: 1;
+    max-width: 1000px;
+    margin: 0 auto;
 
     .textContainer {
       flex: 3;
@@ -162,39 +166,74 @@
     padding: 50px 0;
 
     .wrapper {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
-      text-align: center;
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      text-align: left;
 
-      h2 {
-        font-size: 36px;
-        margin-bottom: 20px;
+      @include md {
+        flex-direction: column;
       }
 
-      p {
-        font-size: 18px;
-        line-height: 1.6;
-        margin-bottom: 40px;
+      .innerWrapper {
+        padding: 5px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        // border: 1px solid firebrick;
+        h2 {
+          font-size: 36px;
+        }
+
+        p {
+          font-size: 18px;
+          line-height: 1.6;
+        }
       }
 
       img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 12px;
+        flex: 2;
+        max-width: 60%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 18px;
+
+        @include md {
+          max-width: 100%;
+          height: auto;
+        }
       }
     }
   }
 
   .contactSection {
-    background-color: #e0e0e0;
+    // background-color: #e0e0e0;
     padding: 50px 0;
 
     .wrapper {
-      max-width: 1200px;
+      max-width: 900px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+
+      @include md {
+        flex-direction: column;
+      }
 
       h2 {
         font-size: 36px;
@@ -204,9 +243,8 @@
       p {
         font-size: 18px;
         line-height: 1.6;
+        margin-bottom: 20px;
         text-align: center;
-        max-width: 600px;
-        margin-bottom: 40px;
       }
 
       .contactInfo {
@@ -243,35 +281,64 @@
   }
 
   .footerSection {
-    background-color: #333;
+    background-color: #3333333a;
     color: #fff;
-    padding: 50px 0;
-    width: 100%;
-    border: 1px solid crimson;
+    padding: 10px 0;
+    border-radius: 20px;
 
     .wrapper {
-      max-width: 100%;
+      max-width: 900px;
       margin: 0 auto;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
 
-      h2 {
-        font-size: 36px;
-        margin-bottom: 20px;
+      @include md {
+        flex-direction: column;
       }
 
-      p {
-        font-size: 18px;
-        line-height: 1.6;
-        margin-bottom: 40px;
+      .innerFooterWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background-color: #444;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        @include md {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        h2 {
+          font-size: 24px;
+          margin: 0;
+        }
+
+        p {
+          font-size: 16px;
+          line-height: 1.6;
+          margin: 0;
+        }
       }
 
       .socialLinks {
-        margin-bottom: 30px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        background-color: #555;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
         a {
           color: #fff;
           font-size: 20px;
-          margin-right: 20px;
+          margin: 0 10px;
           transition: color 0.3s ease;
 
           &:hover {
@@ -279,13 +346,31 @@
           }
         }
       }
+
+      .footerBottom {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        background-color: #666;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        p {
+          font-size: 16px;
+          line-height: 1.6;
+          color: #fff;
+          margin: 0;
+          text-align: center;
+        }
+      }
     }
   }
-}
 
-.firstchild:hover,
-.secondChild:hover,
-.thirdChild:hover,
-.forthChild:hover {
-  transform: scale(1.05);
+  .firstchild:hover,
+  .secondChild:hover,
+  .thirdChild:hover,
+  .forthChild:hover {
+    transform: scale(1.05);
+  }
 }
