@@ -8,6 +8,7 @@ function Navbar() {
   const location = useLocation(); // Get current location
   const [number, setNumber] = useState('');
 
+  const wallet = useSelector((state) => state.wallet.details);
   const highestBidData = useSelector(
     (state) => state.highestBidDataValue.highestBidData
   );
@@ -76,6 +77,7 @@ function Navbar() {
             />
 
             <span onClick={handleClick}>{currentUser?.username}</span>
+            <span onClick={handleClick}>Wallet: {wallet?.balance}</span>
             <Link
               to="/bidderProfile"
               className={`profile ${
