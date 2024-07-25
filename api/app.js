@@ -42,11 +42,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Paths
-const staticPath = path.join(__dirname, '..', 'client', 'dist');
-const indexPath = path.join(staticPath, 'index.html');
-
-// console.log('Static files directory:', staticPath);
-// console.log('Index HTML path:', indexPath);
+const auctioneerStaticPath = path.join(__dirname, '..', 'client', 'dist');
+const auctioneerIndexPath = path.join(auctioneerStaticPath, 'index.html');
+const bidderStaticPath = path.join(__dirname, '..', 'bidderClient', 'dist');
+const bidderIndexPath = path.join(bidderStaticPath, 'index.html');
 
 // Routes setup
 app.use('/api/auth', authRoute);
@@ -60,12 +59,28 @@ app.use('/api/bidders', biddersRoute);
 app.use('/api/wallet', walletRoute);
 app.use('/api/paypal', paypalRoutes);
 
-// Serve static files from the frontend/dist folder
-app.use(express.static(staticPath));
+// Serve static files based on origin
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin === process.env.CLIENT_URL) {
+    express.static(auctioneerStaticPath)(req, res, next);
+  } else if (origin === process.env.BIDDER_URL) {
+    express.static(bidderStaticPath)(req, res, next);
+  } else {
+    next();
+  }
+});
 
-// Serve index.html for all other routes
-app.get('*', (req, res) => {
-  res.sendFile(indexPath);
+// Serve index.html based on origin
+app.get('*', (req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin === process.env.CLIENT_URL) {
+    res.sendFile(auctioneerIndexPath);
+  } else if (origin === process.env.BIDDER_URL) {
+    res.sendFile(bidderIndexPath);
+  } else {
+    next();
+  }
 });
 
 // Start the server
