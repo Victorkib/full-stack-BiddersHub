@@ -397,6 +397,63 @@ export const speedUpSession = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+// function to update IsSold Status
+export const updateIsSoldStatus = async (req, res) => {
+  const { id } = req.params;
+
+  // const currentDate = new Date();
+  // console.log('currentDate: ', currentDate);
+  // const currentDateTime = moment().add(3, 'hours').toDate(); // Adjust for timezone
+  // console.log('currentDateTime: ', currentDateTime);
+
+  try {
+    const session = await prisma.session.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        posts: {
+          include: {
+            post: true,
+          },
+        },
+      },
+    });
+    console.log('sessionWithPostToUpdateIsSold: ', session);
+    if (!session) {
+      return res.status(404).json({ message: 'Session not found' });
+    }
+
+    for (const sessionPost of session.posts) {
+      const postId = sessionPost.post.id;
+
+      const bids = await prisma.bid.findMany({
+        where: {
+          itemId: postId,
+        },
+      });
+
+      const isSold = bids.length > 0;
+
+      const updatedPost = await prisma.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          isSold: isSold,
+        },
+      });
+
+      if (!updatedPost) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+    }
+
+    return res.status(200).json(updatedPost);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
 
 // Delete a specific session by ID
 export const deleteSession = async (req, res) => {

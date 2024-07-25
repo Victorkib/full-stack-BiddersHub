@@ -68,6 +68,7 @@ const DashboardPage = () => {
   const handleTrackSession = (id) => {
     navigate(`/trackSession/${id}`);
   };
+
   const getRemainingTime = (endTime) => {
     // Parse the endTime in UTC
     const localEndTime = moment.utc(endTime);
@@ -93,16 +94,35 @@ const DashboardPage = () => {
 
   const updateRemainingTimes = () => {
     setSessions((prevSessions) => {
-      return prevSessions.filter((session) => {
-        const remainingTime = getRemainingTime(session.endTime);
-        if (remainingTime === null) {
-          return false;
-        } else {
-          session.remainingTime = remainingTime;
-          return true;
-        }
-      });
+      return prevSessions
+        .map((session) => {
+          const remainingTime = getRemainingTime(session.endTime);
+          if (remainingTime === null) {
+            updateIsSoldStatus(session.id); // Send PUT request when the timer ends
+            return { ...session, remainingTime: 'Ended' };
+          } else {
+            session.remainingTime = remainingTime;
+            return session;
+          }
+        })
+        .filter((session) => session.remainingTime !== 'Ended'); // Remove sessions that have ended
     });
+  };
+
+  const updateIsSoldStatus = async (sessionId) => {
+    try {
+      const res = await apiRequest.put(
+        `/sessions/updateIsSoldStatus/${sessionId}`,
+        { isSold: true }
+      );
+      if (res.status) {
+        toast.success('Session status updated to Sold');
+        fetchSessions();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to update session status');
+    }
   };
 
   const toggleDescription = (id) => {
@@ -212,7 +232,6 @@ const DashboardPage = () => {
             <div className={styles.nothing}>
               <h3>There are currently no sessions to display</h3>
               <button>
-                {' '}
                 <Link to="/liveAuctions/create">Create Session</Link>
               </button>
             </div>
