@@ -98,7 +98,6 @@ const DashboardPage = () => {
         .map((session) => {
           const remainingTime = getRemainingTime(session.endTime);
           if (remainingTime === null) {
-            updateIsSoldStatus(session.id); // Send PUT request when the timer ends
             return { ...session, remainingTime: 'Ended' };
           } else {
             session.remainingTime = remainingTime;
@@ -109,6 +108,7 @@ const DashboardPage = () => {
     });
   };
 
+  // updateIsSoldStatus(session.id); // Send PUT request when the timer ends
   const updateIsSoldStatus = async (sessionId) => {
     try {
       const res = await apiRequest.put(
