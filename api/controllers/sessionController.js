@@ -401,11 +401,6 @@ export const speedUpSession = async (req, res) => {
 export const updateIsSoldStatus = async (req, res) => {
   const { id } = req.params;
 
-  // const currentDate = new Date();
-  // console.log('currentDate: ', currentDate);
-  // const currentDateTime = moment().add(3, 'hours').toDate(); // Adjust for timezone
-  // console.log('currentDateTime: ', currentDateTime);
-
   try {
     const session = await prisma.session.findUnique({
       where: {
@@ -419,10 +414,14 @@ export const updateIsSoldStatus = async (req, res) => {
         },
       },
     });
+
     console.log('sessionWithPostToUpdateIsSold: ', session);
+
     if (!session) {
       return res.status(404).json({ message: 'Session not found' });
     }
+
+    let updatedPosts = [];
 
     for (const sessionPost of session.posts) {
       const postId = sessionPost.post.id;
@@ -447,9 +446,13 @@ export const updateIsSoldStatus = async (req, res) => {
       if (!updatedPost) {
         return res.status(404).json({ message: 'Post not found' });
       }
+
+      updatedPosts.push(updatedPost);
     }
 
-    return res.status(200).json(updatedPost);
+    return res
+      .status(200)
+      .json({ message: 'Posts updated successfully', updatedPosts });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
