@@ -70,6 +70,7 @@ function Navbar() {
       <div className="right">
         {currentUser ? (
           <div className="user">
+            <span onClick={handleClick}>Wallet: {wallet?.balance}</span>
             <img
               src={bidder?.profile || '/noavatar.jpg'}
               alt=""
@@ -77,7 +78,7 @@ function Navbar() {
             />
 
             <span onClick={handleClick}>{currentUser?.username}</span>
-            <span onClick={handleClick}>Wallet: {wallet?.balance}</span>
+
             <Link
               to="/bidderProfile"
               className={`profile ${
