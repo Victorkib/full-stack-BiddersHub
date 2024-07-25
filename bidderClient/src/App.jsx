@@ -17,19 +17,23 @@ import ResultNotifications from './components/SessionData/resultOfSession/Result
 import Participation from './components/SessionData/participations/Participation';
 
 const App = () => {
+  const bidder = JSON.parse(localStorage.getItem('bidder'));
+  console.log('localStorageBidder: ', bidder);
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<BidderLogin />} />
+          <Route
+            path="/"
+            element={bidder.username ? <SessionListPage /> : <BidderLogin />}
+          />
           {/* <Route path="/" element={<BiddersLandingPage />} /> */}
           <Route path="/login" element={<BidderLogin />} />
           <Route path="/register" element={<BidderRegister />} />
         </Route>
         <Route path="/" element={<RequireAuth />}>
-          <Route path="/" element={<SessionListPage />} />
-          <Route path="/usersSession" element={<SessionListPage />} />
           <Route path="/bidderProfile" element={<BidderProfile />} />
+          <Route path="/usersSession" element={<SessionListPage />} />
           <Route path="/sessions/:id" element={<SessionDetailPage />} />
           <Route path="/posts/:id" element={<PostDetailPage />} />
           <Route path="/session-end/:id" element={<SessionEndPage />} />
