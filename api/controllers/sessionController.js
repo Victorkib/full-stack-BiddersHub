@@ -151,7 +151,6 @@ export const validEndtimeSessionsBidders = async (req, res) => {
         },
       },
       include: {
-        createdBy: true,
         posts: {
           include: {
             post: true,
@@ -168,7 +167,7 @@ export const validEndtimeSessionsBidders = async (req, res) => {
         password: undefined,
       },
     }));
-
+     console.log('sessionsWithPostImages: ', sessionsWithPostImages: );
     res.status(200).json(sessionsWithPostImages);
   } catch (err) {
     res.status(500).json({ error: err.message });
