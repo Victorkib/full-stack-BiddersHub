@@ -159,7 +159,7 @@ export const validEndtimeSessionsBidders = async (req, res) => {
         },
       },
     });
-
+    console.log('sessions', sessions);
     const sessionsWithPostImages = sessions.map((session) => ({
       ...session,
       postImages: session.posts.map((post) => post.post.images[0]),
