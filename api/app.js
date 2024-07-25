@@ -43,8 +43,11 @@ const __dirname = path.dirname(__filename);
 
 // Paths
 const auctioneerStaticPath = path.join(__dirname, '..', 'client', 'dist');
+console.log('auctioneerStaticPath: ', auctioneerStaticPath);
 const auctioneerIndexPath = path.join(auctioneerStaticPath, 'index.html');
+
 const bidderStaticPath = path.join(__dirname, '..', 'bidderClient', 'dist');
+console.log('bidderStaticPath: ', bidderStaticPath);
 const bidderIndexPath = path.join(bidderStaticPath, 'index.html');
 
 // Routes setup
@@ -59,19 +62,13 @@ app.use('/api/bidders', biddersRoute);
 app.use('/api/wallet', walletRoute);
 app.use('/api/paypal', paypalRoutes);
 
-// Serve static files based on origin
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin === process.env.CLIENT_URL) {
-    express.static(auctioneerStaticPath)(req, res, next);
-  } else if (origin === process.env.BIDDER_URL) {
-    express.static(bidderStaticPath)(req, res, next);
-  } else {
-    next();
-  }
-});
+// Serve static files for auctioneer client
+app.use(express.static(auctioneerStaticPath));
 
-// Serve index.html based on origin
+// Serve static files for bidder client
+app.use(express.static(bidderStaticPath));
+
+// Serve index.html for auctioneer client
 app.get('*', (req, res, next) => {
   const origin = req.headers.origin;
   if (origin === process.env.CLIENT_URL) {
