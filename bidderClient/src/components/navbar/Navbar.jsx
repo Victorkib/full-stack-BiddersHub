@@ -46,7 +46,7 @@ function Navbar() {
             to="/usersSession"
             className={location.pathname === '/liveAuctions' ? 'active' : ''}
           >
-            live-Auctions
+            Live-Auctions
           </Link>
         ) : (
           ''
