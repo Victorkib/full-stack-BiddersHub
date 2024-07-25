@@ -102,7 +102,7 @@ const SeeMorePastSessionPage = () => {
                       </div>
                       <div className="bottomMiniCard">
                         <h4>{post.post.title}</h4>
-                        <p>Price: ${post.post.basePrice}</p>
+                        <p>Price: KSH {post.post.basePrice}</p>
                       </div>
                     </div>
                   ))}

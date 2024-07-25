@@ -85,12 +85,12 @@ function Card({ item, handleDelete }) {
           <img src="/pin.png" alt="" />
           <span>{item.address}</span>
         </p>
-        <p className="price">Base Price: KSh{item.basePrice}</p>
+        <p className="price">Base Price: KSH {item.basePrice}</p>
         <div className="bottom">
           <div className="features">
             <div className="feature">
               <img src="/Mybg.png" alt="" />
-              <span>Deposit:${item.deposit}</span>
+              <span>Deposit: KSH {item.deposit}</span>
             </div>
             <div className="feature">
               <img src="/Mybg.png" alt="" />

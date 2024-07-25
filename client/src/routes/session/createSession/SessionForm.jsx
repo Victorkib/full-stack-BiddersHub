@@ -150,8 +150,8 @@ const SessionForm = ({ onSuccess, session = {} }) => {
                         <img src={post.images[0]} alt={post.title} />
                       </div>
                       <span>{post.title}</span>
-                      <span>BP: ${post.basePrice}</span>
-                      <span>Dep: ${post.deposit}</span>
+                      <span>BasePrice: KSH{post.basePrice}</span>
+                      <span>Deposit: KSH{post.deposit}</span>
                     </div>
                   ))}
                 </div>

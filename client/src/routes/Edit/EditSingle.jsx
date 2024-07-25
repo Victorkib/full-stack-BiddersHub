@@ -105,7 +105,7 @@ function EditSingle() {
               />
             </div>
             <div className="item">
-              <label htmlFor="basePrice">Base Price {`($)`}</label>
+              <label htmlFor="basePrice">Base Price {`(KSH)`}</label>
               <input
                 id="basePrice"
                 name="basePrice"
@@ -115,7 +115,7 @@ function EditSingle() {
               />
             </div>
             <div className="item">
-              <label htmlFor="deposit">Deposit {`($)`}</label>
+              <label htmlFor="deposit">Deposit {`(KSH)`}</label>
               <input
                 id="deposit"
                 name="deposit"

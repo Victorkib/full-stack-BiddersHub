@@ -72,7 +72,7 @@ const TrackIndividualItem = () => {
         </Slider>
         <div className={styles.detailsCard}>
           <h2>{posts?.title}</h2>
-          <p>Price: ${posts?.price}</p>
+          <p>Price: KSH{posts?.price}</p>
           <p>Address: {posts?.address}</p>
           <p>City: {posts?.city}</p>
           <p>Number in Stock: {posts?.numberInStock}</p>
@@ -100,7 +100,7 @@ const TrackIndividualItem = () => {
               <tr key={bid.id}>
                 <td>{bid.bidder.username}</td>
                 <td>{bid.bidder.email}</td>
-                <td>${bid.amount}</td>
+                <td>KSH: {bid.amount}</td>
               </tr>
             ))}
           </tbody>

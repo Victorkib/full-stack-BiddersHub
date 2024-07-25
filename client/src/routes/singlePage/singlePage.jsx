@@ -97,7 +97,9 @@ function SinglePage() {
                             <img src="/pin.png" alt="" />
                             <span>{post?.data?.address}</span>
                           </div>
-                          <div className="price">$ {post?.data?.basePrice}</div>
+                          <div className="price">
+                            KSH {post?.data?.basePrice}
+                          </div>
                         </div>
                         <div className="user">
                           <img src={post?.data?.user?.avatar} alt="" />
