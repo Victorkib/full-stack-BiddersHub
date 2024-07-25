@@ -162,12 +162,8 @@ export const validEndtimeSessionsBidders = async (req, res) => {
     const sessionsWithPostImages = sessions.map((session) => ({
       ...session,
       postImages: session.posts.map((post) => post.post.images[0]),
-      createdBy: {
-        ...session.createdBy,
-        password: undefined,
-      },
     }));
-     console.log('sessionsWithPostImages: ', sessionsWithPostImages: );
+    console.log('sessionsWithPostImages: ', sessionsWithPostImages);
     res.status(200).json(sessionsWithPostImages);
   } catch (err) {
     res.status(500).json({ error: err.message });
