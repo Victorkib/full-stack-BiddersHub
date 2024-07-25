@@ -44,10 +44,12 @@ const __dirname = path.dirname(__filename);
 // Paths
 const auctioneerStaticPath = path.join(__dirname, '..', 'client', 'dist');
 const auctioneerIndexPath = path.join(auctioneerStaticPath, 'index.html');
-console.log('auctioneerStaticPath: ', auctioneerStaticPath);
-
 const bidderStaticPath = path.join(__dirname, '..', 'bidderClient', 'dist');
 const bidderIndexPath = path.join(bidderStaticPath, 'index.html');
+
+console.log('auctioneerStaticPath: ', auctioneerStaticPath);
+console.log('auctioneerIndexPath: ', auctioneerIndexPath);
+console.log('bidderStaticPath: ', bidderStaticPath);
 console.log('bidderIndexPath: ', bidderIndexPath);
 
 // Routes setup
@@ -62,11 +64,11 @@ app.use('/api/bidders', biddersRoute);
 app.use('/api/wallet', walletRoute);
 app.use('/api/paypal', paypalRoutes);
 
-// Serve static files for both clients
+// Serve static files
 app.use(express.static(auctioneerStaticPath));
 app.use(express.static(bidderStaticPath));
 
-// Serve index.html for all other routes based on the request origin
+// Catch-all route to serve index.html for each frontend based on the host
 app.get('*', (req, res) => {
   const host = req.headers.host;
   if (host.includes('bidderspagefront.onrender.com')) {
@@ -74,7 +76,7 @@ app.get('*', (req, res) => {
   } else if (host.includes('bidders-hub.onrender.com')) {
     res.sendFile(auctioneerIndexPath);
   } else {
-    res.status(404).send('Not Founds');
+    res.status(404).send('Not Found');
   }
 });
 
