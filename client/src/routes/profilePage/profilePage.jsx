@@ -14,6 +14,7 @@ import ProfileUpdatePage from '../profileUpdatePage/profileUpdatePage';
 
 function ProfilePage() {
   const data = useLoaderData();
+  console.log('profilePageData: ', data);
 
   const { updateUser, currentUser } = useContext(AuthContext);
 
