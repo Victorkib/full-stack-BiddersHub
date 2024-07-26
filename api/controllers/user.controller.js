@@ -111,18 +111,19 @@ export const savePost = async (req, res) => {
     res.status(500).json({ message: 'Failed to delete users!' });
   }
 };
-
 export const profilePosts = async (req, res) => {
   const tokenUserId = req.userId;
   try {
     const userPosts = await prisma.post.findMany({
       where: { userId: tokenUserId },
+      orderBy: { createdAt: 'desc' }, // Order by creation date in descending order
     });
     const saved = await prisma.savedPost.findMany({
       where: { userId: tokenUserId },
       include: {
         post: true,
       },
+      orderBy: { createdAt: 'desc' }, // Order by creation date in descending order
     });
 
     const savedPosts = saved.map((item) => item.post);
