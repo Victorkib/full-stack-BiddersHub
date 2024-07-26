@@ -253,8 +253,10 @@ const PostDetailPage = () => {
           <strong>Auctioneer:</strong> {post.userId.username}
         </p>
         <p>
-          <strong>Session Ends:</strong> {new Date(endTime).toLocaleString()}
+          <strong>Session Ends:</strong>{' '}
+          {moment(new Date(endTime)).subtract(3, 'hours').toLocaleString()}
         </p>
+
         <p>
           <strong>Remaining Time:</strong> {remainingTime}
         </p>
