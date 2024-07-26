@@ -113,7 +113,7 @@ function Navbar() {
         <div className="menuIcon">
           <img
             src="/menu.png"
-            alt=""
+            alt="menu"
             onClick={() => setOpen((prev) => !prev)}
           />
         </div>
@@ -124,9 +124,19 @@ function Navbar() {
           {currentUser && (
             <Link
               to="/usersSession"
-              className={location.pathname === '/liveAuctions' ? 'active' : ''}
+              className={location.pathname === '/usersSession' ? 'active' : ''}
             >
               liveAuctions
+            </Link>
+          )}
+          {currentUser && (
+            <Link
+              to="/resultNotifications"
+              className={
+                location.pathname === '/resultNotifications' ? 'active' : ''
+              }
+            >
+              Notifications
             </Link>
           )}
 
