@@ -199,12 +199,12 @@ export const login = async (req, res) => {
     if (!isPasswordValid)
       return res.status(400).json({ message: 'Invalid Credentials!' });
 
-    // Check if the user is verified
-    if (!user.verified) {
-      return res
-        .status(404)
-        .json({ message: 'Please verify your email first.', user });
-    }
+    // // Check if the user is verified
+    // if (!user.verified) {
+    //   return res
+    //     .status(404)
+    //     .json({ message: 'Please verify your email first.', user });
+    // }
 
     // Generate token and send to user
     const age = 1000 * 60 * 60 * 24 * 2;
