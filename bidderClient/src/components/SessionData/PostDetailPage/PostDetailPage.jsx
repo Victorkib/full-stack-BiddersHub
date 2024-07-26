@@ -83,9 +83,9 @@ const PostDetailPage = () => {
         dispatch(setItemBided(post));
         toast.success('Auction ended successfully!');
         // Optionally navigate after a delay
-        // setTimeout(() => {
-        //   navigate('/usersSession');
-        // }, 1000);
+        setTimeout(() => {
+          navigate('/resultNotifications');
+        }, 1000);
       } else {
         const duration = moment.duration(timeDifference);
         const hours = Math.floor(duration.asHours());
