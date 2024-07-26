@@ -32,11 +32,15 @@ const Stats = () => {
 
   return (
     <div ref={statsRef} className="stats">
-      <StatsCounter label="Clients" initialValue={500} start={startCount} />
-      <StatsCounter label="Projects" initialValue={1000} start={startCount} />
+      <StatsCounter label="Clients" initialValue={1} start={startCount} />
       <StatsCounter
-        label="Years of Experience"
-        initialValue={5}
+        label="Products Sold"
+        initialValue={10}
+        start={startCount}
+      />
+      <StatsCounter
+        label="Months of Experience"
+        initialValue={2}
         start={startCount}
       />
     </div>

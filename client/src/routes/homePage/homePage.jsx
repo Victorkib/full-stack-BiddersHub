@@ -47,7 +47,7 @@ function HomePage() {
           <div className="innerWrapper">
             <h2>About Us</h2>
             <p>
-              Actioneering is dedicated to making auctioneering accessible and
+              Phoenix is dedicated to making auctioneering accessible and
               efficient for everyone. With a team of passionate experts, we
               ensure that your auction experiences are seamless and successful.
             </p>
@@ -67,7 +67,8 @@ function HomePage() {
           <div className="contactInfo">
             <div>
               <h3>Customer Support</h3>
-              <p>Email: bidhub@actioneering.com</p>
+              <p>Email: bidhub@phoenix.com</p>
+              <p>Phone No: +254-79-454-039 </p>
             </div>
             <img src="/Customer-Care-Script.jpg" alt="Contact Us" />
           </div>
