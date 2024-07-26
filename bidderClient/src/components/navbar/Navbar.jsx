@@ -83,7 +83,7 @@ function Navbar() {
             <Link
               to="/bidderProfile"
               className={`profile ${
-                location.pathname === '/profile' ? 'active' : ''
+                location.pathname === '/bidderProfile' ? 'active' : ''
               }`}
             >
               {/* {number > 0 && <div className="notification">{number}</div>} */}
@@ -141,9 +141,9 @@ function Navbar() {
           )}
 
           <Link
-            to="/profile"
+            to="/bidderProfile"
             className={`profile ${
-              location.pathname === '/profile' ? 'active' : ''
+              location.pathname === '/bidderProfile' ? 'active' : ''
             }`}
           >
             UserProfile
