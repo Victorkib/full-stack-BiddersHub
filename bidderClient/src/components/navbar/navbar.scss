@@ -47,7 +47,7 @@ nav {
 
       @include sm {
         &:nth-of-type(2) {
-          display: none;
+          display: block;
         }
       }
 
