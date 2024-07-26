@@ -127,6 +127,16 @@ function Navbar() {
           )}
           {currentUser && (
             <Link
+              to="/liveAuctions/create"
+              className={
+                location.pathname === '/liveAuctions/create' ? 'active' : ''
+              }
+            >
+              CreateSession
+            </Link>
+          )}
+          {currentUser && (
+            <Link
               to="/products"
               className={location.pathname === '/products' ? 'active' : ''}
             >
