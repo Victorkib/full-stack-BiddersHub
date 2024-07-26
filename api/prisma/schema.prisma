@@ -83,7 +83,7 @@ model User {
   company    Company     @relation(fields: [companyId], references: [id]) // Specify fields and references here
   companyId  String      @db.ObjectId
   documents  Document[]  // Relation to Document
-  verified   Boolean     @default(false)  
+  verified   Boolean     @default(true)  
 }
 
 model Company {
