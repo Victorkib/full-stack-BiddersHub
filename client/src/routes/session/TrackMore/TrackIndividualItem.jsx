@@ -19,7 +19,7 @@ const TrackIndividualItem = () => {
         setPosts(res.data);
         setLoading(false);
       } else {
-        toast('error fetching posts');
+        toast.error('Error fetching posts');
       }
     };
 
@@ -34,12 +34,15 @@ const TrackIndividualItem = () => {
         }
       } catch (error) {
         console.error('Error fetching highest bid', error);
-        toast('error fetching highest bid');
+        toast.error('Error fetching highest bid');
       }
     };
 
     fetchPostData();
     fetchHighestBid();
+    const intervalId = setInterval(fetchHighestBid, 1000);
+
+    return () => clearInterval(intervalId); // Clear interval on component unmounts
   }, [id]);
 
   const sliderSettings = {
